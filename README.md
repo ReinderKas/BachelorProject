@@ -3,8 +3,24 @@
 ## Ideas
 
 ### Diagnostics / Machine Learning
+ - Diagnostics on CSPs
+    * Z3 proof generator
+    * Inference engines
+
+[Direct Debug](https://github.com/AIG-ist-tugraz/DirectDebug)
+
+
+
 Currently the Diagnostics is very basic. <br>
 It would be nice to be able to give changes to the model in order to fix broken models. <br>
+ 
+- Proof generator.
+- Proof by contradiction on CSPs.
+- Also with Expressions (non-logic).
+- Z3 proof generator.
+
+
+
 
 ---
 ### Recommendation System
@@ -36,5 +52,6 @@ Teach OpenAi Codex model the Archer Language so that modeling a Feature Model ca
 
 
 ## Tasks to do
+ - [ ] Find professor/supervisor.
  - [ ] Write proposals.
  - [ ] Sign contract.

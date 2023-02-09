@@ -3,9 +3,10 @@
 ## Ideas
 
 ### Diagnostics / Machine Learning
- - Diagnostics on CSPs
-    * Z3 proof generator
-    * Inference engines
+ - Analyzing infeasibility of Constraint Satisfaction Problems.
+ -   Diagnostics on CSPs
+  * Z3 proof generator
+  * Inference engines
 
 [Direct Debug](https://github.com/AIG-ist-tugraz/DirectDebug)
 

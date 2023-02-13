@@ -1,8 +1,24 @@
-# Bachelor Project
+# Bachelor Project - Feature Model Analysis: a case study
+
+## Implementation
+ - [Z3 Theorem Prover](https://github.com/Z3Prover/z3) <br>
+ - [SMT-lib](https://smtlib.cs.uiowa.edu/) <br>
+
+## Documentation
+ - [Documentation smt-lib Z3](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
+
+## Examples
+ - [Playground lyonFr](https://compsys-tools.ens-lyon.fr/z3/)
+ - [Playground ](https://jfmc.github.io/z3-play/)
+
+
+
+
+
 
 ## Ideas
 
-### Diagnostics / Machine Learning
+### Diagnostics
  - Analyzing infeasibility of Constraint Satisfaction Problems.
  -   Diagnostics on CSPs
   * Z3 proof generator
@@ -20,39 +36,7 @@ It would be nice to be able to give changes to the model in order to fix broken 
 - Also with Expressions (non-logic).
 - Z3 proof generator.
 
-
-
-
----
-### Recommendation System
-A recommendation system for the Configurator that gives product suggestions based on previously configured products <br>
-
----
-### OpenAi Azure ChatGPT integration
-Kind of like the reccomendation system, but this uses natural language processing instead of previously configured products <br>
-
----
-### Archer Language (ML)
-An in-house build language that we created in order to easily create Feature Models. <br>
-
----
-### Continuous Solving
-Building a sort of system in which the solver continuously runs (with ticks) and applies changes to the model. <br>
-This is basically a CAD system, but would be amazing to have implemented. <br>
-
----
-### Geometrical constraint solver
-Building a geometrical constraint solver which basically is an optimization solver.<br>
-Could maybe be done in Microsoft's Z3 solver.<br>
-
----
-### OpenAi Codex Archer Language
-Teach OpenAi Codex model the Archer Language so that modeling a Feature Model can be done copilot style (natural language).
-
----
-
-
 ## Tasks to do
- - [ ] Find professor/supervisor.
+ - [x] Find professor/supervisor.
  - [ ] Write proposals.
- - [ ] Sign contract.
+ - [x] Sign contract.

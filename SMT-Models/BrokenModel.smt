@@ -1,0 +1,5 @@
+(set-option :produce-proofs true)
+(declare-fun a () Bool)
+(assert (= a (not a)))
+(check-sat)
+(get-proof)

@@ -5,8 +5,6 @@
  - :white_check_mark: Find professor/supervisor.
  - :black_square_button: Write proposals.
  - :white_check_mark: Sign contract.
- 
-&nbsp;
 
 ### Research:
 #### Week 7: 

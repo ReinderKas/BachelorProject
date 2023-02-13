@@ -1,5 +1,23 @@
 # Bachelor Project - Feature Model Analysis: a case study
 
+## Tasks to do
+### Before starting
+ - :white_check_mark: Find professor/supervisor.
+ - :black_square_button: Write proposals.
+ - :white_check_mark: Sign contract.
+
+&nbsp;
+&nbsp;
+
+### Research:
+#### Week 7: 
+ - :black_square_button: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
+ - :black_square_button: Write introduction explaining CSP.
+
+
+&nbsp;
+&nbsp;
+
 ## Implementation
  - [Z3 Theorem Prover](https://github.com/Z3Prover/z3) <br>
  - [SMT-lib](https://smtlib.cs.uiowa.edu/) <br>
@@ -35,13 +53,3 @@ It would be nice to be able to give changes to the model in order to fix broken 
 - Proof by contradiction on CSPs.
 - Also with Expressions (non-logic).
 - Z3 proof generator.
-
-## Tasks to do
-### Before starting
- - :white_check_mark: Find professor/supervisor.
- - :black_square_button: Write proposals.
- - :white_check_mark: Sign contract.
-
-### Research:
- - :black_square_button: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
- - :black_square_button: Write introduction explaining CSP.

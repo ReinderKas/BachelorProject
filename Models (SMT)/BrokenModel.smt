@@ -1,3 +1,4 @@
+(set-option :produce-unsat-cores true)
 (set-option :produce-proofs true)
 
 ; Variable declarations
@@ -9,3 +10,4 @@
 ; Solve
 (check-sat)
 (get-proof)
+(get-unsat-core)

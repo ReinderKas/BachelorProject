@@ -8,6 +8,7 @@
 
 ### Research:
 #### Week 7: 
+ - :white_check_mark: Download/Setup Z3. 
  - :black_square_button: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
  - :black_square_button: Write introduction explaining CSP.
 

@@ -5,8 +5,7 @@
  - :white_check_mark: Find professor/supervisor.
  - :black_square_button: Write proposals.
  - :white_check_mark: Sign contract.
-
-&nbsp;
+ 
 &nbsp;
 
 ### Research:
@@ -14,8 +13,6 @@
  - :black_square_button: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
  - :black_square_button: Write introduction explaining CSP.
 
-
-&nbsp;
 &nbsp;
 
 ## Implementation
@@ -29,9 +26,8 @@
  - [Playground lyonFr](https://compsys-tools.ens-lyon.fr/z3/)
  - [Playground ](https://jfmc.github.io/z3-play/)
 
-
-
-
+&nbsp;
+&nbsp;
 
 
 ## Ideas

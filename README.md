@@ -14,7 +14,7 @@
 &nbsp;
 
 ## Implementation
- - [Z3 Theorem Prover](https://github.com/Z3Prover/z3) <br>
+ - [Z3 Theorem Prover](https://github.com/Z3Prover/z3) (Z3 version 4.12.1 - 64 bit) <br>
  - [SMT-lib](https://smtlib.cs.uiowa.edu/) <br>
 
 ## Documentation

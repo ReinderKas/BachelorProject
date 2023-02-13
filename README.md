@@ -37,6 +37,11 @@ It would be nice to be able to give changes to the model in order to fix broken 
 - Z3 proof generator.
 
 ## Tasks to do
- - [x] Find professor/supervisor.
- - [ ] Write proposals.
- - [x] Sign contract.
+### Before starting
+ - :white_check_mark: Find professor/supervisor.
+ - :black_square_button: Write proposals.
+ - :white_check_mark: Sign contract.
+
+### Research:
+ - :black_square_button: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
+ - :black_square_button: Write introduction explaining CSP.

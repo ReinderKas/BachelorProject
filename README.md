@@ -3,7 +3,7 @@
 ## Tasks to do
 ### Before starting
  - :white_check_mark: Find professor/supervisor.
- - :black_square_button: Write proposals.
+ - :black_square_button: Write proposal?.
  - :white_check_mark: Sign contract.
 
 ### Research:

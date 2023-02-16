@@ -1,0 +1,13 @@
+1) Do I still have to write a Research Proposal?
+    - Should not be a problem if not done no.
+
+
+2) How detailed should my introduction be?
+    - It should be readable for AI students. General knownlegde of CSP is expected, but the
+      specific implementations are probably not known (such as Feature Models and their Constraints).
+    
+
+3) Do I also have to present at the Bachelor Symposium?
+    - This is part of grading, so yes; presenting is somewhat mandatory.
+      Does not have to go in depth into everything, as it's only 10 minutes of presenting
+      and 5 minutes of questions.

@@ -13,4 +13,5 @@
 
 ; Solve
 (check-sat)
+(get-model)
 (get-proof)

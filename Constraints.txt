@@ -1,0 +1,17 @@
+Non Cross Tree (Structural):
+ - Mandatory
+ - Optional
+ - Alternative
+ - Or
+
+Cross Tree Constraints (Gives troubles)
+ - Requires
+ - Requires (Default Selected
+ - Excludes
+ - Excludes (Hide In View)
+ - Filter Selection
+ - Simple Calculated Value
+ - Advanced Calculated Value    (Expression)
+ - Conditions                   (Expression)
+ - Default Value                (Expression)
+ - Max Value                    (Expression)

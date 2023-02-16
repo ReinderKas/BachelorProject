@@ -1,1 +1,49 @@
+
 1) Do I still have to write a Research Proposal?
+
+
+2) How detailed should my introduction be?
+    Since it's to be written for Supervisors, CSP is generally known.
+    Feature Models are specific though, so maybe lesser known.
+
+   - Should it give intro for CSP in general?
+   - Just the Feature Model aspect?
+   - Include what Elfsquad is?
+   - State how we usilize CSP?
+
+3) Do I also have to present at the Bachelor Symposium?
+
+
+
+
+
+
+
+
+
+
+
+
+
+What is the aim of my writing/thesis?
+ - Write a report on a project and present my results. //TODO: is it though?
+
+For whom am I writing my thesis?
+ - Professor and Elfsquad.
+
+For what am I writing?
+ - Bachelor -> 11-15 pages.
+
+What is my contribution?
+What message do I want to convey?
+What can I assume to be known?
+What can I present as background information.
+How much detail can I go into?
+Whose work have I used for my own work.
+
+
+Structure (AI, for empirical work): 
+    - Introduction
+    - Method
+    - Results
+    - Discussion

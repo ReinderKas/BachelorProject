@@ -14,6 +14,9 @@
 
 &nbsp;
 
+## Videos:
+ - [Formal Methods for the Informal Engineer: Tutorial #1 - The Z3 Theorem Prover](https://www.youtube.com/watch?v=56IIrBZy9Rc)
+
 ## Implementation
  - [Z3 Theorem Prover](https://github.com/Z3Prover/z3) (Z3 version 4.12.1 - 64 bit) <br>
  - [SMT-lib](https://smtlib.cs.uiowa.edu/) <br>
@@ -24,6 +27,7 @@
 ## Examples
  - [Playground lyonFr](https://compsys-tools.ens-lyon.fr/z3/)
  - [Playground ](https://jfmc.github.io/z3-play/)
+
 
 &nbsp;
 &nbsp;

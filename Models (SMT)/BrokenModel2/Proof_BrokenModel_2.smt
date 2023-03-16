@@ -19,15 +19,15 @@
         (
             let 
             (
-                (@x29 (asserted $x28))
+                (@x29 (asserted $x28))                                                  ; asserted(!(a = b))
             )
             (
                 let 
                 (
-                    (@x27 (asserted $x26))
+                    (@x27 (asserted $x26))                                              ; asserted(a = b)
                 )
                 (
-                    unit-resolution @x27 (mp @x29 (rewrite (= $x28 $x28)) $x28) false
+                    unit-resolution @x27 (mp @x29 (rewrite (= $x28 $x28)) $x28) false   ; (!(a = b) = !(a = b))
                 )
             )
         )

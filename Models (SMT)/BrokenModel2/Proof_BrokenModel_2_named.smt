@@ -1,0 +1,11 @@
+((proof
+(let (($x26 (= a b)))
+ (let (($x31 (or (not first) $x26)))
+ (let ((@x34 (mp (asserted (=> first $x26)) (rewrite (= (=> first $x26) $x31)) $x31)))
+ (let (($x35 (not $x26)))
+ (let (($x44 (or (not second) $x35)))
+ (let (($x37 (=> second $x35)))
+ (let (($x45 (= $x37 $x44)))
+ (let ((@x47 (trans (monotonicity (rewrite (= $x35 $x35)) (= $x37 $x37)) (rewrite $x45) $x45)))
+ (let ((@x55 (mp (mp (asserted $x37) @x47 $x44) (monotonicity (rewrite (= $x35 $x35)) (= $x44 $x44)) $x44)))
+ (unit-resolution @x55 (unit-resolution @x34 (asserted first) $x26) (asserted second) false))))))))))))

@@ -1,0 +1,23 @@
+Self explanatory:
+  not, or, and
+
+rewrite: rewrite the logic such that it's meaning stays the same.
+
+mp:   modus ponens (implication elimination: propagating logic value)
+      Example:
+            P -> Q
+            if(P) then(Q)
+            if(!Q) then(!P)
+
+
+trans: transposition 
+            A valid rule of replacement that permits 
+            one to switch the antecedent with the consequent 
+            of a conditional statement in a logical proof if 
+            they are also both negated.
+
+monotonicity: The hypotheses of any derived fact may be freely extended with additional assumptions
+
+unit-resolution:
+
+asserted:

@@ -5,7 +5,7 @@
 (declare-fun a () Bool)
 
 ; Constraints
-(assert (= a (not a)))
+(assert (!(= a (not a)) :named one))
 
 ; Solve
 (check-sat)

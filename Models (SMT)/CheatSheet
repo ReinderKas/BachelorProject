@@ -1,5 +1,0 @@
-Meta operators:
-  _* zero repetitions of their argument
-  _+ one or more repetitions of their argument
-  _n multiple occurrences to the latter operators having the smae number of repetitions.
-  

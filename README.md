@@ -1,4 +1,5 @@
 # Bachelor Project - Feature Model Analysis: a case study
+[Backlog](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap)
 
 
 ## Tasks to do

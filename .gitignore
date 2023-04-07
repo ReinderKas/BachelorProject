@@ -1,0 +1,6 @@
+# Compiled Files/
+/Code/Z3Parser/Z3Parser/bin
+/Code/Z3Parser/Z3Parser/obj
+
+# IDE files
+/Code/Z3Parser/.vs

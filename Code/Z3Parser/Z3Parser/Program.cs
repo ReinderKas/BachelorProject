@@ -1,14 +1,21 @@
-﻿
-var toParse = "(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))";
+﻿using Antlr4.Runtime;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        var toParse = "(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))";
 
 
 
-AntlrInputStream input = new AntlrInputStream("2 + 3 * 4");
-MyLangLexer lexer = new MyLangLexer(input);
-CommonTokenStream tokens = new CommonTokenStream(lexer);
-MyLangParser parser = new MyLangParser(tokens);
+        AntlrInputStream input = new AntlrInputStream("2 + 3 * 4");
+        z3proofLexer lexer = new z3proofLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        z3proofParser parser = new z3proofParser(tokens);
 
-MyLangParser.ExprContext tree = parser.expr();
+        z3proofParser.ExprContext tree = parser.expr();
 
 
-var pause = true;
+        var pause = true;
+    }
+}

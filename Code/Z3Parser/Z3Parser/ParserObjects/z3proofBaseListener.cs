@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from .\z3proof.g4 by ANTLR 4.12.0
+// Generated from z3proof.g4 by ANTLR 4.12.0
 
 // Unreachable code detected
 #pragma warning disable 0162

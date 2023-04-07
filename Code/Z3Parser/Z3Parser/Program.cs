@@ -4,18 +4,27 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        var toParse = "(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))";
+        // Broken Model 1
+        Prove("(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))");
+
+        // Broken Model 2
+        Prove("((proof" 
+            + " (let (($x26 (= a b)))"
+            + " (let (($x28 (not $x26)))"
+            + " (let ((@x29 (asserted $x28)))"
+            + " (let ((@x27 (asserted $x26)))"
+            + " (unit-resolution @x27 (mp @x29 (rewrite (= $x28 $x28)) $x28) false)))))))");
 
 
+        var pause = true;
+    }
 
-        AntlrInputStream input = new AntlrInputStream("2 + 3 * 4");
+    private static void Prove(string proof){
+        AntlrInputStream input = new AntlrInputStream(proof);
         z3proofLexer lexer = new z3proofLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         z3proofParser parser = new z3proofParser(tokens);
 
         z3proofParser.ExprContext tree = parser.expr();
-
-
-        var pause = true;
     }
 }

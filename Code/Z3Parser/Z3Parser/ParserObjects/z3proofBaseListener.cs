@@ -60,17 +60,29 @@ public partial class z3proofBaseListener : Iz3proofListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitExpr([NotNull] z3proofParser.ExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.let"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.letExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterLet([NotNull] z3proofParser.LetContext context) { }
+	public virtual void EnterLetExpr([NotNull] z3proofParser.LetExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.let"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.letExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitLet([NotNull] z3proofParser.LetContext context) { }
+	public virtual void ExitLetExpr([NotNull] z3proofParser.LetExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.bindings"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterBindings([NotNull] z3proofParser.BindingsContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.bindings"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitBindings([NotNull] z3proofParser.BindingsContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.binding"/>.
 	/// <para>The default implementation does nothing.</para>
@@ -84,29 +96,41 @@ public partial class z3proofBaseListener : Iz3proofListener {
 	/// <param name="context">The parse tree.</param>
 	public virtual void ExitBinding([NotNull] z3proofParser.BindingContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.asserted"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.mpExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterAsserted([NotNull] z3proofParser.AssertedContext context) { }
+	public virtual void EnterMpExpr([NotNull] z3proofParser.MpExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.asserted"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.mpExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitAsserted([NotNull] z3proofParser.AssertedContext context) { }
+	public virtual void ExitMpExpr([NotNull] z3proofParser.MpExprContext context) { }
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.rewrite"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.assertedExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void EnterRewrite([NotNull] z3proofParser.RewriteContext context) { }
+	public virtual void EnterAssertedExpr([NotNull] z3proofParser.AssertedExprContext context) { }
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.rewrite"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.assertedExpr"/>.
 	/// <para>The default implementation does nothing.</para>
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	public virtual void ExitRewrite([NotNull] z3proofParser.RewriteContext context) { }
+	public virtual void ExitAssertedExpr([NotNull] z3proofParser.AssertedExprContext context) { }
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.rewriteExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void EnterRewriteExpr([NotNull] z3proofParser.RewriteExprContext context) { }
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.rewriteExpr"/>.
+	/// <para>The default implementation does nothing.</para>
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	public virtual void ExitRewriteExpr([NotNull] z3proofParser.RewriteExprContext context) { }
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.funcCall"/>.
 	/// <para>The default implementation does nothing.</para>

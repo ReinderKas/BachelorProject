@@ -2,14 +2,15 @@ grammar z3proof;
 
 parse: expr EOF;
 
-expr: let | asserted | rewrite | funcCall;
-
-let: '(' 'let' '(' binding (',' binding)* ')' expr ')';
-binding: '(' '$' ID expr ')';
-asserted: '(' 'asserted' expr ')';
-rewrite: '(' 'rewrite' expr expr ')';
+expr: letExpr | mpExpr | assertedExpr | rewriteExpr | funcCall | VAR;
+letExpr: '(' 'let' '(' bindings ')' expr ')';
+bindings: (binding (',' binding)*)?;
+binding: '(' VAR expr ')';
+mpExpr: '(' 'mp' expr expr expr ')';
+assertedExpr: '(' 'asserted' expr ')';
+rewriteExpr: '(' 'rewrite' expr expr ')';
 funcCall: '(' ID (expr)* ')';
 
 ID: [a-zA-Z]+;
-INT: [0-9]+;
+VAR: '$' [a-zA-Z0-9]+;
 WS: [ \t\r\n]+ -> skip;

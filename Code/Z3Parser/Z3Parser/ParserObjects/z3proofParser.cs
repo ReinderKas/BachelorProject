@@ -36,18 +36,19 @@ public partial class z3proofParser : Parser {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
-		T__0=1, T__1=2, T__2=3, T__3=4, ID=5, INT=6, WS=7;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, ID=8, INT=9, WS=10;
 	public const int
-		RULE_expr = 0;
+		RULE_parse = 0, RULE_expr = 1, RULE_let = 2, RULE_binding = 3, RULE_asserted = 4, 
+		RULE_rewrite = 5, RULE_funcCall = 6;
 	public static readonly string[] ruleNames = {
-		"expr"
+		"parse", "expr", "let", "binding", "asserted", "rewrite", "funcCall"
 	};
 
 	private static readonly string[] _LiteralNames = {
-		null, "'*'", "'/'", "'+'", "'-'"
+		null, "'('", "'let'", "','", "')'", "'$'", "'asserted'", "'rewrite'"
 	};
 	private static readonly string[] _SymbolicNames = {
-		null, null, null, null, null, "ID", "INT", "WS"
+		null, null, null, null, null, null, null, null, "ID", "INT", "WS"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -81,15 +82,64 @@ public partial class z3proofParser : Parser {
 		Interpreter = new ParserATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
 	}
 
-	public partial class ExprContext : ParserRuleContext {
-		public IToken op;
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode INT() { return GetToken(z3proofParser.INT, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(z3proofParser.ID, 0); }
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
-			return GetRuleContexts<ExprContext>();
+	public partial class ParseContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
 		}
-		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
-			return GetRuleContext<ExprContext>(i);
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode Eof() { return GetToken(z3proofParser.Eof, 0); }
+		public ParseContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_parse; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterParse(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitParse(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public ParseContext parse() {
+		ParseContext _localctx = new ParseContext(Context, State);
+		EnterRule(_localctx, 0, RULE_parse);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 14;
+			expr();
+			State = 15;
+			Match(Eof);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class ExprContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public LetContext let() {
+			return GetRuleContext<LetContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public AssertedContext asserted() {
+			return GetRuleContext<AssertedContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public RewriteContext rewrite() {
+			return GetRuleContext<RewriteContext>(0);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public FuncCallContext funcCall() {
+			return GetRuleContext<FuncCallContext>(0);
 		}
 		public ExprContext(ParserRuleContext parent, int invokingState)
 			: base(parent, invokingState)
@@ -110,99 +160,40 @@ public partial class z3proofParser : Parser {
 
 	[RuleVersion(0)]
 	public ExprContext expr() {
-		return expr(0);
-	}
-
-	private ExprContext expr(int _p) {
-		ParserRuleContext _parentctx = Context;
-		int _parentState = State;
-		ExprContext _localctx = new ExprContext(Context, _parentState);
-		ExprContext _prevctx = _localctx;
-		int _startState = 0;
-		EnterRecursionRule(_localctx, 0, RULE_expr, _p);
-		int _la;
+		ExprContext _localctx = new ExprContext(Context, State);
+		EnterRule(_localctx, 2, RULE_expr);
 		try {
-			int _alt;
-			EnterOuterAlt(_localctx, 1);
-			{
-			State = 5;
+			State = 21;
 			ErrorHandler.Sync(this);
-			switch (TokenStream.LA(1)) {
-			case INT:
+			switch ( Interpreter.AdaptivePredict(TokenStream,0,Context) ) {
+			case 1:
+				EnterOuterAlt(_localctx, 1);
 				{
-				State = 3;
-				Match(INT);
-				}
-				break;
-			case ID:
-				{
-				State = 4;
-				Match(ID);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-			Context.Stop = TokenStream.LT(-1);
-			State = 15;
-			ErrorHandler.Sync(this);
-			_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
-			while ( _alt!=2 && _alt!=global::Antlr4.Runtime.Atn.ATN.INVALID_ALT_NUMBER ) {
-				if ( _alt==1 ) {
-					if ( ParseListeners!=null )
-						TriggerExitRuleEvent();
-					_prevctx = _localctx;
-					{
-					State = 13;
-					ErrorHandler.Sync(this);
-					switch ( Interpreter.AdaptivePredict(TokenStream,1,Context) ) {
-					case 1:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 7;
-						if (!(Precpred(Context, 2))) throw new FailedPredicateException(this, "Precpred(Context, 2)");
-						State = 8;
-						_localctx.op = TokenStream.LT(1);
-						_la = TokenStream.LA(1);
-						if ( !(_la==T__0 || _la==T__1) ) {
-							_localctx.op = ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 9;
-						expr(3);
-						}
-						break;
-					case 2:
-						{
-						_localctx = new ExprContext(_parentctx, _parentState);
-						PushNewRecursionContext(_localctx, _startState, RULE_expr);
-						State = 10;
-						if (!(Precpred(Context, 1))) throw new FailedPredicateException(this, "Precpred(Context, 1)");
-						State = 11;
-						_localctx.op = TokenStream.LT(1);
-						_la = TokenStream.LA(1);
-						if ( !(_la==T__2 || _la==T__3) ) {
-							_localctx.op = ErrorHandler.RecoverInline(this);
-						}
-						else {
-							ErrorHandler.ReportMatch(this);
-						    Consume();
-						}
-						State = 12;
-						expr(2);
-						}
-						break;
-					}
-					} 
-				}
 				State = 17;
-				ErrorHandler.Sync(this);
-				_alt = Interpreter.AdaptivePredict(TokenStream,2,Context);
-			}
+				let();
+				}
+				break;
+			case 2:
+				EnterOuterAlt(_localctx, 2);
+				{
+				State = 18;
+				asserted();
+				}
+				break;
+			case 3:
+				EnterOuterAlt(_localctx, 3);
+				{
+				State = 19;
+				rewrite();
+				}
+				break;
+			case 4:
+				EnterOuterAlt(_localctx, 4);
+				{
+				State = 20;
+				funcCall();
+				}
+				break;
 			}
 		}
 		catch (RecognitionException re) {
@@ -211,32 +202,329 @@ public partial class z3proofParser : Parser {
 			ErrorHandler.Recover(this, re);
 		}
 		finally {
-			UnrollRecursionContexts(_parentctx);
+			ExitRule();
 		}
 		return _localctx;
 	}
 
-	public override bool Sempred(RuleContext _localctx, int ruleIndex, int predIndex) {
-		switch (ruleIndex) {
-		case 0: return expr_sempred((ExprContext)_localctx, predIndex);
+	public partial class LetContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public BindingContext[] binding() {
+			return GetRuleContexts<BindingContext>();
 		}
-		return true;
+		[System.Diagnostics.DebuggerNonUserCode] public BindingContext binding(int i) {
+			return GetRuleContext<BindingContext>(i);
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public LetContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_let; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterLet(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitLet(this);
+		}
 	}
-	private bool expr_sempred(ExprContext _localctx, int predIndex) {
-		switch (predIndex) {
-		case 0: return Precpred(Context, 2);
-		case 1: return Precpred(Context, 1);
+
+	[RuleVersion(0)]
+	public LetContext let() {
+		LetContext _localctx = new LetContext(Context, State);
+		EnterRule(_localctx, 4, RULE_let);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 23;
+			Match(T__0);
+			State = 24;
+			Match(T__1);
+			State = 25;
+			Match(T__0);
+			State = 26;
+			binding();
+			State = 31;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==T__2) {
+				{
+				{
+				State = 27;
+				Match(T__2);
+				State = 28;
+				binding();
+				}
+				}
+				State = 33;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 34;
+			Match(T__3);
+			State = 35;
+			expr();
+			State = 36;
+			Match(T__3);
+			}
 		}
-		return true;
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class BindingContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(z3proofParser.ID, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public BindingContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_binding; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterBinding(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitBinding(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public BindingContext binding() {
+		BindingContext _localctx = new BindingContext(Context, State);
+		EnterRule(_localctx, 6, RULE_binding);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 38;
+			Match(T__0);
+			State = 39;
+			Match(T__4);
+			State = 40;
+			Match(ID);
+			State = 41;
+			expr();
+			State = 42;
+			Match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class AssertedContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public AssertedContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_asserted; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterAsserted(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitAsserted(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public AssertedContext asserted() {
+		AssertedContext _localctx = new AssertedContext(Context, State);
+		EnterRule(_localctx, 8, RULE_asserted);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 44;
+			Match(T__0);
+			State = 45;
+			Match(T__5);
+			State = 46;
+			expr();
+			State = 47;
+			Match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class RewriteContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
+		}
+		public RewriteContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_rewrite; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterRewrite(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitRewrite(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public RewriteContext rewrite() {
+		RewriteContext _localctx = new RewriteContext(Context, State);
+		EnterRule(_localctx, 10, RULE_rewrite);
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 49;
+			Match(T__0);
+			State = 50;
+			Match(T__6);
+			State = 51;
+			expr();
+			State = 52;
+			expr();
+			State = 53;
+			Match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
+	}
+
+	public partial class FuncCallContext : ParserRuleContext {
+		[System.Diagnostics.DebuggerNonUserCode] public ITerminalNode ID() { return GetToken(z3proofParser.ID, 0); }
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
+		}
+		[System.Diagnostics.DebuggerNonUserCode] public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
+		}
+		public FuncCallContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_funcCall; } }
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void EnterRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.EnterFuncCall(this);
+		}
+		[System.Diagnostics.DebuggerNonUserCode]
+		public override void ExitRule(IParseTreeListener listener) {
+			Iz3proofListener typedListener = listener as Iz3proofListener;
+			if (typedListener != null) typedListener.ExitFuncCall(this);
+		}
+	}
+
+	[RuleVersion(0)]
+	public FuncCallContext funcCall() {
+		FuncCallContext _localctx = new FuncCallContext(Context, State);
+		EnterRule(_localctx, 12, RULE_funcCall);
+		int _la;
+		try {
+			EnterOuterAlt(_localctx, 1);
+			{
+			State = 55;
+			Match(T__0);
+			State = 56;
+			Match(ID);
+			State = 60;
+			ErrorHandler.Sync(this);
+			_la = TokenStream.LA(1);
+			while (_la==T__0) {
+				{
+				{
+				State = 57;
+				expr();
+				}
+				}
+				State = 62;
+				ErrorHandler.Sync(this);
+				_la = TokenStream.LA(1);
+			}
+			State = 63;
+			Match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			ErrorHandler.ReportError(this, re);
+			ErrorHandler.Recover(this, re);
+		}
+		finally {
+			ExitRule();
+		}
+		return _localctx;
 	}
 
 	private static int[] _serializedATN = {
-		4,1,7,19,2,0,7,0,1,0,1,0,1,0,3,0,6,8,0,1,0,1,0,1,0,1,0,1,0,1,0,5,0,14,
-		8,0,10,0,12,0,17,9,0,1,0,0,1,0,1,0,0,2,1,0,1,2,1,0,3,4,20,0,5,1,0,0,0,
-		2,3,6,0,-1,0,3,6,5,6,0,0,4,6,5,5,0,0,5,2,1,0,0,0,5,4,1,0,0,0,6,15,1,0,
-		0,0,7,8,10,2,0,0,8,9,7,0,0,0,9,14,3,0,0,3,10,11,10,1,0,0,11,12,7,1,0,0,
-		12,14,3,0,0,2,13,7,1,0,0,0,13,10,1,0,0,0,14,17,1,0,0,0,15,13,1,0,0,0,15,
-		16,1,0,0,0,16,1,1,0,0,0,17,15,1,0,0,0,3,5,13,15
+		4,1,10,66,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,1,0,
+		1,0,1,0,1,1,1,1,1,1,1,1,3,1,22,8,1,1,2,1,2,1,2,1,2,1,2,1,2,5,2,30,8,2,
+		10,2,12,2,33,9,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,1,4,1,
+		4,1,4,1,5,1,5,1,5,1,5,1,5,1,5,1,6,1,6,1,6,5,6,59,8,6,10,6,12,6,62,9,6,
+		1,6,1,6,1,6,0,0,7,0,2,4,6,8,10,12,0,0,63,0,14,1,0,0,0,2,21,1,0,0,0,4,23,
+		1,0,0,0,6,38,1,0,0,0,8,44,1,0,0,0,10,49,1,0,0,0,12,55,1,0,0,0,14,15,3,
+		2,1,0,15,16,5,0,0,1,16,1,1,0,0,0,17,22,3,4,2,0,18,22,3,8,4,0,19,22,3,10,
+		5,0,20,22,3,12,6,0,21,17,1,0,0,0,21,18,1,0,0,0,21,19,1,0,0,0,21,20,1,0,
+		0,0,22,3,1,0,0,0,23,24,5,1,0,0,24,25,5,2,0,0,25,26,5,1,0,0,26,31,3,6,3,
+		0,27,28,5,3,0,0,28,30,3,6,3,0,29,27,1,0,0,0,30,33,1,0,0,0,31,29,1,0,0,
+		0,31,32,1,0,0,0,32,34,1,0,0,0,33,31,1,0,0,0,34,35,5,4,0,0,35,36,3,2,1,
+		0,36,37,5,4,0,0,37,5,1,0,0,0,38,39,5,1,0,0,39,40,5,5,0,0,40,41,5,8,0,0,
+		41,42,3,2,1,0,42,43,5,4,0,0,43,7,1,0,0,0,44,45,5,1,0,0,45,46,5,6,0,0,46,
+		47,3,2,1,0,47,48,5,4,0,0,48,9,1,0,0,0,49,50,5,1,0,0,50,51,5,7,0,0,51,52,
+		3,2,1,0,52,53,3,2,1,0,53,54,5,4,0,0,54,11,1,0,0,0,55,56,5,1,0,0,56,60,
+		5,8,0,0,57,59,3,2,1,0,58,57,1,0,0,0,59,62,1,0,0,0,60,58,1,0,0,0,60,61,
+		1,0,0,0,61,63,1,0,0,0,62,60,1,0,0,0,63,64,5,4,0,0,64,13,1,0,0,0,3,21,31,
+		60
 	};
 
 	public static readonly ATN _ATN =

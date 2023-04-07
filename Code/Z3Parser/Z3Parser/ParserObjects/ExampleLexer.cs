@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-// Generated from z3proof.g4 by ANTLR 4.12.0
+// Generated from .\z3proof.g4 by ANTLR 4.12.0
 
 // Unreachable code detected
 #pragma warning disable 0162
@@ -29,7 +29,7 @@ using DFA = Antlr4.Runtime.Dfa.DFA;
 
 [System.CodeDom.Compiler.GeneratedCode("ANTLR", "4.12.0")]
 [System.CLSCompliant(false)]
-public partial class z3proofLexer : Lexer {
+public partial class ExampleLexer : Lexer {
 	protected static DFA[] decisionToDFA;
 	protected static PredictionContextCache sharedContextCache = new PredictionContextCache();
 	public const int
@@ -47,10 +47,10 @@ public partial class z3proofLexer : Lexer {
 	};
 
 
-	public z3proofLexer(ICharStream input)
+	public ExampleLexer(ICharStream input)
 	: this(input, Console.Out, Console.Error) { }
 
-	public z3proofLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
+	public ExampleLexer(ICharStream input, TextWriter output, TextWriter errorOutput)
 	: base(input, output, errorOutput)
 	{
 		Interpreter = new LexerATNSimulator(this, _ATN, decisionToDFA, sharedContextCache);
@@ -83,7 +83,7 @@ public partial class z3proofLexer : Lexer {
 
 	public override int[] SerializedAtn { get { return _serializedATN; } }
 
-	static z3proofLexer() {
+	static ExampleLexer() {
 		decisionToDFA = new DFA[_ATN.NumberOfDecisions];
 		for (int i = 0; i < _ATN.NumberOfDecisions; i++) {
 			decisionToDFA[i] = new DFA(_ATN.GetDecisionState(i), i);

@@ -1,11 +1,15 @@
 grammar z3proof;
 
-expr : INT
-     | ID
-     | expr op=('*' | '/') expr
-     | expr op=('+' | '-') expr
-     ;
+parse: expr EOF;
 
-ID   : [a-zA-Z]+ ;
-INT  : [0-9]+ ;
-WS   : [ \t\r\n]+ -> skip ;
+expr: let | asserted | rewrite | funcCall;
+
+let: '(' 'let' '(' binding (',' binding)* ')' expr ')';
+binding: '(' '$' ID expr ')';
+asserted: '(' 'asserted' expr ')';
+rewrite: '(' 'rewrite' expr expr ')';
+funcCall: '(' ID (expr)* ')';
+
+ID: [a-zA-Z]+;
+INT: [0-9]+;
+WS: [ \t\r\n]+ -> skip;

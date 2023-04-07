@@ -31,6 +31,16 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface Iz3proofListener : IParseTreeListener {
 	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.parse"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterParse([NotNull] z3proofParser.ParseContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.parse"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitParse([NotNull] z3proofParser.ParseContext context);
+	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -40,4 +50,54 @@ public interface Iz3proofListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitExpr([NotNull] z3proofParser.ExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.let"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterLet([NotNull] z3proofParser.LetContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.let"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitLet([NotNull] z3proofParser.LetContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.binding"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterBinding([NotNull] z3proofParser.BindingContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.binding"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitBinding([NotNull] z3proofParser.BindingContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.asserted"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterAsserted([NotNull] z3proofParser.AssertedContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.asserted"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitAsserted([NotNull] z3proofParser.AssertedContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.rewrite"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterRewrite([NotNull] z3proofParser.RewriteContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.rewrite"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitRewrite([NotNull] z3proofParser.RewriteContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.funcCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterFuncCall([NotNull] z3proofParser.FuncCallContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.funcCall"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitFuncCall([NotNull] z3proofParser.FuncCallContext context);
 }

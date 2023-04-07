@@ -31,15 +31,15 @@ using IToken = Antlr4.Runtime.IToken;
 [System.CLSCompliant(false)]
 public interface Iz3proofListener : IParseTreeListener {
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.parse"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.z3proof"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterParse([NotNull] z3proofParser.ParseContext context);
+	void EnterZ3proof([NotNull] z3proofParser.Z3proofContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.parse"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.z3proof"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitParse([NotNull] z3proofParser.ParseContext context);
+	void ExitZ3proof([NotNull] z3proofParser.Z3proofContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.expr"/>.
 	/// </summary>
@@ -61,25 +61,45 @@ public interface Iz3proofListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitLetExpr([NotNull] z3proofParser.LetExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.bindings"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.assertExpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBindings([NotNull] z3proofParser.BindingsContext context);
+	void EnterAssertExpr([NotNull] z3proofParser.AssertExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.bindings"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.assertExpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBindings([NotNull] z3proofParser.BindingsContext context);
+	void ExitAssertExpr([NotNull] z3proofParser.AssertExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.binding"/>.
+	/// Enter a parse tree produced by <see cref="z3proofParser.notExpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterBinding([NotNull] z3proofParser.BindingContext context);
+	void EnterNotExpr([NotNull] z3proofParser.NotExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.binding"/>.
+	/// Exit a parse tree produced by <see cref="z3proofParser.notExpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitBinding([NotNull] z3proofParser.BindingContext context);
+	void ExitNotExpr([NotNull] z3proofParser.NotExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.equalsExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterEqualsExpr([NotNull] z3proofParser.EqualsExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.equalsExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitEqualsExpr([NotNull] z3proofParser.EqualsExprContext context);
+	/// <summary>
+	/// Enter a parse tree produced by <see cref="z3proofParser.unitResolutionExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void EnterUnitResolutionExpr([NotNull] z3proofParser.UnitResolutionExprContext context);
+	/// <summary>
+	/// Exit a parse tree produced by <see cref="z3proofParser.unitResolutionExpr"/>.
+	/// </summary>
+	/// <param name="context">The parse tree.</param>
+	void ExitUnitResolutionExpr([NotNull] z3proofParser.UnitResolutionExprContext context);
 	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.mpExpr"/>.
 	/// </summary>
@@ -91,16 +111,6 @@ public interface Iz3proofListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitMpExpr([NotNull] z3proofParser.MpExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.assertedExpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAssertedExpr([NotNull] z3proofParser.AssertedExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.assertedExpr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAssertedExpr([NotNull] z3proofParser.AssertedExprContext context);
-	/// <summary>
 	/// Enter a parse tree produced by <see cref="z3proofParser.rewriteExpr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
@@ -110,14 +120,4 @@ public interface Iz3proofListener : IParseTreeListener {
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitRewriteExpr([NotNull] z3proofParser.RewriteExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by <see cref="z3proofParser.funcCall"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterFuncCall([NotNull] z3proofParser.FuncCallContext context);
-	/// <summary>
-	/// Exit a parse tree produced by <see cref="z3proofParser.funcCall"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitFuncCall([NotNull] z3proofParser.FuncCallContext context);
 }

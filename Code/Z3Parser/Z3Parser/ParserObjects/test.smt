@@ -1,0 +1,1 @@
+(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))

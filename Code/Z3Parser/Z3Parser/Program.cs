@@ -4,6 +4,9 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+
+
+
         // Broken Model 1
         Prove("(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))");
 
@@ -14,6 +17,12 @@ internal class Program
             + " (let ((@x29 (asserted $x28)))"
             + " (let ((@x27 (asserted $x26)))"
             + " (unit-resolution @x27 (mp @x29 (rewrite (= $x28 $x28)) $x28) false)))))))");
+
+        // Broken Model 3
+        Prove("(let ((@x47 (asserted a))) (unit-resolution (asserted (or (not a) (not b))) (unit-resolution (asserted (or b (not a))) @x47 b) @x47 false))");
+
+        // Broken Model 4
+        Prove("(let ((@x60 (asserted a))) (unit-resolution (asserted (or (not a) (not b))) (unit-resolution (asserted (or b (not a))) @x60 b) @x60 false))");
 
 
         var pause = true;

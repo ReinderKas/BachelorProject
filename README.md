@@ -12,9 +12,17 @@
  - :white_check_mark: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
  - :white_check_mark: Generate proofs with Z3. 
  - :black_square_button: Investigate into feasibility of usage of [DRAT-trim](https://www.cs.utexas.edu/~marijn/drat-trim/).
+ - :black_square_button: Investigate into feasibility of usage of [Antlr](https://www.cs.utexas.edu/~marijn/drat-trim/).
  - :black_square_button: Write introduction explaining CSP.
 
 &nbsp;
+
+# Antlr
+## Getting started <br>
+[download](https://www.nuget.org/packages/Antlr/) - Nuget package<br>
+[tutorial](https://tomassetti.me/getting-started-with-antlr-in-csharp/) - Getting started with antlr in C#. <br>
+
+
 
 ## Videos:
  - [Formal Methods for the Informal Engineer: Tutorial #1 - The Z3 Theorem Prover](https://www.youtube.com/watch?v=56IIrBZy9Rc)

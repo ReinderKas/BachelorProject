@@ -1,19 +1,8 @@
 # Bachelor Project - Feature Model Analysis: a case study
 [Overleaf](https://www.overleaf.com/project/63ec92e134a27342e8a123d5) <br>
-[Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap)
-
 
 ## Tasks to do
-### Before starting
- - :black_square_button: Write proposal?.
-
-### Research:
- - :white_check_mark: Download/Setup Z3. 
- - :white_check_mark: Read [Z3/SMT-lib Documentation](https://compsys-tools.ens-lyon.fr/z3/smt-lib-reference-v2.5-r2015-06-28.pdf)
- - :white_check_mark: Generate proofs with Z3. 
- - :black_square_button: Investigate into feasibility of usage of [DRAT-trim](https://www.cs.utexas.edu/~marijn/drat-trim/).
- - :black_square_button: Investigate into feasibility of usage of [Antlr](https://www.cs.utexas.edu/~marijn/drat-trim/).
- - :black_square_button: Write introduction explaining CSP.
+[Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap)
 
 &nbsp;
 

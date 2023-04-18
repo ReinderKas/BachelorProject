@@ -10,6 +10,13 @@
   <ItemGroup>
     <PackageReference Include="Antlr" Version="3.5.0.2" />
     <PackageReference Include="Antlr4.Runtime.Standard" Version="4.12.0" />
+    <PackageReference Include="Microsoft.Z3" Version="4.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Elfsquad\Builders\" />
+    <Folder Include="Elfsquad\Constraints\" />
+    <Folder Include="Elfsquad\Variables\" />
   </ItemGroup>
 
 </Project>

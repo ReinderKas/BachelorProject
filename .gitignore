@@ -5,3 +5,6 @@
 # IDE files
 /Code/Z3Parser/.vs
 /.vscode
+
+# Elfsquad source files
+/Code/Z3Parser/Z3Parser/Elfsquad

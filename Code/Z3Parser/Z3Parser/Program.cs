@@ -1,9 +1,23 @@
 ﻿using Antlr4.Runtime;
+using Microsoft.Z3;
+using Z3Parser.FeatureModels;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
+        var model = ModelBuilder.CreateModel(@"
+                        model [phone] {
+                            [phone] - mandatory -> [calls]
+                            [phone] - mandatory -> [screen]
+                            [calls] - excludes -> [screen]
+                        }").Result;
+
+        model.Solve();
+
+
+
+
         // Broken Model 1
         Prove("(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))");
 

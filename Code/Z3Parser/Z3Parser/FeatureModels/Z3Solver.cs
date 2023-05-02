@@ -1,23 +1,39 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator;
+using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
+using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfsquad.Core.Archer;
 using Microsoft.Z3;
+using Z3Parser.Elfsquad.Archer.Elfsquad.Core.Archer;
 
 namespace Z3Parser.FeatureModels
 {
     /*  This class implements components of the ArcherSolver.cs class of Elfsquad.
+     *  
+     *  
+     *  Currently implemented in this project:
+     *    - Mandatory
+     *    - Optional
+     *    - Alternative
+     *    - Or
+     *    
+     *    - Excludes
+     *    - Requires
      */
 
     public class Z3Solver
     {
         public Context Z3Context;
-        public Optimize OptimizedSolver;
         public Solver Solver;
 
         public FeatureModelGraph FmGraph;
         public ArcherModel[] ArcherModel;
 
-        internal NodeProperty[] Variables;
+        public NodeProperty[] Variables;
+        public ArcherVariableStore ArcherVariableStore;
+
+        public Expr Proof;
+
 
         public Z3Solver()
         {
@@ -29,6 +45,8 @@ namespace Z3Parser.FeatureModels
                             { "timeout", "60000" },     // set timout for solving
                         });
 
+            ArcherVariableStore = new(this);
+
             /*  Elfsquad uses Expressions.
              *  These are Language Specific to the company.
              *  It's easiest to create all this without the Expressions first!.
@@ -37,9 +55,14 @@ namespace Z3Parser.FeatureModels
             // InitializeZ3ExpressionBuilder();
         }
 
-        public class Requirements
+        public bool Solve()
         {
+            var solution = Solver.Check();
+            if (solution == Status.SATISFIABLE)
+                return true;
 
+            Proof = Solver.Proof;
+            return false;
         }
 
         public async Task InitializeFeatureModelGraph(string model)
@@ -51,20 +74,29 @@ namespace Z3Parser.FeatureModels
                 throw new Exception("Could not create Feature Model Graph instance. Please validate the model: " + model);
         }
 
-        public bool Solve()
+        public void InitializeZ3Solver()
         {
-            InitializeVariables();
-            InitializeConstraints();
-
             InitializeSolvers();
 
-            return true;
+            InitializeVariables();
+            InitializeConstraints();
+            InitializeRequirements();
         }
 
         private void InitializeSolvers()
         {
-            OptimizedSolver = Z3Context.MkOptimize();
             Solver = Z3Context.MkSolver();
+        }
+
+        private void InitializeRequirements()
+        {
+            // TODO: For now only a Requirement on the Root.
+
+            var root = ArcherVariableStore.GetExpression(SelectedProperty(FmGraph.GetRoot())) as BoolExpr;
+
+            Solver.Add(
+                Z3Context.MkEq(root, Z3Context.MkTrue()) 
+                );
         }
 
         private void InitializeVariables()
@@ -74,23 +106,66 @@ namespace Z3Parser.FeatureModels
 
         private void InitializeConstraints()
         {
-            //var child = ArcherVariableStore.GetExpression(SelectedProperty(relationship.ToNodes().First())) as BoolExpr;
-            //var conditionExpr = BuildConditionExpression(variable);
+            foreach(var variable in Variables)
+            {
+                if (variable.Property == "Selected") continue;
 
-            //var parent = ArcherVariableStore.GetExpression(SelectedProperty(relationship.FromNode)) as BoolExpr;
+                var relationship = FmGraph.GetRelationshipConstraint(variable.Node);
+                if (relationship == null) continue;
 
-            //foreach (var constraint in FmGraph.GetConstraints())
-            //{
-            //    var relationshipExpr = constraint switch
-            //    {
-            //        OptionalFeatureModelConstraint => Optional(parent, child),
-            //        MandatoryFeatureModelConstraint => Mandatory(parent, child),
-            //        ExcludesFeatureModelConstraint => Excludes(parent, child),
-            //        RequiresFeatureModelConstraint => Requires(parent, child),
-            //        AlternativeFeatureModelConstraint => Alternative(parent, children)
-            //        _ => null
-            //    };
-            //}
+
+                // Initialize the Hierarchical model.
+                if (relationship is AlternativeFeatureModelConstraint or OrFeatureModelConstraint)
+                    InitializeNaryConstraint(relationship);
+                else
+                    InitializeBinaryConstraint(relationship);
+
+
+
+                // Initialize the Non-Cross Tree Constraints.
+                foreach (var crossTreeRelationships in FmGraph.GetConstraints(variable.Node.NodeId).OfType<BinaryRelationshipConstraint>())
+                {
+                    InitializeBinaryConstraint(crossTreeRelationships);
+                }
+            }
+        }
+
+        private void InitializeNaryConstraint(IRelationshipConstraint relationship)
+        {
+            var parent = ArcherVariableStore.GetExpression(SelectedProperty(relationship.FromNode)) as BoolExpr;
+            var children = new List<BoolExpr>();
+
+            foreach (var child in relationship.ToNodes())
+            {
+                var selectedProp = SelectedProperty(child);
+                var childExpr = ArcherVariableStore.GetExpression(selectedProp) as BoolExpr;
+
+                children.Add(childExpr);
+            }
+
+            Solver.Add(
+                relationship switch
+                {
+                    AlternativeFeatureModelConstraint => Alternative(parent, children.ToArray()),
+                    OrFeatureModelConstraint => Or(parent, children.ToArray()),
+                    _ => throw new NotImplementedException($"Type {relationship.GetType()} is not suported")
+                });
+        }
+
+        private void InitializeBinaryConstraint(IRelationshipConstraint relationship)
+        {
+            var parent = ArcherVariableStore.GetExpression(SelectedProperty(relationship.FromNode)) as BoolExpr;
+            var child = ArcherVariableStore.GetExpression(SelectedProperty(relationship.ToNodes().First())) as BoolExpr;
+
+            Solver.Add(
+                relationship switch
+                {
+                    OptionalFeatureModelConstraint => Optional(parent, child),
+                    MandatoryFeatureModelConstraint => Mandatory(parent, child),
+                    ExcludesFeatureModelConstraint => Excludes(parent, child),
+                    RequiresFeatureModelConstraint => Requires(parent, child),
+                    _ => throw new NotImplementedException($"Type {relationship.GetType()} is not suported")
+                });
         }
 
 

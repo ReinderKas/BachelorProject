@@ -1,4 +1,5 @@
 ﻿using Antlr4.Runtime;
+using Antlr4.Runtime.Misc;
 using Microsoft.Z3;
 using Z3Parser.FeatureModels;
 
@@ -6,40 +7,46 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        var model = ModelBuilder.CreateModel(
-            @"
-                            model [phone] {
-                                [phone] - mandatory -> [calls]
-                                [phone] - mandatory -> [screen]
-                                [calls] - excludes -> [screen]
-                            }
-            ").Result;
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [mandatory1] - excludes -> [mandatory1]
+                }");
+
+        Console.WriteLine("\n\n\n\n\n\n\n");
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [root] - alternative -> [alt1]
+                    [root] - alternative -> [alt2]
+
+                    [mandatory1] - excludes -> [alt1]
+                    [mandatory1] - excludes -> [alt2]
+                }");
+    }
+
+
+
+
+    private static void ProveModel(string modelString)
+    {
+        Console.Write($"Proof for:");
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.Write($"{modelString}\n\n");
+        Console.ResetColor();
+
+
+
+        var model = ModelBuilder.CreateModel(modelString).Result;
 
         model.InitializeZ3Solver();
         model.Solve();
 
         PrintProof(model.Proof);
 
-        //Prove(model.Proof.ToString());
-
-
-
-
-        //// Broken Model 1
-        //Prove("(mp (asserted (= a (not a))) (rewrite (= (= a (not a)) false)) false)))");
-
-        //// Broken Model 2
-        //Prove("(let (($x26 (= a b)))"
-        //    + " (let (($x28 (not $x26)))"
-        //    + " (let ((@x29 (asserted $x28)))"
-        //    + " (let ((@x27 (asserted $x26)))"
-        //    + " (unit-resolution @x27 (mp @x29 (rewrite (= $x28 $x28)) $x28) false))))");
-
-        //// Broken Model 3
-        //Prove("(let ((@x47 (asserted a))) (unit-resolution (asserted (or (not a) (not b))) (unit-resolution (asserted (or b (not a))) @x47 b) @x47 false))");
-
-        //// Broken Model 4
-        //Prove("(let ((@x60 (asserted a))) (unit-resolution (asserted (or (not a) (not b))) (unit-resolution (asserted (or b (not a))) @x60 b) @x60 false))");
     }
 
     private static void PrintProof(Expr proof)
@@ -50,22 +57,20 @@ internal class Program
             Console.WriteLine($"Proof - Arg: {i}");
             Console.ResetColor();
             Console.WriteLine(proof.Args[i]);
+            //Console.WriteLine($"\nRecursively: ");
+            //VisitProofRecursively(proof.Args[i]);
             Console.WriteLine($"-------------------------------");
         }
     }
 
-
-    private static void Prove(string proof)
+    private static void VisitProofRecursively(Expr expression)
     {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine(Environment.NewLine + proof);
-        Console.ResetColor();
+        Console.WriteLine($"-----------------------------------------------------------------------------------------------");
+        Console.WriteLine($"{expression}\n");
 
-        AntlrInputStream input = new AntlrInputStream(proof);
-        z3proofLexer lexer = new z3proofLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        z3proofParser parser = new z3proofParser(tokens);
+        foreach (var arg in expression.Args)
+            VisitProofRecursively(arg);
 
-        z3proofParser.ExprContext tree = parser.expr();
+        return;
     }
 }

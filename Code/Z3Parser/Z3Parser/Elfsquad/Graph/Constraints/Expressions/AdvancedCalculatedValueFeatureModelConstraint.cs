@@ -1,0 +1,14 @@
+﻿using Elfskot.Core.Models.Entities.FeatureModel;
+using System;
+using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
+
+namespace Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints
+{
+    public class AdvancedCalculatedValueFeatureModelConstraint : ExpressionConstraint
+    {
+        public AdvancedCalculatedValueFeatureModelConstraint(IFeatureModelNode affectedNode, Expression expression) : base(affectedNode, expression)
+        {
+
+        }
+    }
+}

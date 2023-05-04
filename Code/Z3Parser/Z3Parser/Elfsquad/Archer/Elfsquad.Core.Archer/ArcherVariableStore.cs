@@ -30,7 +30,8 @@ namespace Z3Parser.Elfsquad.Archer.Elfsquad.Core.Archer
 
         public Expr AddExpression(NodeProperty variable)
         {
-            var name = $"{variable.Node.NodeId}.{variable.Property}";
+            // Set name in proof here.
+            var name = $"{variable.Node.FeatureModelNode.Name}";
             Expr expr = variable.Type switch
             {
                 NodePropertyType.Boolean => _z3Solver.Z3Context.MkBoolConst(name),
@@ -51,13 +52,6 @@ namespace Z3Parser.Elfsquad.Archer.Elfsquad.Core.Archer
                 else
                 {
                     var ratNum = DecimalToRatNum(_z3Solver.Z3Context, Convert.ToDecimal(value, CultureInfo.InvariantCulture));
-
-                    //_z3Solver.Solver..AssertSoft(_z3Solver.Z3Context.MkEq(
-                    //    expr as ArithExpr,
-                    //    ratNum), 1, "default");
-
-
-                    // TODO: Implement in non-optimization solver.
                 }
             }
 

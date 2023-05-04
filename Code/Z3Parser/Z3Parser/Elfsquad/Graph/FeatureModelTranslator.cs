@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
+﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Scripts;

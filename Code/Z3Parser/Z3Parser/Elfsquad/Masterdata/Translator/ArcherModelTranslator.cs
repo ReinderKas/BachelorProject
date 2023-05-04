@@ -48,6 +48,7 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
                 var fmNode = new FeatureModelNode
                 {
                     Id = Guid.NewGuid(),
+                    Name = variable.Name,
                 };
                 IFeatureModelNode node;
                 if (variable == _archerModel.RootVariable)

@@ -17,6 +17,7 @@
   <ItemGroup>
     <Folder Include="Elfsquad\Archer\" />
     <Folder Include="Elfsquad\Graph\" />
+    <Folder Include="Z3ParserAPI\" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,14 @@
 
 # IDE files
 /Code/Z3Parser/.vs
+/Code/Z3Parser/.vscode
+
 /Code/DiagnosticsApi/DiagnosticsApi/.vs
+/Code/DiagnosticsApi/DiagnosticsApi/.vscode
+
+/Code/FrontEnd/DiagnosticsFrontEnd/.vs
+/Code/FrontEnd/DiagnosticsFrontEnd/.vscode
+
 /.vscode
 
 ## Elfsquad source files

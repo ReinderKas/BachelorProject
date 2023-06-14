@@ -1,7 +1,5 @@
 ﻿using DiagnosticsApi.Models;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace DiagnosticsApi.Controllers
 {

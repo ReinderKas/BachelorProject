@@ -2,18 +2,18 @@
 /Code/Z3Parser/Z3Parser/bin
 /Code/Z3Parser/Z3Parser/obj
 
-/Code/DiagnosticsApi/DiagnosticsApi/DiagnosticsApi/bin
-/Code/DiagnosticsApi/DiagnosticsApi/DiagnosticsApi/obj
+/Code/DiagnosticsApi/DiagnosticsApi/bin
+/Code/DiagnosticsApi/DiagnosticsApi/obj
 
 # IDE files
 /Code/Z3Parser/.vs
 /Code/Z3Parser/.vscode
 
-/Code/DiagnosticsApi/DiagnosticsApi/.vs
-/Code/DiagnosticsApi/DiagnosticsApi/.vscode
+/Code/DiagnosticsApi/.vs
+/Code/DiagnosticsApi/.vscode
 
-/Code/FrontEnd/DiagnosticsFrontEnd/.vs
-/Code/FrontEnd/DiagnosticsFrontEnd/.vscode
+/Code/DiagnosticsFrontEnd/.vs
+/Code/DiagnosticsFrontEnd/.vscode
 
 /.vscode
 

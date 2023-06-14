@@ -19,8 +19,8 @@ namespace DiagnosticsApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add the database with the connection string as set in appsettings.json
-            services.AddDbContext<ApiContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("SQLiteDatabase")));
+            //services.AddDbContext<ApiContext>(options =>
+            //    options.UseSqlite(Configuration.GetConnectionString("SQLiteDatabase")));
 
             // Add Cross Origin Resource Sharing.
             services.AddCors(options =>

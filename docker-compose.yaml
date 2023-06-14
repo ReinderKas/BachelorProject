@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  api:
+    container_name: Api
+    build: /Code/DiagnosticsApi/
+    expose:
+      - '80'
+    ports:
+      - "80:80"  # http
+
+  interface:
+    container_name: Interface
+    build: /Code/DiagnosticsFrontEnd
+    expose:
+     - '4200'
+    ports:
+     - "4200:4200"

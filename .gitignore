@@ -2,9 +2,15 @@
 /Code/Z3Parser/Z3Parser/bin
 /Code/Z3Parser/Z3Parser/obj
 
+/Code/DiagnosticsApi/DiagnosticsApi/DiagnosticsApi/bin
+/Code/DiagnosticsApi/DiagnosticsApi/DiagnosticsApi/obj
+
 # IDE files
 /Code/Z3Parser/.vs
+/Code/DiagnosticsApi/DiagnosticsApi/.vs
 /.vscode
 
 ## Elfsquad source files
 #/Code/Z3Parser/Z3Parser/Elfsquad
+
+

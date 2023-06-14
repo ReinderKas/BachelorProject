@@ -7,10 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["DiagnosticsApi/DiagnosticsApi.csproj", "DiagnosticsApi/"]
-RUN dotnet restore "DiagnosticsApi/DiagnosticsApi.csproj"
+COPY ["DiagnosticsApi/DiagnosticsApi/DiagnosticsApi.csproj", "DiagnosticsApi/DiagnosticsApi/"]
+COPY ["Z3Parser/Z3Parser/Z3Parser.csproj", "Z3Parser/Z3Parser/"]
+RUN dotnet restore "DiagnosticsApi/DiagnosticsApi/DiagnosticsApi.csproj"
 COPY . .
-WORKDIR "/src/DiagnosticsApi"
+WORKDIR "/src/DiagnosticsApi/DiagnosticsApi"
 RUN dotnet build "DiagnosticsApi.csproj" -c Release -o /app/build
 
 FROM build AS publish

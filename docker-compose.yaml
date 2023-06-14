@@ -2,7 +2,7 @@ version: "3.9"
 services:
   api:
     container_name: Api
-    build: /Code/DiagnosticsApi/
+    build: /Code/
     expose:
       - '80'
     ports:

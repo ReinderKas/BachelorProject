@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>e3671b66-ba7d-4534-9e53-b1ffd0e3db53</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\Z3Parser</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

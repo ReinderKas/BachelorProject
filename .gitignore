@@ -5,6 +5,9 @@
 /Code/DiagnosticsApi/DiagnosticsApi/bin
 /Code/DiagnosticsApi/DiagnosticsApi/obj
 
+/Code/DiagnosticsFrontEnd/bin
+/Code/DiagnosticsFrontEnd/obj
+
 # IDE files
 /Code/Z3Parser/.vs
 /Code/Z3Parser/.vscode
@@ -15,6 +18,7 @@
 /Code/DiagnosticsFrontEnd/.vs
 /Code/DiagnosticsFrontEnd/.vscode
 
+/.vs
 /.vscode
 
 ## Elfsquad source files

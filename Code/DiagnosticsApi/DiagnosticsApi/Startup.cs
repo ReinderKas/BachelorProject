@@ -15,10 +15,6 @@ namespace DiagnosticsApi
         // Use this method to add services to the container for Dependency Injection.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add the database with the connection string as set in appsettings.json
-            //services.AddDbContext<ApiContext>(options =>
-            //    options.UseSqlite(Configuration.GetConnectionString("SQLiteDatabase")));
-
             // Add Cross Origin Resource Sharing.
             services.AddCors(options =>
              options.AddPolicy("AllowAllHeaders",

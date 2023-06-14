@@ -1,5 +1,7 @@
-﻿using DiagnosticsApi.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Z3;
+using Z3Parser;
+using Z3Parser.FeatureModels;
 
 namespace DiagnosticsApi.Controllers
 {
@@ -8,15 +10,10 @@ namespace DiagnosticsApi.Controllers
     public class DiagnosticsController : ControllerBase
     {
         private ILogger<DiagnosticsController> _logger;
-        private ApiContext _apiContext;
 
-        public DiagnosticsController(
-            ILogger<DiagnosticsController> logger,
-            ApiContext apiContext
-            )
+        public DiagnosticsController(ILogger<DiagnosticsController> logger)
         {
             _logger = logger;
-            _apiContext = apiContext;
         }
 
 
@@ -24,15 +21,110 @@ namespace DiagnosticsApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<string>> Diagnose([FromQuery] string id)
+        public async Task<ActionResult<string>> Diagnose([FromBody] string model = null)
         {
+            if (model == null)
+            {
+                model = @" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [mandatory1] - excludes -> [mandatory1]
+                }";
+            }
 
+            var solver = new DiagnosticsParser(model);
+            solver.ProveModel();
 
+            if (!solver.HasSolution)
+            {
+                solver.PrintProof();
+                return Ok();
+                //return Ok(solver.ModelSolver.Proof);
+            }
 
-            return Ok();
+            return NotFound($"No proof found for the model {model}");
         }
 
 
+        /*  
+         *  Models:
+         *   ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [mandatory1] - excludes -> [mandatory1]
+                }");
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [mandatory1] - excludes -> [mandatory2]
+                }");
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [root] - alternative -> [alt1]
+                    [root] - alternative -> [alt2]
+
+                    [mandatory1] - excludes -> [alt1]
+                    [mandatory2] - excludes -> [alt2]
+                }");
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [root] - mandatory -> [mandatory3]
+                    [root] - alternative -> [alt1]
+                    [root] - alternative -> [alt2]
+                    [root] - alternative -> [alt3]
+
+                    [mandatory1] - excludes -> [alt1]
+                    [mandatory1] - excludes -> [alt2]
+                    [mandatory1] - excludes -> [alt3]
+                }");
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - mandatory -> [mandatory1]
+                    [root] - mandatory -> [mandatory2]
+                    [root] - mandatory -> [mandatory3]
+                    [root] - mandatory -> [mandatory4]
+                    [root] - mandatory -> [mandatory5]
+                    [root] - mandatory -> [mandatory6]
+                    [root] - alternative -> [alt1]
+                    [root] - alternative -> [alt2]
+                    [root] - alternative -> [alt3]
+                    [root] - alternative -> [alt4]
+                    [root] - alternative -> [alt5]
+                    [root] - alternative -> [alt6]
+
+                    [mandatory1] - excludes -> [alt1]
+                    [mandatory2] - excludes -> [alt2]
+                    [mandatory3] - excludes -> [alt3]
+                    [mandatory4] - excludes -> [alt4]
+                    [mandatory5] - excludes -> [alt5]
+                    [mandatory6] - excludes -> [alt6]
+                }");
+
+
+        ProveModel(@" 
+                model [root] {
+                    [root] - optional -> [opt1]
+                    [root] - mandatory -> [mand1]
+                    [root] - mandatory -> [mand2]
+
+
+                    [mand1] - requires -> [opt1]
+                    [opt1] - excludes -> [mand2]
+                }");
+
+         
+         */
 
     }
 }

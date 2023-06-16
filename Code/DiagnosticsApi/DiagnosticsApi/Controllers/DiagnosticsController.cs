@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Z3;
+using System.Text.Json.Serialization;
 using Z3Parser;
 using Z3Parser.FeatureModels;
 
@@ -17,21 +18,16 @@ namespace DiagnosticsApi.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPut]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<string>> Diagnose([FromBody] string model = null)
         {
+            Console.WriteLine("Model: \n" + model);
+
             if (model == null)
-            {
-                model = @" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [mandatory1] - excludes -> [mandatory1]
-                }";
-            }
+                return BadRequest("No model provided!");
 
             var solver = new DiagnosticsParser(model);
             solver.ProveModel();
@@ -39,7 +35,10 @@ namespace DiagnosticsApi.Controllers
             if (!solver.HasSolution)
             {
                 solver.PrintProof();
-                return Ok(solver.Proof.ToString());
+
+                var result = solver.Proof.ToString();
+
+                return Ok(result);
             }
 
             return NotFound($"No proof found for the model {model}");
@@ -121,9 +120,6 @@ namespace DiagnosticsApi.Controllers
                     [mand1] - requires -> [opt1]
                     [opt1] - excludes -> [mand2]
                 }");
-
-         
          */
-
     }
 }

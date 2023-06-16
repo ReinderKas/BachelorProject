@@ -39,8 +39,7 @@ namespace DiagnosticsApi.Controllers
             if (!solver.HasSolution)
             {
                 solver.PrintProof();
-                return Ok();
-                //return Ok(solver.ModelSolver.Proof);
+                return Ok(solver.Proof.ToString());
             }
 
             return NotFound($"No proof found for the model {model}");

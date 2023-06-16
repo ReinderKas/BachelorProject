@@ -8,7 +8,7 @@ namespace Z3Parser
         public string ModelString;
         public Z3Solver ModelSolver;
         public bool HasSolution;
-        public Expr Proof => ModelSolver.Proof;
+        public Expr Proof;
 
 
         public DiagnosticsParser(string modelString)
@@ -29,13 +29,16 @@ namespace Z3Parser
             ModelSolver.InitializeZ3Solver();
 
             HasSolution = ModelSolver.Solve();
+
+            if (!HasSolution)
+                Proof = ModelSolver.Proof;
         }
 
 
         public void PrintProof()
         {
-            PrintVariablesInProof(ModelSolver.Proof);
-            PrintArguments(ModelSolver.Proof);
+            PrintVariablesInProof(Proof);
+            PrintArguments(Proof);
             Console.WriteLine("\n\n\n");
         }
 

@@ -10,14 +10,36 @@ export class AppComponent {
   title = 'DiagnosticsFrontEnd';
 
   public proof: string = "";
-  public model: string = "model [root] { \n"
+  public models: string[] = 
+                  [
+                    "model [root] { \n"
                       + "    [root] - mandatory -> [mandatory1] \n"
                       + "    [root] - mandatory -> [mandatory2] \n"
                       + "    [mandatory1] - excludes -> [mandatory1] \n"
+                      + "}",
+                      "model [root] { \n"
+                      + "    [root] - mandatory -> [mandatory1] \n"
+                      + "    [root] - mandatory -> [mandatory2] \n"
+                      + "    [root] - alternative -> [alt1] \n"
+                      + "    [root] - alternative -> [alt2] \n"
+                      + "    [mandatory1] - excludes -> [alt1] \n"
+                      + "    [mandatory2] - excludes -> [alt2] \n"
                       + "}"
+                  ]
+
+  public modelToDiagnose: string = "model [root] { \n"
+                                  + "    [root] - mandatory -> [mandatory1] \n"
+                                  + "    [root] - mandatory -> [mandatory2] \n"
+                                  + "    [mandatory1] - excludes -> [mandatory1] \n"
+                                  + "}"
+
+  public selectModel(model: string) {
+    console.log("Selection: " + model)
+    this.modelToDiagnose = model
+  }
 
   public proveModel(){
-    console.log("Model:" + this.model)
+    console.log("Model:" + this.modelToDiagnose)
 
     // con.setRequestProperty("Content-Type", "application/json; charset=utf8")
 
@@ -26,7 +48,7 @@ export class AppComponent {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.model),
+      body: JSON.stringify(this.modelToDiagnose),
     })
     .then(async (response) => {
       this.proof = await response.text()

@@ -25,13 +25,21 @@
   
   <!-- Archer Model  -->
   <h1>Proof Generation.</h1>
+
+  <h2>Predefined Models</h2>
+
+  <div *ngFor="let model of models">
+    <button (click)="selectModel(model)"> Model {{models.indexOf(model)}} </button>
+  </div>
+  
+
   <h2>Model</h2>
   <p>Define a model to generate a proof for:</p>
   <br>  
   <br>  
   
   <form class="example-form"> 
-      <textarea mdInput [(ngModel)]="model" name="Model" cols="100" rows="15"></textarea>
+      <textarea mdInput [(ngModel)]="this.modelToDiagnose" name="Model" cols="100" rows="15"></textarea>
   </form>
 
   <div class="card-container">

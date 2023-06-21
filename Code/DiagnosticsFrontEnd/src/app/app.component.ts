@@ -14,10 +14,14 @@ export class AppComponent {
                   [
                     "model [root] { \n"
                       + "    [root] - mandatory -> [mandatory1] \n"
-                      + "    [root] - mandatory -> [mandatory2] \n"
                       + "    [mandatory1] - excludes -> [mandatory1] \n"
                       + "}",
-                      "model [root] { \n"
+                    "model [root] { \n"
+                      + "    [root] - mandatory -> [mandatory1] \n"
+                      + "    [root] - mandatory -> [mandatory2] \n"
+                      + "    [mandatory1] - excludes -> [mandatory2] \n"
+                      + "}",
+                    "model [root] { \n"
                       + "    [root] - mandatory -> [mandatory1] \n"
                       + "    [root] - mandatory -> [mandatory2] \n"
                       + "    [root] - alternative -> [alt1] \n"
@@ -29,7 +33,6 @@ export class AppComponent {
 
   public modelToDiagnose: string = "model [root] { \n"
                                   + "    [root] - mandatory -> [mandatory1] \n"
-                                  + "    [root] - mandatory -> [mandatory2] \n"
                                   + "    [mandatory1] - excludes -> [mandatory1] \n"
                                   + "}"
 

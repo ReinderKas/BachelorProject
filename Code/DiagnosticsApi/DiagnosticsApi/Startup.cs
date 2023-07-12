@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DiagnosticsApi
 {
@@ -30,7 +31,11 @@ namespace DiagnosticsApi
          );
 
             // Add the Controllers.
-            services.AddControllersWithViews();
+            services.AddControllers()
+                .AddNewtonsoftJson(a =>
+                {
+                    
+                });
 
             services.AddLogging();
 

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Z3;
-using System.Text.Json.Serialization;
+﻿using DiagnosticsApi.Models;
+using Elfskot.Core.Masterdata.FeatureModels.Translator;
+using Elfsquad.Core.Archer;
+using Microsoft.AspNetCore.Mvc;
 using Z3Parser;
-using Z3Parser.FeatureModels;
 
 namespace DiagnosticsApi.Controllers
 {
@@ -18,11 +18,11 @@ namespace DiagnosticsApi.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("proof")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<string>> Diagnose([FromBody] string model = null)
+        public async Task<ActionResult<string>> GetProof([FromBody] string model = null)
         {
             Console.WriteLine("Model: \n" + model);
 
@@ -41,85 +41,30 @@ namespace DiagnosticsApi.Controllers
                 return Ok(result);
             }
 
-            return NotFound($"No proof found for the model {model}");
+            return NotFound($"No proof found for the model \n\n{model}");
         }
 
+        [HttpPut("featureModel")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<FmGraphResult>> FeatureModel([FromBody] string model = null)
+        { 
+            if (model == null)
+                return BadRequest("No model provided!");
 
-        /*  
-         *  Models:
-         *   ProveModel(@" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [mandatory1] - excludes -> [mandatory1]
-                }");
-
-        ProveModel(@" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [mandatory1] - excludes -> [mandatory2]
-                }");
-
-        ProveModel(@" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [root] - alternative -> [alt1]
-                    [root] - alternative -> [alt2]
-
-                    [mandatory1] - excludes -> [alt1]
-                    [mandatory2] - excludes -> [alt2]
-                }");
-
-        ProveModel(@" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [root] - mandatory -> [mandatory3]
-                    [root] - alternative -> [alt1]
-                    [root] - alternative -> [alt2]
-                    [root] - alternative -> [alt3]
-
-                    [mandatory1] - excludes -> [alt1]
-                    [mandatory1] - excludes -> [alt2]
-                    [mandatory1] - excludes -> [alt3]
-                }");
-
-        ProveModel(@" 
-                model [root] {
-                    [root] - mandatory -> [mandatory1]
-                    [root] - mandatory -> [mandatory2]
-                    [root] - mandatory -> [mandatory3]
-                    [root] - mandatory -> [mandatory4]
-                    [root] - mandatory -> [mandatory5]
-                    [root] - mandatory -> [mandatory6]
-                    [root] - alternative -> [alt1]
-                    [root] - alternative -> [alt2]
-                    [root] - alternative -> [alt3]
-                    [root] - alternative -> [alt4]
-                    [root] - alternative -> [alt5]
-                    [root] - alternative -> [alt6]
-
-                    [mandatory1] - excludes -> [alt1]
-                    [mandatory2] - excludes -> [alt2]
-                    [mandatory3] - excludes -> [alt3]
-                    [mandatory4] - excludes -> [alt4]
-                    [mandatory5] - excludes -> [alt5]
-                    [mandatory6] - excludes -> [alt6]
-                }");
+            var solver = new DiagnosticsParser(model);
+            Console.WriteLine(solver.ModelSolver.FmGraph.ToString());
 
 
-        ProveModel(@" 
-                model [root] {
-                    [root] - optional -> [opt1]
-                    [root] - mandatory -> [mand1]
-                    [root] - mandatory -> [mand2]
+            var result = new FmGraphResult(
+                solver.ModelSolver.FmGraph.GetNodes(), 
+                solver.ModelSolver.FmGraph.GetConstraints()
+            );
 
+            Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
 
-                    [mand1] - requires -> [opt1]
-                    [opt1] - excludes -> [mand2]
-                }");
-         */
+            return Ok(result);
+        }
     }
 }

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
+﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Scripts;
 
 namespace Elfskot.Core.Masterdata.FeatureModels.Translator
 {
@@ -12,7 +8,6 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
     {
         private List<IFeatureModelNode> _featureModelNodes;
         private List<IFeatureModelConstraint> _featureModelConstraints;
-        private List<IFeatureModelFunctionCall> _featureModelScripts;
             
         // Lookup lists
         private Dictionary<Guid, IFeatureModelNode> _nodesByNodeId;
@@ -21,14 +16,20 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
 
         public FeatureModelGraph(
             List<IFeatureModelNode> nodes, 
-            List<IFeatureModelConstraint> constraints,
-            List<IFeatureModelFunctionCall> scripts)
+            List<IFeatureModelConstraint> constraints)
         {
             _featureModelNodes = nodes;
             _featureModelConstraints = constraints;
-            _featureModelScripts = scripts;
 
             InitializeLookupLists();
+        }
+
+        public override string ToString()
+        {
+            var result = "";
+            result += $"Nodes: {_featureModelNodes.Count()} \n";
+            result += $"Constraints: {_featureModelConstraints.Count()} \n";
+            return result;
         }
 
         private void InitializeLookupLists()
@@ -69,8 +70,6 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
             ? constraints
             : new List<IFeatureModelConstraint>();
 
-        public List<IFeatureModelFunctionCall> GetScripts() => _featureModelScripts;
-        public void AddScript(IFeatureModelFunctionCall functionCall) => _featureModelScripts.Add(functionCall);
         public IFeatureModelNode GetNodeById(Guid id) => _nodesByNodeId[id];
         
         public IFeatureModelNode GetParent(IFeatureModelNode node)

@@ -1,3 +1,4 @@
+using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,16 @@ namespace Elfsquad.Core.Archer
             IncludePythonStatements = includePythonStatements;
             Objectives = objectives;
         }
-        
+
+        public override string ToString()
+        {
+            var result = "";
+            result += $"Nodes: {Variables.Count()} \n";
+            result += $"Constraints: {Constraints.Count()} \n";
+            result += $"Relationships: {Relationships.Count()} \n";
+            return result;
+        }
+
         public ArcherVariable RootVariable
         {
             get

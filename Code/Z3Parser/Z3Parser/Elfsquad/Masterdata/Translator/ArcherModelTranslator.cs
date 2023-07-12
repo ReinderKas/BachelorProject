@@ -1,9 +1,7 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Scripts;
 using Elfskot.Core.Models.Configurator.Graph.Constraints;
-using Elfskot.Core.Models.Entities;
 using Elfskot.Core.Models.Entities.FeatureModels;
 using Elfsquad.Core.Archer;
 using Node = Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes.Node;
@@ -15,7 +13,6 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
         private ArcherModel _archerModel;
         private List<IFeatureModelNode> featureModelNodes;
         private List<IFeatureModelConstraint> featureModelConstraints;
-        private List<IFeatureModelFunctionCall> _featureModelFunctionCalls;
         private Dictionary<ArcherVariable, IFeatureModelNode> _nodesByVariable = new ();
 
 
@@ -28,7 +25,6 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
             _archerModel = archerModel;
             featureModelNodes = new List<IFeatureModelNode>();
             featureModelConstraints = new List<IFeatureModelConstraint>();
-            _featureModelFunctionCalls = new List<IFeatureModelFunctionCall>();
 
             InitializeNodes();
             InitializeConstraints();
@@ -37,7 +33,7 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
             IntializeConstraints();
             InitializeObjectives();
 
-            return new FeatureModelGraph(featureModelNodes, featureModelConstraints, _featureModelFunctionCalls);
+            return new FeatureModelGraph(featureModelNodes, featureModelConstraints);
         }
 
         private void InitializeNodes()

@@ -1,7 +1,6 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Scripts;
 using Elfskot.Core.Models.Entities.FeatureModel;
 using Elfskot.Core.Models.Entities.FeatureModels;
 
@@ -42,7 +41,7 @@ namespace Elfskot.Core.Masterdata.FeatureModels.Translator
 
         public FeatureModelGraph BuildGraph()
         {
-            return new FeatureModelGraph(featureModelNodes, featureModelConstraints, new List<IFeatureModelFunctionCall>());
+            return new FeatureModelGraph(featureModelNodes, featureModelConstraints);
         }
 
         public static FeatureModelGraph BuildGraph(FeatureModel featureModel)

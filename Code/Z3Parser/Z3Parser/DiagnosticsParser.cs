@@ -14,7 +14,9 @@ namespace Z3Parser
         public DiagnosticsParser(string modelString)
         {
             ModelString = modelString;
-            HasSolution = false;    
+            HasSolution = false;
+            ModelSolver = ModelBuilder.CreateModel(ModelString).Result;
+            ModelSolver.InitializeZ3Solver();
         }
 
         public void ProveModel()
@@ -25,8 +27,6 @@ namespace Z3Parser
             Console.Write($"{ModelString}\n\n");
             Console.ResetColor();
 
-            ModelSolver = ModelBuilder.CreateModel(ModelString).Result;
-            ModelSolver.InitializeZ3Solver();
 
             HasSolution = ModelSolver.Solve();
 

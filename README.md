@@ -3,6 +3,9 @@
 
 ## Tasks to do
 [Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap)
+https://github.com/ekuiter/feature-model-viz
+https://observablehq.com/@d3/tree
+
 
 &nbsp;
 

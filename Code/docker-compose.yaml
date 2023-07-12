@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   api:
-    container_name: ThesisApi
+    container_name: DiagnosticsApi
     build: .
     expose:
       - '80'
@@ -9,7 +9,7 @@ services:
       - "80:80"  # http
 
   interface:
-    container_name: ThesisInterface
+    container_name: DiagnosticsInterface
     build: /DiagnosticsFrontEnd
     expose:
      - '4200'

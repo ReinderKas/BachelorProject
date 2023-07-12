@@ -1,15 +1,18 @@
-import { Component } from '@angular/core';
-
+import { Component, ElementRef } from '@angular/core';
+import { FmGraphResult } from 'src/models/fmGraphResult';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'DiagnosticsFrontEnd';
 
   public proof: string = "";
+  public fmGraph: FmGraphResult | null = null;
+
   public models: string[] = 
                   [
                     "model [root] { \n"
@@ -37,16 +40,18 @@ export class AppComponent {
                                   + "}"
 
   public selectModel(model: string) {
-    console.log("Selection: " + model)
     this.modelToDiagnose = model
   }
 
+  public resetVariables(){
+    this.proof = "";
+    this.fmGraph = null;
+  }
+
   public proveModel(){
-    console.log("Model:" + this.modelToDiagnose)
+    this.resetVariables();
 
-    // con.setRequestProperty("Content-Type", "application/json; charset=utf8")
-
-    fetch("http://localhost/diagnose", {
+    fetch("http://localhost/diagnose/proof", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -55,16 +60,34 @@ export class AppComponent {
     })
     .then(async (response) => {
       this.proof = await response.text()
-      console.log(this.proof);
     })
-    // .then((data) => {
-    //   // Handle the response data
-    //   console.log(data);
-    // })
     .catch((error) => {
-      // Handle any errors
-      console.error("Could not find proof of the model: " + error);
+      alert("Something went wrong trying to find proof for the model: \n\n" + error);
     });
   }
+
+  public getFeatureModel(){
+    this.resetVariables();
+
+    fetch("http://localhost/diagnose/featureModel", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.modelToDiagnose),
+    })
+    .then(async (response) => {
+      this.fmGraph = await response.json() as FmGraphResult;
+      console.log(this.fmGraph);
+
+      this.drawGraph();
+    })
+    .catch((error) => {
+      alert("Something went wrong trying to create a Feature Model graph for the model: \n\n" + error);
+    });
+  }
+
+  private drawGraph(){
+    console.log("Draw Graph Function.")
+  }
 }
- 

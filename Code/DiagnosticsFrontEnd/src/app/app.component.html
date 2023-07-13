@@ -16,8 +16,8 @@
   <h2>Predefined Models</h2> 
 
   <mat-list>  
-    <div *ngFor="let model of models">
-      <button mat-raised-button color="primary" (click)="selectModel(model)"> Model {{models.indexOf(model)}} </button>
+    <div *ngFor="let modelNumber of modelCount()">
+      <button mat-raised-button color="primary" (click)="selectModel(modelNumber)"> Model {{modelNumber}} </button>
       <mat-divider></mat-divider>
     </div>
   </mat-list>
@@ -70,6 +70,7 @@
         Nodes: {{fmGraph.nodes.length}}
         <br>
         Edges: {{fmGraph.edges.length}}
+        <app-graph></app-graph>
       </mat-card-content>
     </mat-card>
   </div>

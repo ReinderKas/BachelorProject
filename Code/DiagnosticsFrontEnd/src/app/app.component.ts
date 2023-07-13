@@ -1,4 +1,5 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
+import { ExampleModels } from 'src/models/exampleModels';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 
 @Component({
@@ -12,40 +13,20 @@ export class AppComponent {
 
   public proof: string = "";
   public fmGraph: FmGraphResult | null = null;
+  public modelToDiagnose: string = ExampleModels.models[0];
 
-  public models: string[] = 
-                  [
-                    "model [root] { \n"
-                      + "    [root] - mandatory -> [mandatory1] \n"
-                      + "    [mandatory1] - excludes -> [mandatory1] \n"
-                      + "}",
-                    "model [root] { \n"
-                      + "    [root] - mandatory -> [mandatory1] \n"
-                      + "    [root] - mandatory -> [mandatory2] \n"
-                      + "    [mandatory1] - excludes -> [mandatory2] \n"
-                      + "}",
-                    "model [root] { \n"
-                      + "    [root] - mandatory -> [mandatory1] \n"
-                      + "    [root] - mandatory -> [mandatory2] \n"
-                      + "    [root] - alternative -> [alt1] \n"
-                      + "    [root] - alternative -> [alt2] \n"
-                      + "    [mandatory1] - excludes -> [alt1] \n"
-                      + "    [mandatory2] - excludes -> [alt2] \n"
-                      + "}"
-                  ]
-
-  public modelToDiagnose: string = "model [root] { \n"
-                                  + "    [root] - mandatory -> [mandatory1] \n"
-                                  + "    [mandatory1] - excludes -> [mandatory1] \n"
-                                  + "}"
-
-  public selectModel(model: string) {
-    this.modelToDiagnose = model
-  }
 
   public resetVariables(){
     this.proof = "";
     this.fmGraph = null;
+  }
+
+  public selectModel(modelIndex: number) {
+    this.modelToDiagnose = ExampleModels.models[modelIndex];
+  }
+
+  public modelCount(){
+    return Array.from({ length: ExampleModels.models.length }, (_, index) => index);
   }
 
   public proveModel(){

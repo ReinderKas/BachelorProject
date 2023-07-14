@@ -13,17 +13,17 @@
   <!-- Archer Model  -->
   <h1>Z3 Proof Generation</h1>
 
-  <h2>Predefined Models</h2> 
+  <h2 style="border-bottom: 1px solid lightgrey;">Predefined Models</h2> 
 
-  <mat-list>  
-    <div *ngFor="let modelNumber of modelCount()">
+  <mat-list style="display: flex;" >  
+    <div *ngFor="let modelNumber of modelCount()" style="padding: 10px;">
       <button mat-raised-button color="primary" (click)="selectModel(modelNumber)"> Model {{modelNumber}} </button>
       <mat-divider></mat-divider>
     </div>
   </mat-list>
 
   <!--- Model Definition -->
-  <h2>Model</h2>
+  <h2 style="border-bottom: 1px solid lightgrey;">Model</h2>
   <p>Define a model to generate a proof for:</p>
   <br>  
   <br>  

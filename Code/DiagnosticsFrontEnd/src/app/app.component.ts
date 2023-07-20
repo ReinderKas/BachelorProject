@@ -9,7 +9,7 @@ import { FmGraphResult } from 'src/models/fmGraphResult';
 })
 
 export class AppComponent {
-  title = 'DiagnosticsFrontEnd';
+  title = 'Z3 Theorem Prover';
 
   public proof: string = "";
   public fmGraph: FmGraphResult | null = null;
@@ -58,17 +58,11 @@ export class AppComponent {
       body: JSON.stringify(this.modelToDiagnose),
     })
     .then(async (response) => {
-      this.fmGraph = await response.json() as FmGraphResult;
-      console.log(this.fmGraph);
-
-      this.drawGraph();
+      let dict = await response.json();
+      this.fmGraph = new FmGraphResult(dict.nodes, dict.edges);
     })
     .catch((error) => {
       alert("Something went wrong trying to create a Feature Model graph for the model: \n\n" + error);
     });
-  }
-
-  private drawGraph(){
-    console.log("Draw Graph Function.")
   }
 }

@@ -1,44 +1,65 @@
+import { Edge } from "./edge";
+import { Node } from "./node";
+
 export class FmGraphResult{
-    public nodes: Node[];
-    public edges: Edge[];
+    public root: Node | undefined;
+    public nodes: Node[] = [];
+    public edges: Edge[] = [];
 
-    constructor(nodes: Node[], edges: Edge[]) {
-        this.nodes = nodes;
-        this.edges = edges;
+    private nodesById: { [key: string]: Node } = {};
+
+    constructor(nodes: any[], edges: any[]) {
+        this.initializeNodes(nodes);
+        this.initializeEdges(edges);
+        this.root = this.nodes.find(n => !this.edges.some(e => e.to.some(to => to == n)));
+    }
+
+    private initializeNodes(nodes: any[]){
+        for(let i = 0; i < nodes.length; i++){
+            let node = new Node(nodes[i].id, nodes[i].name)
+
+            this.nodes.push(node)
+            this.nodesById[node.id] = node;
+        }
+    }
+
+    private initializeEdges(edges: any[]){
+        for(let i = 0; i < edges.length; i++){
+            let toNodeIds: string[] = edges[i].toNodes;
+
+            let toNodes = toNodeIds.map(id => this.nodesById[id])
+            let fromNode = this.nodesById[edges[i].fromNode];
+
+            this.edges.push(new Edge(fromNode, toNodes, edges[i].type))
+        }
+    }
+
+    public getNodeStructure(){
+        if (!this.root){
+            throw new Error("Node does not exist.");
+        }
+
+        return this.buildRecursively(this.root);
+    }
+
+    private buildRecursively(node: Node): NodeData{  
+        const children: NodeData[] = [];
+            
+        // Recursively build child nodes for each child
+        node.childNodes.forEach(child => {
+            let childNode = this.buildRecursively(child);
+            children.push(childNode);
+        });
+              
+        let name = node.name;
+        return {
+          name,
+          children,
+        };
     }
 }
 
-export class Node{
-    public name: string;
-    public id: string;
-
-    constructor(
-        name: string,
-        id: string
-    ) {
-        this.name = name;
-        this.id = id;
-    }
-}
-
-export class Edge{
-    public from: string;
-    public to: string;
-    public relType: ConstraintType;
-
-    constructor(from: string, to: string, type: ConstraintType) {
-        this.from = from;
-        this.to = to;
-        this.relType = type;
-    }
-}    
-
-export enum ConstraintType{
-    Mandatory,
-    Optional,
-    Alternative,
-    Or,
-
-    Excludes,
-    Requires,
+export interface NodeData {
+  name: string;
+  children?: NodeData[];
 }

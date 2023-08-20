@@ -17,7 +17,7 @@
 
   <mat-list style="display: flex;" >  
     <div *ngFor="let modelNumber of modelCount()" style="padding: 10px;">
-      <button mat-raised-button color="primary" (click)="selectModel(modelNumber)"> Model {{modelNumber}} </button>
+      <button mat-raised-button color="primary" (click)="selectModel(modelNumber)"> Model {{modelNumber + 1}} </button>
       <mat-divider></mat-divider>
     </div>
   </mat-list>

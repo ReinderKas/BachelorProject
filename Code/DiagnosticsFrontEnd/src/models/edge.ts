@@ -1,6 +1,6 @@
 import { Node } from './node'
 
-export class Edge{
+export class Edge {
     public from: Node;
     public to: Node[];
     public relType: ConstraintType;
@@ -35,4 +35,20 @@ export enum ConstraintType{
 
     Excludes,
     Requires,
+}
+
+export class GraphEdge{
+    public fromId: string | null = null;
+    public toId: string | null = null;
+    public relType: number | null = null;
+
+    constructor(
+        fromId: string,
+        toId: string,
+        relType: number
+    ) {
+        this.fromId = fromId;
+        this.toId = toId;
+        this.relType = relType;
+    }
 }

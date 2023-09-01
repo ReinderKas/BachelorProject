@@ -35,15 +35,11 @@ export class GraphComponent implements OnInit {
       return;
     }
 
-    // Setup data.
-    let structure = this.fmGraph.getNodeStructure();
+    let graphNodes = this.fmGraph.getVisualizationNodes();
+    let graphEdges = this.fmGraph.GetVisualizationEdges();
 
-    let root: TreeNode = d3.hierarchy<NodeData>(structure, d => d.children) as TreeNode;
-    d3.tree<NodeData>().size([this.width, this.height])(root);
-
-    // Fill the SVG with data.
-    this.addLinks(svg, root);
-    this.addNodes(svg, root);    
+    console.log(graphNodes);
+    console.log(graphEdges);
   }
 
 
@@ -60,49 +56,4 @@ export class GraphComponent implements OnInit {
       .attr("transform", "translate("
             + this.margin.left + "," + this.margin.top + ")");
   }
-
-  private addLinks(svg: any, root: any){
-    // Add links between the nodes.
-    svg.selectAll(".link")
-      .data(root.links())
-      .enter()
-      .append("path")
-      .attr("class", "link")
-         
-      
-      // Straight lines.
-      .attr("d", function(d: { source: { y: string; x: string; }; target: { y: string; x: string; }; }) {
-        return "M" + d.source.x + "," + d.source.y
-          + "L" + d.target.x + "," + d.target.y;
-      })
-  }
-
-  private addNodes(svg: any, root: any){
-    // Add each node as a group.
-    var node = svg.selectAll(".node")
-        .data(root.descendants())
-        .enter()
-        .append("g")
-        .attr("class", function(d: { children: any; }) { 
-          return "node" + 
-            (d.children ? " node--internal" : " node--leaf"); })
-        .attr("transform", function(d: { x: string; y: string; }) { 
-          return "translate(" + d.x + "," + d.y + ")"; });
-
-    // Adds the circle to the node
-    node.append("circle")
-        .attr("r", 15);
-
-    // Add text to the node.
-    node.append("text")
-        .attr("dy", ".35em")
-        .attr("x", function(d: { children: any; }) { return d.children ? -13 : 13; })
-        .style("text-anchor", "middle")
-        .text(function(d: { data: { name: any; }; }) { return d.data.name; });
-  }
-}
-
-interface TreeNode extends d3.HierarchyNode<NodeData> {
-  x?: number;
-  y?: number;
 }

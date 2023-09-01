@@ -1,6 +1,6 @@
 import { ConstraintType } from "./edge";
 
-export class Node{
+export class Node {
     public id: string;
     public name: string;
     public childNodes: Node[]
@@ -23,5 +23,15 @@ export class Node{
 
     public setParentRelType(type: ConstraintType){
         this.parentRelationshipType = type;
+    }
+}
+
+export class GraphNode{
+    public id: string | null = null;
+    public name: string | null = null;
+
+    constructor(id: string, name: string) {
+        this.id = id;
+        this.name = name;
     }
 }

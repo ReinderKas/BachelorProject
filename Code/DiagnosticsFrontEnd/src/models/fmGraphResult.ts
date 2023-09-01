@@ -1,5 +1,5 @@
-import { ConstraintType, Edge } from "./edge";
-import { Node } from "./node";
+import { ConstraintType, Edge, GraphEdge } from "./edge";
+import { GraphNode, Node } from "./node";
 
 export class FmGraphResult{
     public root: Node | undefined;
@@ -32,6 +32,29 @@ export class FmGraphResult{
 
             this.edges.push(new Edge(fromNode, toNodes, edges[i].type))
         }
+    }
+
+    public getVisualizationNodes(){
+        return this.nodes.map<GraphNode>(n => new GraphNode(n.id, n.name));
+    }
+
+    public GetVisualizationEdges(){
+        let result: GraphEdge[] = new Array();
+
+        // Currently only assigns ID's
+        // Could easily be made into assigning entire Node.
+        this.edges.forEach(edge => {
+            edge.to.forEach(to => {
+                result.push(
+                    new GraphEdge(
+                        edge.from.id,
+                        to.id,
+                        edge.relType
+                    ))
+            });
+        });
+
+        return result;
     }
 
     public getNodeStructure(){

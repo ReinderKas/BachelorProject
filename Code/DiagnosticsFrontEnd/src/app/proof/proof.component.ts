@@ -13,7 +13,7 @@ export class ProofComponent implements OnInit {
 
     
     ngOnInit(): void {
-        console.log("Initializing with Proof: ");
-        console.log(this.proof);
+
+      
     }
 }

@@ -9,11 +9,13 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './graph/graph.component';
+import { ProofComponent } from './proof/proof.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GraphComponent,
+    ProofComponent
   ],
   imports: [
     MatCardModule,

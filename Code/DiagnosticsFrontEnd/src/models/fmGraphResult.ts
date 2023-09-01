@@ -1,4 +1,4 @@
-import { Edge } from "./edge";
+import { ConstraintType, Edge } from "./edge";
 import { Node } from "./node";
 
 export class FmGraphResult{
@@ -52,8 +52,12 @@ export class FmGraphResult{
         });
               
         let name = node.name;
+        let id = node.id;
+        let parentType = node.parentRelationshipType;
         return {
           name,
+          id,
+          parentType,
           children,
         };
     }
@@ -61,5 +65,7 @@ export class FmGraphResult{
 
 export interface NodeData {
   name: string;
+  id:string;
+  parentType: ConstraintType;
   children?: NodeData[];
 }

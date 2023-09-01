@@ -19,6 +19,10 @@ export class Edge{
 
         if (this.isNonXTree){
             from.addChildNodes(to);
+
+            to.forEach(n => {
+                n.setParentRelType(type);
+            });
         }
     }
 }   

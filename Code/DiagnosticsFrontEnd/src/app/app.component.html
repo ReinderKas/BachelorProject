@@ -54,8 +54,7 @@
       <mat-card-subtitle>Z3 generated Proof</mat-card-subtitle>
     </mat-card-header>
     <mat-card>
-      <mat-card-content>
-        {{ proof }}</mat-card-content>
+      <app-proof  [proof]="proof"></app-proof>
     </mat-card>
   </div>
   
@@ -67,9 +66,6 @@
     </mat-card-header>
     <mat-card>
       <mat-card-content>
-        Nodes: {{fmGraph.nodes.length}}
-        <br>
-        Edges: {{fmGraph.edges.length}}
         <app-graph  [fmGraph]="fmGraph"></app-graph>
       </mat-card-content>
     </mat-card>

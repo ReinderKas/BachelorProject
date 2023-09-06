@@ -27,8 +27,8 @@ export class Node {
 }
 
 export class GraphNode{
-    public id: string | null = null;
-    public name: string | null = null;
+    public id: string;
+    public name: string;
 
     constructor(id: string, name: string) {
         this.id = id;

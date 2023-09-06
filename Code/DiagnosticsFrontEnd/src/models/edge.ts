@@ -38,9 +38,9 @@ export enum ConstraintType{
 }
 
 export class GraphEdge{
-    public fromId: string | null = null;
-    public toId: string | null = null;
-    public relType: number | null = null;
+    public fromId: string;
+    public toId: string;
+    public relType: number;
 
     constructor(
         fromId: string,

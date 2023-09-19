@@ -14,7 +14,7 @@ https://observablehq.com/@d3/tree
  + Z3
  + Angular
  + .NET 7.0 (C#)
- + Antlr
+ + Antlr 
  
 ## 1.1 - Web Interface
 The front end is implemented in Angular. This is a javascript based web application framework. <br>

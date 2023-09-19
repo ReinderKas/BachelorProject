@@ -12,9 +12,10 @@ https://observablehq.com/@d3/tree
 # 1 - Design Choises
 ## Quick Overview:
  + Z3
- + Angular
  + .NET 7.0 (C#)
  + Antlr 
+ + Angular
+ + NodeJS
  
 ## 1.1 - Web Interface
 The front end is implemented in Angular. This is a javascript based web application framework. <br>

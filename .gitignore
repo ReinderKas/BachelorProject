@@ -7,6 +7,7 @@
 
 /Code/DiagnosticsFrontEnd/bin
 /Code/DiagnosticsFrontEnd/obj
+/Code/DiagnosticsFrontEnd/.angular
 
 # IDE files
 /Code/Z3Parser/.vs
@@ -21,7 +22,15 @@
 /.vs
 /.vscode
 
+
+# Python
+__pycache__/
+*.py[cod]
+
+
+
 ## Elfsquad source files
 #/Code/Z3Parser/Z3Parser/Elfsquad
+
 
 

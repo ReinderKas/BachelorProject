@@ -10,6 +10,7 @@ export class ExampleModels {
           + "    [root] - mandatory -> [mandatory1] \n"
           + "    [root] - mandatory -> [mandatory2] \n"
           + "    [mandatory1] - excludes -> [mandatory2] \n"
+          + "    [mandatory2] - requires -> [mandatory1] \n"
           + "}",
 
 

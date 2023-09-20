@@ -14,7 +14,6 @@ import { GraphDrawer } from './graphDrawer';
 export class GraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
 
-
   private graphDrawer: GraphDrawer | null = null;
   private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> | null = null;
 
@@ -58,7 +57,10 @@ export class GraphComponent implements AfterViewInit {
     this.graphDrawer.renderGraph();
   }
 
+
+
   //#region Data Layouts
+
   // Create a tree layout.
   private generateTree(){
     return d3.tree<GraphNode>().size([

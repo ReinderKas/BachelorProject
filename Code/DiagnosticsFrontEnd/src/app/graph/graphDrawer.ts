@@ -29,14 +29,13 @@ export class GraphDrawer{
         this.addNodes()
     }
 
+
+
+    
     //#region Draw Nodes
 
     // Visualize the Nodes.
     private addNodes(){
-
-        console.log(this.root.descendants())
-
-        
         // Add each node as a group.
         var node = this.svg.selectAll(".node")
             .data(this.root.descendants())
@@ -58,8 +57,7 @@ export class GraphDrawer{
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
             .text(d => d.data.name);
-      }
-
+    }
     //#endregion
 
 
@@ -110,31 +108,12 @@ export class GraphDrawer{
                 .style("stroke-dasharray", ("3, 3"))  // Dashed line for cross-tree constraints
                 .attr("marker-end", "url(#end)");  // Arrow marker
     }
-
-
-
-
-    private drawMandatory(){
-    }
-    
-    private drawOptional(){
-    }
-    
-    private drawAlternative(){
-    }
-    
-    private drawOr(){
-    }
-    
-    private drawExclusion(){
-    }
-    
-    private drawRequires(){
-    }
-
     //#endregion
+    
+
 
     //#region Legend and Tooltip
+
     // Add the tooltip so that if we hover over the link we get the necessary information.
     private addTooltip(){
         const tooltip = d3.select("body")

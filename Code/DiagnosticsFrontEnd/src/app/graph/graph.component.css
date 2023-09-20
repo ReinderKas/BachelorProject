@@ -3,7 +3,7 @@
     height: 400px;
 }
 
-#graphContainer {
+.graph {
     width: 100%;
     height: 100%;
 }

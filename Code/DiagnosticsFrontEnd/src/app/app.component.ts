@@ -13,7 +13,7 @@ export class AppComponent {
 
   public proof: string = "";
   public fmGraph: FmGraphResult | null = null;
-  public modelToDiagnose: string = ExampleModels.models[0];
+  public modelToDiagnose: string = ExampleModels.models[1];
 
 
   public resetVariables(){

@@ -102,7 +102,7 @@ export class GraphDrawer{
                         .attr("class", "excludes")
                         .attr("x1", (d) => this.pointNodeById[d.fromId].x)
                         .attr("y1", (d) => this.pointNodeById[d.fromId].y)
-                        .attr("x2", (d) => this.pointNodeById[d.toId].x)
+                        .attr("x2", (d) => this.pointNodeById[d.toId].x) 
                         .attr("y2", (d) => this.pointNodeById[d.toId].y)
                         .style("stroke", "red");
                                 

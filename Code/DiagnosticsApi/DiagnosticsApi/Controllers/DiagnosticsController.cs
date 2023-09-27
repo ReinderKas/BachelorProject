@@ -41,7 +41,7 @@ namespace DiagnosticsApi.Controllers
                 return Ok(result);
             }
 
-            return NotFound($"No proof found for the model \n\n{model}");
+            return NotFound($"The model seems satisfiable.");
         }
 
         [HttpPut("featureModel")]

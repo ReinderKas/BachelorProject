@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './graph/graph.component';
 import { ProofComponent } from './proof/proof.component';
-import { InteractiveGraphComponent } from './interactive-graph/interactive-graph.component';
+import { InteractiveGraphComponent } from './graph/interactive-graph.component';
 
 @NgModule({
   declarations: [

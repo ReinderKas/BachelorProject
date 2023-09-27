@@ -65,6 +65,18 @@
     margin-top: 50px;    
   }
 
+
+  .myinput {
+    --thumb-size: 205px;
+    --track-height: calc(var(--thumb-size) / 3);
+    --progress-shadow: none;
+    --progress-flll-shadow: none;
+    --thumb-shadow: 0 0 0 7px var(--primary-color) inset, 0 0 0 99px white inset;
+    --thumb-shadow-hover: 0 0 0 9px var(--primary-color) inset,
+      0 0 0 99px white inset;
+    --thumb-shadow-active: 0 0 0 13px var(--primary-color) inset;
+  }
+
   .card {
     all: unset;
     border-radius: 4px;

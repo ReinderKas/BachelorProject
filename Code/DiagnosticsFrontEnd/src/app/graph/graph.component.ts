@@ -14,7 +14,6 @@ import { GraphDrawer } from './graphDrawer';
 export class GraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
   @Input() componentSize: number = 500;
-  @Input() zoom: number = 100;
 
   private graphDrawer: GraphDrawer | null = null;
   private svg: any;
@@ -67,7 +66,7 @@ export class GraphComponent implements AfterViewInit {
     
     this.svg = d3.select('.graph')
                   .append('svg')
-                  .attr("viewBox", [0, 0, this.width()*(this.zoom/100), this.height()*(this.zoom/100)])
+                  .attr("viewBox", [0, 0, this.width(), this.height()])
                   .append('g')
                   .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
         

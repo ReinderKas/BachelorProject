@@ -10,6 +10,8 @@ export class GraphDrawer{
     private root: any
     private svg: any
 
+    private zoom: any
+
     private pointNodeById: { [id: string] : d3.HierarchyPointNode<GraphNode> }
     
     constructor(
@@ -37,7 +39,7 @@ export class GraphDrawer{
         this.addCrossLinks()
         this.addTooltip()
         this.addLegend()
-
+        this.addZoom()
     }
 
 
@@ -211,5 +213,18 @@ export class GraphDrawer{
                 .text("Cross-tree")
                 .attr("alignment-baseline", "middle");
     }
+    
+    private addZoom(){
+        this.zoom = d3.zoom()
+            .on('zoom', (e) => this.handleZoom(e));
+
+        this.svg.call(this.zoom);
+    }
+    
+
+    private handleZoom(e: { transform: string | number | boolean | readonly (string | number)[] | d3.ValueFn<d3.BaseType, unknown, string | number | boolean | readonly (string | number)[] | null> | null; }) {
+        this.svg.attr('transform', e.transform);
+    }
+
     //#endregion
 }

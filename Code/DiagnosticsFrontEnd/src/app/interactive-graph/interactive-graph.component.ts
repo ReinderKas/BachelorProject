@@ -20,6 +20,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
   private link: any;
   private node: any;  
   private drag: any;
+  private zoom: any;
 
   // // Dimensions / styling.
   private margin =  {top: 20, right: 90, bottom: 30, left: 90};
@@ -72,6 +73,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
     this.initLinks();   
     this.initSimulation();
     this.initDrag();
+    this.initZoom();
   }
 
   // Initialize the root hierarchical object.
@@ -129,6 +131,13 @@ export class InteractiveGraphComponent implements AfterViewInit {
                   .on("drag", (event: any, d: any) => this.dragged(event, d));
 
     this.node.call(this.drag).on("click", (d: { fx: any; fy: any; }) => this.click(d));
+  }
+
+  private initZoom(){
+    this.zoom = d3.zoom()
+          .on('zoom', (e) => this.handleZoom(e));
+
+    this.svg.call(this.zoom);
   }
 
   //#endregion
@@ -195,6 +204,10 @@ export class InteractiveGraphComponent implements AfterViewInit {
 
   private clamp(x: number, lo: number, hi: number) {
       return x < lo ? lo : x > hi ? hi : x;
+  }
+
+  private handleZoom(e: { transform: string | number | boolean | readonly (string | number)[] | d3.ValueFn<d3.BaseType, unknown, string | number | boolean | readonly (string | number)[] | null> | null; }) {
+    this.svg.attr('transform', e.transform);
   }
 
   //#endregion

@@ -72,9 +72,9 @@ export class GraphComponent implements AfterViewInit {
     this.initZoom();
     this.initRoot();
     this.initSVG(); 
-    this.initNodes();
     this.initLinks();   
     this.initCrossLinks();
+    this.initNodes();
     this.initLegend();
   }
 

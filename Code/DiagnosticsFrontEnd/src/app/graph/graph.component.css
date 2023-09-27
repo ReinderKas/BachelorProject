@@ -8,6 +8,13 @@
     height: 100%;
 }
 
+.center {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
+
 .node circle {
     fill: #c8e8e7;
     stroke: steelblue;
@@ -41,6 +48,8 @@
 .requires{
   stroke-dasharray: 5,5; 
 }
+
+
 
 .tooltip {
     position: absolute;

@@ -95,7 +95,6 @@ export class GraphDrawer{
                                      .append("g")
                                      .attr("class", "cross-hierarchy");
 
-        console.log(crossHierarchy);
         // Render links of type1
         crossHierarchy.filter((d) => d.relType === 4)
                         .append("line")

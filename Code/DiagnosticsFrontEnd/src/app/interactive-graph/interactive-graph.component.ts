@@ -1,28 +1,35 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular/core';
 import { FmGraphResult } from 'src/models/fmGraphResult';
-import { GraphDrawer } from './graphDrawer';
 import * as d3 from 'd3';
 import { GraphNode } from 'src/models/node';
 
 @Component({
   selector: 'app-interactive-graph',
-  templateUrl: './interactive-graph.component.html',
-  styleUrls: ['./interactive-graph.component.css']
+  templateUrl: '../graph/graph.component.html',
+  styleUrls: ['../graph/graph.component.css']
 })
 export class InteractiveGraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
+  @Input() componentSize: number = 500;
+  
+
+  private root: any;
+  private svg: any;
 
   private simulation : any;
   private link: any;
   private node: any;  
   private drag: any;
 
-  // Dimensions / styling.
+  // // Dimensions / styling.
   private margin =  {top: 20, right: 90, bottom: 30, left: 90};
-  private width = 700 - this.margin.left - this.margin.right;
-  private height = 700 - this.margin.top - this.margin.bottom;
+  private width() { return this.componentSize - this.margin.left - this.margin.right; }
+  private height() { return this.componentSize - this.margin.top - this.margin.bottom; }
 
-  constructor() {}
+  constructor(
+    private el: ElementRef, 
+    private renderer: Renderer2
+  ) {}
 
   ngAfterViewInit() {
     if (!this.fmGraph){
@@ -30,41 +37,96 @@ export class InteractiveGraphComponent implements AfterViewInit {
       return;
     }
 
+    this.clearGraph();
+    this.adjustSize();
+    this.createGraph();
+  }
+  
+  // Called when the 'componentSize' property changes (through binding from the parent/app component).
+  ngOnChanges() {
+    this.clearGraph();
+    this.adjustSize();
     this.createGraph();
   }
 
-  createGraph(){
-    if (!this.fmGraph) return;
+  
+  
+  // Rescale the element of the component to the given height and width.
+  private adjustSize() {
+    this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
+    this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
+  }
 
+  // Remove the existing SVG from the graph div in this component.
+  private clearGraph(){
+    // Select and remove all D3 objects within the SVG container
+    const svg2 = d3.select(this.el.nativeElement);
+        svg2.selectAll('*:not(.graph)').remove();
+  }
+
+
+
+  // #region Rendering the Graph itself.
+
+  // Create and draw the new Graph.
+  private createGraph(){          
+    this.initRoot();
+    this.initSVG();
+    this.initLinks();    
+    this.initNodes();
+    this.initSimulation();
+    this.initDrag()
+  }
+
+  // Initialize the root hierarchical object.
+  private initRoot(){
+    if (!this.fmGraph) {
+      alert("Feature Model object is undefined!")
+      return;
+    }
     // Create necessary data layouts.
     let tree = this.generateTree();
     let stratify = this.generateStratify();
-    let root = tree(stratify(this.fmGraph.getGraphNodes()))
+    this.root = tree(stratify(this.fmGraph.getGraphNodes()))
+  }
 
-    let svg = d3.select(".graph")
+  // Initialize the SVG object on which we can draw the Graph
+  private initSVG(){
+    this.svg =  d3.select(".graph")
                 .append("svg")
-                .attr("viewBox", [0, 0, this.width, this.height]);                    
-    
-    this.link = svg.selectAll(".link")
-                    .data(root.links())
+                .attr("viewBox", [0, 0, this.width(), this.height()]);    
+  }
+
+  // Draw the Links between Nodes.
+  private initLinks(){
+    this.link = this.svg.selectAll(".link")
+                    .data(this.root.links())
                     .join("line")
-                    .classed("link", true);
+                    .classed("link", true)
+  }
 
-    this.node = svg.selectAll(".node")
-        .data(root.descendants())
-        .join("circle")
-        .attr("r", 12)
-        .classed("node", true)
-        .classed("fixed", d => d.x !== undefined)
+  // Draw the Nodes on the Graph SVG.
+  private initNodes(){
+    this.node = this.svg.selectAll(".node")
+                    .data(this.root.descendants())
+                    .join("circle")
+                    .attr("r", 10)
+                    .classed("node", true)
+                    .classed("fixed", (d: { x: undefined; }) => d.x !== undefined)
+  }
 
+  // Initialize the force simulator for the graph.
+  private initSimulation(){
     this.simulation = d3.forceSimulation()
-            .nodes(root.descendants())
-            .force("charge", d3.forceManyBody())
-            // .force("center", d3.forceCenter(this.height/2, this.width/2))
-            .force("link", d3.forceLink(root.links()))
-            .on("tick", () => {this.tick()});
+                        .nodes(this.root.descendants())
+                        .force("charge", d3.forceManyBody())
+                        .force("center", d3.forceCenter(this.height()/2, this.width()/2))
+                        .force("link", d3.forceLink(this.root.links()))
+                        .on("tick", () => {this.tick()});
+  }
 
-
+  // Initialize the drag behaviour of the Graph Nodes.
+  private initDrag(){
     this.drag = d3.drag()
                   .on("start", () => this.dragstart())
                   .on("drag", (event: any, d: any) => this.dragged(event, d));
@@ -72,15 +134,16 @@ export class InteractiveGraphComponent implements AfterViewInit {
     this.node.call(this.drag).on("click", (event: any, d: { fx: any; fy: any; }) => this.click(event, d));
   }
 
+  //#endregion
 
 
-  //#region Data Layouts
+  // #region Data Layouts
 
   // Create a tree layout.
   private generateTree(){
     return d3.tree<GraphNode>().size([
-      this.width - this.margin.left - this.margin.right,
-      this.height - this.margin.top - this.margin.bottom
+      this.width() - this.margin.left - this.margin.right,
+      this.height() - this.margin.top - this.margin.bottom
     ])
   }
 
@@ -103,7 +166,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
   //#endregion
 
 
-  
+  // #region Drag behavior  
 
   private tick(){
     this.link
@@ -117,9 +180,6 @@ export class InteractiveGraphComponent implements AfterViewInit {
   }
 
   private click(this: any, event: any, d: { fx: any; fy: any; }){
-    console.log("Click.")
-    console.log(this)
-
       delete d.fx;
       delete d.fy;
       d3.select(this).classed("fixed", false);
@@ -128,14 +188,10 @@ export class InteractiveGraphComponent implements AfterViewInit {
 
 
   private dragstart(this: any) {
-    // console.log("DragStart")
-    // console.log(this)
       d3.select(this).classed("fixed", true);
   }
 
   private dragged(this: any, event: { x: any; y: any; }, d: { fx: any; fy: any; }) {
-    console.log("Dragged")
-    console.log(this)
       d.fx = this.clamp(event.x, 0, this.width);
       d.fy = this.clamp(event.y, 0, this.height);
       this.simulation.alpha(1).restart();
@@ -144,4 +200,6 @@ export class InteractiveGraphComponent implements AfterViewInit {
   private clamp(x: number, lo: number, hi: number) {
       return x < lo ? lo : x > hi ? hi : x;
   }
+
+  //#endregion
 }

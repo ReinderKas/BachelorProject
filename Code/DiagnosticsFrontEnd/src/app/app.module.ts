@@ -27,6 +27,7 @@ import { InteractiveGraphComponent } from './interactive-graph/interactive-graph
     MatButtonModule,
     FormsModule,
     BrowserAnimationsModule, 
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

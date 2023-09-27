@@ -14,6 +14,8 @@ export class AppComponent {
   public proof: string = "";
   public fmGraph: FmGraphResult | null = null;
   public modelToDiagnose: string = ExampleModels.models[1];
+  public interactiveGraph: boolean = true;
+  public componentSize = 500; // Initial component size value
 
 
   public resetVariables(){
@@ -27,6 +29,10 @@ export class AppComponent {
 
   public modelCount(){
     return Array.from({ length: ExampleModels.models.length }, (_, index) => index);
+  }
+
+  public toggleGraph(){
+    this.interactiveGraph = !this.interactiveGraph
   }
 
   public proveModel(){

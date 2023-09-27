@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, Input, AfterViewInit, ElementRef, Renderer2 } from '@angular/core';
 import * as d3 from 'd3';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 import { GraphNode } from 'src/models/node';
@@ -13,16 +13,20 @@ import { GraphDrawer } from './graphDrawer';
 
 export class GraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
+  @Input() componentSize: number = 500;
 
   private graphDrawer: GraphDrawer | null = null;
   private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> | null = null;
 
   // Dimensions / styling.
   private margin =  {top: 20, right: 90, bottom: 30, left: 90};
-  private width = 700 - this.margin.left - this.margin.right;
-  private height = 700 - this.margin.top - this.margin.bottom;
+  private width() { return this.componentSize - this.margin.left - this.margin.right; }
+  private height() { return this.componentSize - this.margin.top - this.margin.bottom; }
 
-  constructor() {}
+  constructor(
+    private el: ElementRef, 
+    private renderer: Renderer2
+  ) {}
 
   ngAfterViewInit() {
     if (!this.fmGraph){
@@ -30,16 +34,37 @@ export class GraphComponent implements AfterViewInit {
       return;
     }
 
-    this.svg = d3.select('.graph')
-                  .append('svg')
-                  .attr('width', this.width)
-                  .attr('height', this.height);
-
     this.createGraph();
   }
 
-  createGraph(){
-    if (!this.fmGraph || !this.svg) return;
+  ngOnChanges() {
+    this.clearGraph();
+    this.adjustSize();
+    this.createGraph();
+  }
+  
+  private clearGraph(){
+    // Remove the Graph
+    d3.select(".graph#svg")
+      .remove()
+
+    // Remove the Tooltip component
+    d3.select(".tooltip")
+      .remove()
+  }
+
+  // Rescale the element of the component to the given height and width.
+  private adjustSize() {
+    this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
+    this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
+  }
+
+  private createGraph(){
+    if (!this.fmGraph) return;
+
+    this.svg = d3.select('.graph')
+                  .append('svg')
+                  .attr("viewBox", [0, 0, this.width(), this.height()]); 
 
     // Create necessary data layouts.
     let tree = this.generateTree();
@@ -64,8 +89,8 @@ export class GraphComponent implements AfterViewInit {
   // Create a tree layout.
   private generateTree(){
     return d3.tree<GraphNode>().size([
-      this.width - this.margin.left - this.margin.right,
-      this.height - this.margin.top - this.margin.bottom
+      this.width() - this.margin.left - this.margin.right,
+      this.height() - this.margin.top - this.margin.bottom
     ])
   }
 

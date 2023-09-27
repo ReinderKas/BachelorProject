@@ -21,7 +21,6 @@ export class GraphComponent implements AfterViewInit {
   private root: any;
   private zoom: any;
   private legend: any;
-  private tooltip: any;
 
   private pointNodeById: any = {};
 

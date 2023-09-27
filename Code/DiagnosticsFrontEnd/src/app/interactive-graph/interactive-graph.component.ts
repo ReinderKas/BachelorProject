@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 import * as d3 from 'd3';
 import { GraphNode } from 'src/models/node';
@@ -6,7 +6,8 @@ import { GraphNode } from 'src/models/node';
 @Component({
   selector: 'app-interactive-graph',
   templateUrl: '../graph/graph.component.html',
-  styleUrls: ['../graph/graph.component.css']
+  styleUrls: ['../graph/graph.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class InteractiveGraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
@@ -69,12 +70,12 @@ export class InteractiveGraphComponent implements AfterViewInit {
   // Create and draw the new Graph.
   private createGraph(){          
     this.initRoot();
+    this.initZoom();
     this.initSVG(); 
     this.initNodes();
     this.initLinks();   
     this.initSimulation();
     this.initDrag();
-    this.initZoom();
   }
 
   // Initialize the root hierarchical object.
@@ -94,6 +95,9 @@ export class InteractiveGraphComponent implements AfterViewInit {
     this.svg =  d3.select(".graph")
                 .append("svg")
                 .attr("viewBox", [0, 0, this.width(), this.height()]);    
+                
+    this.svg.call(this.zoom);
+    this.svg = this.svg.append('g')
   }
 
   // Draw the Links between Nodes.
@@ -137,8 +141,6 @@ export class InteractiveGraphComponent implements AfterViewInit {
   private initZoom(){
     this.zoom = d3.zoom()
           .on('zoom', (e) => this.handleZoom(e));
-
-    this.svg.call(this.zoom);
   }
 
   //#endregion

@@ -6,22 +6,23 @@ import { GraphNode } from 'src/models/node';
 
 export class GraphDrawer{
     private fmGraph: FmGraphResult;
-    private root: d3.HierarchyPointNode<GraphNode>
-    private svg:  d3.Selection<SVGGElement, unknown, HTMLElement, any>
+
+    private root: any
+    private svg: any
 
     private pointNodeById: { [id: string] : d3.HierarchyPointNode<GraphNode> }
     
     constructor(
         fmGraph: FmGraphResult,
-        root: d3.HierarchyPointNode<GraphNode>,
-        svg:  d3.Selection<SVGGElement, unknown, HTMLElement, any>
+        root: any,
+        svg:  any
     ) {
         this.fmGraph = fmGraph;
         this.root = root;
         this.svg = svg
         this.pointNodeById = {};
 
-        this.root.descendants().forEach(node => {
+        this.root.descendants().forEach((node: d3.HierarchyPointNode<GraphNode>) => {
             if (node.id)
                 this.pointNodeById[node.id] = node;
         });
@@ -36,8 +37,8 @@ export class GraphDrawer{
         this.addCrossLinks()
         this.addTooltip()
         this.addLegend()
-    }
 
+    }
 
 
 
@@ -52,10 +53,10 @@ export class GraphDrawer{
             .append("g")
     
         // Assign correct class
-            .attr("class", d => "node" + (d.children ? " node--internal" : " node--leaf"))
+            .attr("class", (d: { children: any; }) => "node" + (d.children ? " node--internal" : " node--leaf"))
             
         // Assign correct position
-            .attr("transform", d => "translate(" + d.x + "," + d.y + ")")
+            .attr("transform", (d: { x: string; y: string; }) => "translate(" + d.x + "," + d.y + ")")
             
         // Adds the circle to the node 
         node.append("circle")
@@ -65,7 +66,7 @@ export class GraphDrawer{
         node.append("text")
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
-            .text(d => d.data.name);
+            .text((d: { data: { name: any; }; }) => d.data.name);
     }
     //#endregion
 
@@ -82,7 +83,7 @@ export class GraphDrawer{
                 .attr("class", "link")
                 
                 // Straight lines.
-                .attr("d", d => "M" + d.source.x + "," + d.source.y + 
+                .attr("d", (d: { source: { x: string; y: string; }; target: { x: string; y: string; }; }) => "M" + d.source.x + "," + d.source.y + 
                                 "L" + d.target.x + "," + d.target.y)
       }
 
@@ -96,23 +97,23 @@ export class GraphDrawer{
                                      .attr("class", "cross-hierarchy");
 
         // Render links of type1
-        crossHierarchy.filter((d) => d.relType === 4)
+        crossHierarchy.filter((d: { relType: number; }) => d.relType === 4)
                         .append("line")
                         .attr("class", "excludes")
-                        .attr("x1", (d) => this.pointNodeById[d.fromId].x)
-                        .attr("y1", (d) => this.pointNodeById[d.fromId].y)
-                        .attr("x2", (d) => this.pointNodeById[d.toId].x) 
-                        .attr("y2", (d) => this.pointNodeById[d.toId].y)
+                        .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                        .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
+                        .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x) 
+                        .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
                         .style("stroke", "red");
                                 
         // Render links of type1
-        crossHierarchy.filter((d) => d.relType === 5)
+        crossHierarchy.filter((d: { relType: number; }) => d.relType === 5)
                         .append("line")
                         .attr("class", "requires")
-                        .attr("x1", (d) => this.pointNodeById[d.fromId].x)
-                        .attr("y1", (d) => this.pointNodeById[d.fromId].y)
-                        .attr("x2", (d) => this.pointNodeById[d.toId].x)
-                        .attr("y2", (d) => this.pointNodeById[d.toId].y)
+                        .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                        .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
+                        .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x)
+                        .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
                         .style("stroke", "blue");
 
 

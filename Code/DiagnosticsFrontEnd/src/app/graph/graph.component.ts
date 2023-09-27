@@ -14,9 +14,10 @@ import { GraphDrawer } from './graphDrawer';
 export class GraphComponent implements AfterViewInit {
   @Input() fmGraph: FmGraphResult | null = null;
   @Input() componentSize: number = 500;
+  @Input() zoom: number = 100;
 
   private graphDrawer: GraphDrawer | null = null;
-  private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> | null = null;
+  private svg: any;
 
   // Dimensions / styling.
   private margin =  {top: 20, right: 90, bottom: 30, left: 90};
@@ -36,7 +37,6 @@ export class GraphComponent implements AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log("changes")
     this.clearGraph();
     this.adjustSize();
     this.createGraph();
@@ -45,6 +45,8 @@ export class GraphComponent implements AfterViewInit {
   
   // Rescale the element of the component to the given height and width.
   private adjustSize() {
+    console.log(this.componentSize)
+    this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
     this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
     this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
   }
@@ -52,37 +54,30 @@ export class GraphComponent implements AfterViewInit {
   // Remove the existing SVG from the graph div in this component.
   private clearGraph(){
     // Select and remove all D3 objects within the SVG container excepth the graph div container.
-    const svg2 = d3.select(this.el.nativeElement);
-        svg2.selectAll('*:not(.graph)').remove();
+    let graph = d3.select(this.el.nativeElement);
+    graph.selectAll('*:not(.graph)').remove();
         
     // Remove the Tooltip component
     d3.select(".tooltip")
       .remove()
   }
 
-
-
-
   private createGraph(){
     if (!this.fmGraph) return;
-
-    console.log("Creating Graph")
-
+    
     this.svg = d3.select('.graph')
                   .append('svg')
-                  .attr("viewBox", [0, 0, this.width(), this.height()]); 
-
+                  .attr("viewBox", [0, 0, this.width()*(this.zoom/100), this.height()*(this.zoom/100)])
+                  .append('g')
+                  .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+        
     // Create necessary data layouts.
     let tree = this.generateTree();
     let stratify = this.generateStratify();
     let root = tree(stratify(this.fmGraph.getGraphNodes()))
-
-    // Move the starting point from the edge.
-    let graphSvg = this.svg.append('g')
-                    .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
                     
     // Initialize Graph Drawer here since we want to assert that the FmGraph is initialized.
-    this.graphDrawer = new GraphDrawer(this.fmGraph, root, graphSvg);
+    this.graphDrawer = new GraphDrawer(this.fmGraph, root, this.svg);
               
     // Render the data.
     this.graphDrawer.renderGraph();

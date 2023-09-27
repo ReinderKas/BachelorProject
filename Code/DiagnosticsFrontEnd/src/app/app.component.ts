@@ -14,8 +14,10 @@ export class AppComponent {
   public proof: string = "";
   public fmGraph: FmGraphResult | null = null;
   public modelToDiagnose: string = ExampleModels.models[1];
-  public interactiveGraph: boolean = true;
+  public interactiveGraph: boolean = false;
+
   public componentSize = 500; // Initial component size value
+  public zoom = 100;
 
 
   constructor(

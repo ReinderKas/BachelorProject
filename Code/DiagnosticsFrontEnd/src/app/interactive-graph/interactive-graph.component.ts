@@ -50,6 +50,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
   
   // Rescale the element of the component to the given height and width.
   private adjustSize() {
+    this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
     this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
     this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
   }
@@ -57,8 +58,8 @@ export class InteractiveGraphComponent implements AfterViewInit {
   // Remove the existing SVG from the graph div in this component.
   private clearGraph(){
     // Select and remove all D3 objects within the SVG container excepth the graph div container.
-    const svg2 = d3.select(this.el.nativeElement);
-        svg2.selectAll('*:not(.graph)').remove();
+    const toClear = d3.select(this.el.nativeElement);
+    toClear.selectAll('*:not(.graph)').remove();
   }
 
 

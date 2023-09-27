@@ -36,10 +36,6 @@ export class InteractiveGraphComponent implements AfterViewInit {
       alert("No Feature Model data given to create a Graph for.")
       return;
     }
-
-    this.clearGraph();
-    this.adjustSize();
-    this.createGraph();
   }
   
   // Called when the 'componentSize' property changes (through binding from the parent/app component).
@@ -59,7 +55,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
 
   // Remove the existing SVG from the graph div in this component.
   private clearGraph(){
-    // Select and remove all D3 objects within the SVG container
+    // Select and remove all D3 objects within the SVG container excepth the graph div container.
     const svg2 = d3.select(this.el.nativeElement);
         svg2.selectAll('*:not(.graph)').remove();
   }
@@ -71,11 +67,11 @@ export class InteractiveGraphComponent implements AfterViewInit {
   // Create and draw the new Graph.
   private createGraph(){          
     this.initRoot();
-    this.initSVG();
-    this.initLinks();    
+    this.initSVG(); 
     this.initNodes();
+    this.initLinks();   
     this.initSimulation();
-    this.initDrag()
+    this.initDrag();
   }
 
   // Initialize the root hierarchical object.
@@ -99,6 +95,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
 
   // Draw the Links between Nodes.
   private initLinks(){
+    console.log(this.root.links())
     this.link = this.svg.selectAll(".link")
                     .data(this.root.links())
                     .join("line")
@@ -109,9 +106,9 @@ export class InteractiveGraphComponent implements AfterViewInit {
   private initNodes(){
     this.node = this.svg.selectAll(".node")
                     .data(this.root.descendants())
-                    .join("circle")
-                    .attr("r", 10)
                     .classed("node", true)
+                    .join("circle")
+                      .attr("r", 7)
                     .classed("fixed", (d: { x: undefined; }) => d.x !== undefined)
   }
 
@@ -120,7 +117,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
     this.simulation = d3.forceSimulation()
                         .nodes(this.root.descendants())
                         .force("charge", d3.forceManyBody())
-                        .force("center", d3.forceCenter(this.height()/2, this.width()/2))
+                        .force("center", d3.forceCenter(this.height()/2.5, this.width()/2.5))
                         .force("link", d3.forceLink(this.root.links()))
                         .on("tick", () => {this.tick()});
   }
@@ -131,11 +128,10 @@ export class InteractiveGraphComponent implements AfterViewInit {
                   .on("start", () => this.dragstart())
                   .on("drag", (event: any, d: any) => this.dragged(event, d));
 
-    this.node.call(this.drag).on("click", (event: any, d: { fx: any; fy: any; }) => this.click(event, d));
+    this.node.call(this.drag).on("click", (d: { fx: any; fy: any; }) => this.click(d));
   }
 
   //#endregion
-
 
   // #region Data Layouts
 
@@ -166,7 +162,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
   //#endregion
 
 
-  // #region Drag behavior  
+  // #region Simulation / Drag / Zoom behavior functions  
 
   private tick(){
     this.link
@@ -179,7 +175,7 @@ export class InteractiveGraphComponent implements AfterViewInit {
       .attr("cy", (d: { y: any; }) => d.y);
   }
 
-  private click(this: any, event: any, d: { fx: any; fy: any; }){
+  private click(this: any, d: { fx: any; fy: any; }){
       delete d.fx;
       delete d.fy;
       d3.select(this).classed("fixed", false);

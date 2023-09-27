@@ -33,34 +33,40 @@ export class GraphComponent implements AfterViewInit {
       alert("No Feature Model data given to create a Graph for.")
       return;
     }
-
-    this.createGraph();
   }
 
   ngOnChanges() {
+    console.log("changes")
     this.clearGraph();
     this.adjustSize();
     this.createGraph();
   }
   
-  private clearGraph(){
-    // Remove the Graph
-    d3.select(".graph#svg")
-      .remove()
-
-    // Remove the Tooltip component
-    d3.select(".tooltip")
-      .remove()
-  }
-
+  
   // Rescale the element of the component to the given height and width.
   private adjustSize() {
     this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
     this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
   }
 
+  // Remove the existing SVG from the graph div in this component.
+  private clearGraph(){
+    // Select and remove all D3 objects within the SVG container excepth the graph div container.
+    const svg2 = d3.select(this.el.nativeElement);
+        svg2.selectAll('*:not(.graph)').remove();
+        
+    // Remove the Tooltip component
+    d3.select(".tooltip")
+      .remove()
+  }
+
+
+
+
   private createGraph(){
     if (!this.fmGraph) return;
+
+    console.log("Creating Graph")
 
     this.svg = d3.select('.graph')
                   .append('svg')

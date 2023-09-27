@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ExampleModels } from 'src/models/exampleModels';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 
@@ -18,6 +18,10 @@ export class AppComponent {
   public componentSize = 500; // Initial component size value
 
 
+  constructor(
+    private changeDetector : ChangeDetectorRef
+  ) {}
+
   public resetVariables(){
     this.proof = "";
     this.fmGraph = null;
@@ -33,6 +37,7 @@ export class AppComponent {
 
   public toggleGraph(){
     this.interactiveGraph = !this.interactiveGraph
+    this.changeDetector.detectChanges()  
   }
 
   public proveModel(){

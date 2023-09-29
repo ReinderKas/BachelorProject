@@ -47,6 +47,8 @@ export class GraphComponent extends AbstractGraphComponent {
           .attr("dy", ".35em")
           .style("text-anchor", "middle")
           .text((d: { data: { name: any; }; }) => d.data.name);
+          
+    console.log(this.node)
   }
 
   //#endregion

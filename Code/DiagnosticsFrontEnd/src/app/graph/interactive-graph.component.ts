@@ -41,9 +41,6 @@ export class InteractiveGraphComponent extends AbstractGraphComponent {
                       .attr("class", (d: any) => this.getNodeClass(d))
                       .attr("r", this.nodeSize/2)
                       .classed("fixed", (d: { x: undefined; }) => d.x !== undefined)
-                    .join("text")
-                      .attr("dy", ".35em")
-                      .text((d: { data: { name: any; }; }) => d.data.name);
   }
 
   

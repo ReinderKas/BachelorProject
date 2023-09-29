@@ -17,7 +17,7 @@ export class AppComponent {
   public interactiveGraph: boolean = false;
 
   public componentSize = 500; // Initial component size value
-  public nodeSize = 5;
+  public nodeSize = 15;
 
 
   constructor(

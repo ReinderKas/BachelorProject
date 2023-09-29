@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@ang
 import * as d3 from 'd3';
 import { AbstractGraphComponent } from './abstractGraph.component';
 import { FmGraphResult } from 'src/models/fmGraphResult';
+import { GraphNode } from 'src/models/node';
 
 @Component({
   selector: 'app-interactive-graph',
@@ -13,7 +14,8 @@ import { FmGraphResult } from 'src/models/fmGraphResult';
 export class InteractiveGraphComponent extends AbstractGraphComponent {
     @Input() fmGraph: FmGraphResult | null = null;
     @Input() componentSize: number = 500;
-  
+    @Input() nodeSize: number = 10;
+    
   constructor(
         protected override el: ElementRef, 
         protected override renderer: Renderer2
@@ -31,14 +33,20 @@ export class InteractiveGraphComponent extends AbstractGraphComponent {
   //#region Draw the Nodes  
 
   // Draw the Nodes on the Graph SVG.
-  protected initNodes(){
+  protected initNodes(){    
     this.node = this.svg.selectAll(".node")
                     .data(this.root.descendants())
                     .classed("node", true)
                     .join("circle")
-                      .attr("r", 7)
-                    .classed("fixed", (d: { x: undefined; }) => d.x !== undefined)
+                      .attr("class", (d: any) => this.getNodeClass(d))
+                      .attr("r", this.nodeSize/2)
+                      .classed("fixed", (d: { x: undefined; }) => d.x !== undefined)
+                    .join("text")
+                      .attr("dy", ".35em")
+                      .text((d: { data: { name: any; }; }) => d.data.name);
   }
+
+  
 
   //#endregion
 
@@ -46,10 +54,10 @@ export class InteractiveGraphComponent extends AbstractGraphComponent {
 
   // Draw the Links between Nodes.
   protected initLinks(){
-    this.link = this.svg.selectAll(".link")
+    this.link = this.svg.selectAll(".edge")
                     .data(this.root.links())
                     .join("line")
-                    .classed("link", true)
+                    .attr("class", "edge")
   }
   
   protected override initCrossLinks() {
@@ -98,7 +106,7 @@ export class InteractiveGraphComponent extends AbstractGraphComponent {
       delete d.fx;
       delete d.fy;
       d3.select(this).classed("fixed", false);
-      this.simulation.alpha(1).restart();
+      this.simulation.alpha(0.1).restart();
   }
 
 
@@ -109,7 +117,7 @@ export class InteractiveGraphComponent extends AbstractGraphComponent {
   private dragged(this: any, event: { x: any; y: any; }, d: { fx: any; fy: any; }) {
       d.fx = this.clamp(event.x, 0, this.width);
       d.fy = this.clamp(event.y, 0, this.height);
-      this.simulation.alpha(1).restart();
+      this.simulation.alpha(0.1).restart();
   }
 
   private clamp(x: number, lo: number, hi: number) {

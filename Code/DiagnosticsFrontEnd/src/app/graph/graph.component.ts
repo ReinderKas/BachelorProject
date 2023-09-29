@@ -1,6 +1,9 @@
 import { Component, ViewEncapsulation, Input, ElementRef, Renderer2 } from '@angular/core';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 import { AbstractGraphComponent } from './abstractGraph.component';
+import { HierarchyPointNode } from 'd3-hierarchy';
+import { GraphNode } from 'src/models/node';
+import { GraphEdge } from 'src/models/edge';
 
 @Component({
   selector: 'app-graph',
@@ -12,6 +15,7 @@ import { AbstractGraphComponent } from './abstractGraph.component';
 export class GraphComponent extends AbstractGraphComponent {
   @Input() fmGraph: FmGraphResult | null = null;
   @Input() componentSize: number = 500;
+  @Input() nodeSize: number = 10;
 
   constructor(
     protected override el: ElementRef, 
@@ -29,15 +33,14 @@ export class GraphComponent extends AbstractGraphComponent {
           .enter()
           .append("g")
 
-      // Assign correct class
-          .attr("class", (d: { children: any; }) => "node" + (d.children ? " node--internal" : " node--leaf"))
           
       // Assign correct position
           .attr("transform", (d: { x: string; y: string; }) => "translate(" + d.x + "," + d.y + ")")
           
       // Adds the circle to the node 
       this.node.append("circle")
-          .attr("r", 15)
+          .attr("r", this.nodeSize)
+          .attr("class", (d: HierarchyPointNode<GraphNode>) => this.getNodeClass(d))
           
       // Add text to the node.
       this.node.append("text")
@@ -57,7 +60,10 @@ export class GraphComponent extends AbstractGraphComponent {
                         .data(this.root.links())
                         .enter()
                         .append("path")
-                        .attr("class", "link")
+
+                        // Not a graph Node. It's a link
+                        .attr("class", "edge")
+
                         
                         // Straight lines.
                         .attr("d", (d: { source: { x: string; y: string; }; target: { x: string; y: string; }; }) => "M" + d.source.x + "," + d.source.y + 
@@ -73,27 +79,23 @@ export class GraphComponent extends AbstractGraphComponent {
                                   .data(this.fmGraph.getEdgesCrossTree())
                                   .enter()
                                   .append("g")
-                                  .attr("class", "cross-hierarchy");
+                                  .attr("class", (rel: GraphEdge) => this.getCrossRelationshipClass(rel));
 
     // Render links of type1
     this.crossLink.filter((d: { relType: number; }) => d.relType === 4)
                     .append("line")
-                    .attr("class", "excludes")
                     .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
                     .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
                     .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x) 
                     .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
-                    .style("stroke", "red");
                             
     // Render links of type1
     this.crossLink.filter((d: { relType: number; }) => d.relType === 5)
                     .append("line")
-                    .attr("class", "requires")
                     .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
                     .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
                     .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x)
                     .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
-                    .style("stroke", "blue");
 
     // Cross-tree constraints visualization
     this.svg.selectAll(".constraint")

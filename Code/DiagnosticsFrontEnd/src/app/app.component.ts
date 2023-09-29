@@ -11,13 +11,13 @@ import { FmGraphResult } from 'src/models/fmGraphResult';
 export class AppComponent {
   title = 'Z3 Theorem Prover';
 
-  public proof: string = "";
-  public fmGraph: FmGraphResult | null = null;
+  protected proof: string = "";
+  protected fmGraph: FmGraphResult | null = null;
   public modelToDiagnose: string = ExampleModels.models[1];
   public interactiveGraph: boolean = false;
 
   public componentSize = 500; // Initial component size value
-  public zoom = 100;
+  public nodeSize = 5;
 
 
   constructor(

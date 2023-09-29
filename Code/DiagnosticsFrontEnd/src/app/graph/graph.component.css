@@ -3,53 +3,78 @@
     height: 400px;
 }
 
+
+.graph svg {
+  width:100%;
+  height:100%;
+}
+
 .graph {
     width: 100%;
     height: 100%;
 }
 
-.center {
-  margin: auto;
-  width: 50%;
-  border: 3px solid green;
-  padding: 10px;
-}
-
-.node circle {
-    fill: #c8e8e7;
-    stroke: steelblue;
-    stroke-width: 3px;
-  }
-
-.node rect {
-  fill: #c8e8e7;
-  stroke: steelblue;
+.node {
   stroke-width: 3px;
+  fill-opacity: .75;
 }
+
+.node-root{
+  stroke: red;
+  fill: red;
+}
+.node-mandatory{
+  stroke: orange;
+  fill: orange;
+}
+.node-optional{
+  stroke: green;
+  fill: green;
+}
+.node-alternative{
+  stroke: blue;
+  fill: blue;
+}
+.node-or{
+  stroke: turquoise;
+  fill: turquoise;
+}
+
+
+
 
 .node text {
     font: 12px sans-serif;
-  }
-
-.link {
-    fill: none;
-    stroke: #000;
-    stroke-width: 1px;
-  }
-
-.label{
-  padding-top: 1000px;
+    text-anchor: "middle";
 }
 
-.excludes{
-  stroke:solid;
+
+
+
+
+.edge {
+  fill: none;
+  stroke-width: 1px;
+  stroke: solid;
+  stroke: black;
 }
 
-.requires{
+.edge-excludes{
+  stroke: red;
+}
+
+.edge-requires{
+  stroke: blue;
   stroke-dasharray: 5,5; 
 }
 
 
+
+
+
+.label{
+  padding-top: 1000px;
+}
 
 .tooltip {
     position: absolute;
@@ -59,10 +84,4 @@
     border-radius: 5px;
     pointer-events: none;
     opacity: 0;  /* initially hidden */
-}
-
-
-.graph svg {
-  width:100%;
-  height:100%;
 }

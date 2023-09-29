@@ -2,11 +2,13 @@ import {  Input, AfterViewInit, ElementRef, Renderer2, Injectable } from '@angul
 import { FmGraphResult } from 'src/models/fmGraphResult';
 import * as d3 from 'd3';
 import { GraphNode } from 'src/models/node';
+import { GraphEdge } from 'src/models/edge';
 
 @Injectable()
 export abstract class AbstractGraphComponent implements AfterViewInit {
     @Input() abstract fmGraph: FmGraphResult | null;
     @Input() abstract componentSize: number;
+    @Input() abstract nodeSize: number;
     
   
     protected root: any;
@@ -19,7 +21,9 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
     protected zoom: any;
     protected legend: any;
     protected simulation : any;
+
     protected pointNodeById: any = {};
+    protected parentRelationshipByChildNodeId: any = {};
   
     // // Dimensions / styling.
     protected margin =  {top: 20, right: 90, bottom: 30, left: 90};
@@ -86,12 +90,23 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
             return d3.stratify<GraphNode>();
         }
 
+        // THESIS: Since we have the hierarchy here, initialize the parentRelationshipDictionary. 
+        // This will save time initializing the stratify as well.
         let edgesHierarchy = this.fmGraph.getEdgesHierarchy();
+
+        edgesHierarchy.forEach(edge => {
+            this.parentRelationshipByChildNodeId[edge.toId] = edge;
+        })
+
+
+
         return d3.stratify<GraphNode>()
                     .id(d => d.id)
                     .parentId(d => {
-                    let edge = edgesHierarchy.find(e => e.toId.includes(d.id));
-                    return edge ? edge.fromId : null;
+                        if (!(d.id in this.parentRelationshipByChildNodeId))
+                            return null
+
+                        return this.parentRelationshipByChildNodeId[d.id].fromId
                     })
     }
 
@@ -117,7 +132,62 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
     protected abstract initLinks(): any;        // Draw the Hierarchical Links.
     protected abstract initCrossLinks(): any;   // Draw the Cross-Hierarchical Links.
     
+    protected getNodeClass(d: d3.HierarchyPointNode<GraphNode>){
+        if (!d.id){
+          alert("Node ID is null. Check how we got here.")
+          return;
+        }
+    
+        if (!(d.id in this.parentRelationshipByChildNodeId))
+          return "node node-root";
+    
+        switch(this.parentRelationshipByChildNodeId[d.id].relType){
+          case 0: return "node node-mandatory"
+          case 1: return "node node-optional"
+          case 2: return "node node-alternative"
+          case 3: return "node node-or"
+          default:
+            alert("This Relationship type should not be present in the dictionary!")
+            return "BROKEN"
+        }
+      }
 
+      protected getCrossRelationshipClass(edge: GraphEdge){
+        if (!edge.relType){
+            console.log(edge)
+            return; // root?
+        }
+    
+        switch(edge.relType){
+            case 4: return "edge edge-excludes"
+            case 5: return "edge edge-requires"
+            default:
+                alert("This Relationship type should not be present in the dictionary!: " + edge.relType)
+                return "BROKEN"
+        }
+      }
+
+      protected getHierarchyRelationshipClass(link: {source:any, target: any}){
+
+        if (!link.source || !link.target){        
+            alert("Floating Relationship?")
+            return "BROKEN";
+        }
+
+        if (!(link.target.id in this.parentRelationshipByChildNodeId))
+            return "Root";
+        
+        switch(this.parentRelationshipByChildNodeId[link.target.id].relType){
+            case 0: return "edge edge-mandatory"
+            case 1: return "edge edge-optional"
+            case 2: return "edge edge-alternative"
+            case 3: return "edge edge-or"
+            default:
+                alert("This Relationship type should not be present in the dictionary!: " + this.parentRelationshipByChildNodeId[link.target.id].relType)
+                return "BROKEN"
+        }
+
+      }
 
     // Initialize the d3 root hierarchical object.
     protected initRoot(){

@@ -77,14 +77,24 @@
         <!-- Component size -->
         <mat-list style="display: flex;" >  
           <mat-list-item class="card ">
-              <label class="componentSizeText" for="component-size-slider">Component Size:</label>
+            <label class="sliderText" for="component-size-slider">Component Size:</label>
+            <input
+              type="range"
+              id="component-size-slider"
+              [(ngModel)]="componentSize"
+              min="500"
+              max="1500"
+              step="10"
+            />
+            
+            <label class="sliderText" for="node-size-slider">Node Size:</label>
                 <input
                   type="range"
-                  id="component-size-slider"
-                  [(ngModel)]="componentSize"
-                  min="500"
-                  max="1500"
-                  step="10"
+                  id="node-size-slider"
+                  [(ngModel)]="nodeSize"
+                  min="1"
+                  max="100"
+                  step="1"
                 />
             </mat-list-item>
             
@@ -102,11 +112,19 @@
     <div *ngIf="fmGraph != null" style="white-space:pre-wrap;">
       <mat-card>
         <mat-card-content *ngIf="interactiveGraph">
-          <app-interactive-graph [componentSize]="componentSize" [fmGraph]="fmGraph"></app-interactive-graph>
+          <app-interactive-graph 
+            [componentSize]="componentSize" 
+            [nodeSize]="nodeSize"
+            [fmGraph]="fmGraph">
+          </app-interactive-graph>
         </mat-card-content>
         
         <mat-card-content *ngIf="!interactiveGraph">
-          <app-graph [componentSize]="componentSize" [fmGraph]="fmGraph"></app-graph>
+          <app-graph 
+            [componentSize]="componentSize" 
+            [nodeSize]="nodeSize"
+            [fmGraph]="fmGraph">
+          </app-graph>
         </mat-card-content>
       </mat-card>
     </div>

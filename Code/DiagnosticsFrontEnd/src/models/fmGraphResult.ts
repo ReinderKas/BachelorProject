@@ -60,6 +60,8 @@ export class FmGraphResult{
 
         return result;
     }
+
+    
     public getEdgesCrossTree(){
         let result: GraphEdge[] = new Array();
 

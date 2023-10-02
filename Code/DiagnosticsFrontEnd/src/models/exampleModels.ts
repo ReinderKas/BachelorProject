@@ -41,6 +41,30 @@ export class ExampleModels {
           + "\n"
           + "    [alt12] - alternative -> [alt121] \n"
           + "    [alt12] - alternative -> [alt122] \n"
+          + "}",
+
+          
+          "model [root] { \n"
+          + "    [root] - mandatory -> [mandatory1] \n"
+          + "    [root] - mandatory -> [mandatory2] \n"
+          + "    [root] - alternative -> [alt1] \n"
+          + "    [root] - alternative -> [alt2] \n"
+          + "\n"
+          + "    [alt1] - alternative -> [alt11] \n"
+          + "    [alt1] - alternative -> [alt12] \n"
+          + "    [alt1] - alternative -> [alt13] \n"
+          + "    [alt1] - alternative -> [alt14] \n"
+          + "\n"
+          + "    [alt2] - alternative -> [alt21] \n"
+          + "    [alt2] - alternative -> [alt22] \n"
+          + "    [alt2] - alternative -> [alt23] \n"
+          + "    [alt2] - alternative -> [alt24] \n"
+          + "\n"
+          + "    [alt12] - alternative -> [alt121] \n"
+          + "    [alt12] - alternative -> [alt122] \n"
+          + "\n"
+          + "    [alt2] - requires-> [alt1]  \n"
+          + "    [alt1] - requires-> [alt2]  \n"
           + "}"
       ];
 }

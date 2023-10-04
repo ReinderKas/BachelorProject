@@ -8,7 +8,9 @@ namespace Z3Parser
         public string ModelString;
         public Z3Solver ModelSolver;
         public bool HasSolution;
-        public Expr Proof;
+
+        public Expr Proof() => ModelSolver.Proof;
+        public Expr[] UnsatCore() => ModelSolver.UnsatCore;
 
 
         public DiagnosticsParser(string modelString)
@@ -27,19 +29,26 @@ namespace Z3Parser
             Console.Write($"{ModelString}\n\n");
             Console.ResetColor();
 
-
             HasSolution = ModelSolver.Solve();
-
-            if (!HasSolution)
-                Proof = ModelSolver.Proof;
         }
 
 
         public void PrintProof()
         {
-            PrintVariablesInProof(Proof);
-            PrintArguments(Proof);
-            Console.WriteLine("\n\n\n");
+            PrintUnsatCore();
+            //PrintVariablesInProof(Proof());
+            //PrintArguments(Proof());
+            //Console.WriteLine("\n\n\n");
+        }
+
+        private void PrintUnsatCore()
+        {
+            Console.WriteLine($"Printing unsat core: {UnsatCore().Count()}");
+            foreach(var coreExpr in UnsatCore())
+            {
+                Console.WriteLine(coreExpr.ToString());
+            }
+            Console.WriteLine($"\n\n\n");
         }
 
         private void PrintVariablesInProof(Expr proof)

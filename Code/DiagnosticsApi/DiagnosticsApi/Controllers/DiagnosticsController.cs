@@ -24,8 +24,6 @@ namespace DiagnosticsApi.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<string>> GetProof([FromBody] string model = null)
         {
-            Console.WriteLine("Model: \n" + model);
-
             if (model == null)
                 return BadRequest("No model provided!");
 
@@ -36,7 +34,7 @@ namespace DiagnosticsApi.Controllers
             {
                 solver.PrintProof();
 
-                var result = solver.Proof.ToString();
+                var result = solver.Proof().ToString();
 
                 return Ok(result);
             }

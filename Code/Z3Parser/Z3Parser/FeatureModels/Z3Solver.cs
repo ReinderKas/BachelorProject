@@ -33,35 +33,58 @@ namespace Z3Parser.FeatureModels
         public ArcherVariableStore ArcherVariableStore;
 
         public Expr Proof;
+        public Expr[] UnsatCore;
 
+        public HashSet<BoolExpr> Z3Constraints;
 
         public Z3Solver()
         {
             Z3Context = new Context(new Dictionary<string, string>
                         {
-                            { "unsat_core", "false" },  // enable generation of unsat cores
+                            { "unsat_core", "true" },  // enable generation of unsat cores
                             { "model", "true" },        // enable model generation
                             { "proof", "true" },        // enable proof generation
                             { "timeout", "60000" },     // set timout for solving
                         });
 
             ArcherVariableStore = new(this);
+            Z3Constraints = new();
 
             /*  Elfsquad uses Expressions.
              *  These are Language Specific to the company.
              *  It's easiest to create all this without the Expressions first!.
              */
-
-            // InitializeZ3ExpressionBuilder();
         }
 
         public bool Solve()
         {
+            int counter = 0;
+
+            foreach(var constraint in Z3Constraints)
+            {
+                try
+                {
+                    counter++;
+                    Console.WriteLine($"({counter}/{Z3Constraints.Count()}) {constraint}");
+                    Solver.AssertAndTrack(constraint, constraint);
+                }
+                catch (Z3Exception ex) 
+                {
+                    Console.WriteLine($"(Z3) Something went wrong for {constraint}: {ex.Message}");
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine($"Something went wrong for {constraint}: {ex.Message}");
+                }
+            }
+
             var solution = Solver.Check();
             if (solution == Status.SATISFIABLE)
                 return true;
 
             Proof = Solver.Proof;
+            UnsatCore = Solver.UnsatCore;
+
             return false;
         }
 
@@ -77,7 +100,6 @@ namespace Z3Parser.FeatureModels
         public void InitializeZ3Solver()
         {
             InitializeSolvers();
-
             InitializeVariables();
             InitializeConstraints();
             InitializeRequirements();
@@ -94,7 +116,7 @@ namespace Z3Parser.FeatureModels
 
             var root = ArcherVariableStore.GetExpression(SelectedProperty(FmGraph.GetRoot())) as BoolExpr;
 
-            Solver.Add(
+            Z3Constraints.Add(
                 Z3Context.MkEq(root, Z3Context.MkTrue()) 
                 );
         }
@@ -143,7 +165,7 @@ namespace Z3Parser.FeatureModels
                 children.Add(childExpr);
             }
 
-            Solver.Add(
+            Z3Constraints.Add(
                 relationship switch
                 {
                     AlternativeFeatureModelConstraint => Alternative(parent, children.ToArray()),
@@ -157,7 +179,7 @@ namespace Z3Parser.FeatureModels
             var parent = ArcherVariableStore.GetExpression(SelectedProperty(relationship.FromNode)) as BoolExpr;
             var child = ArcherVariableStore.GetExpression(SelectedProperty(relationship.ToNodes().First())) as BoolExpr;
 
-            Solver.Add(
+            Z3Constraints.Add(
                 relationship switch
                 {
                     OptionalFeatureModelConstraint => Optional(parent, child),

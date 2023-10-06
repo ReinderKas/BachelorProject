@@ -1,4 +1,5 @@
 ﻿using Microsoft.Z3;
+using System.Diagnostics.Contracts;
 using Z3Parser.FeatureModels;
 
 namespace Z3Parser
@@ -8,7 +9,10 @@ namespace Z3Parser
         public string ModelString;
         public Z3Solver ModelSolver;
         public bool HasSolution;
-        public Expr Proof;
+
+        public Expr Proof() => ModelSolver.Proof;
+        public Expr[] UnsatCore() => ModelSolver.UnsatCore;
+        public Expr[] UnsatCoreArguments() => ModelSolver.UnsatCore.SelectMany(c => c.Args).Distinct().ToArray();
 
 
         public DiagnosticsParser(string modelString)
@@ -27,22 +31,28 @@ namespace Z3Parser
             Console.Write($"{ModelString}\n\n");
             Console.ResetColor();
 
-
             HasSolution = ModelSolver.Solve();
-
-            if (!HasSolution)
-                Proof = ModelSolver.Proof;
         }
 
 
         public void PrintProof()
         {
-            PrintVariablesInProof(Proof);
-            PrintArguments(Proof);
+            PrintVariablesInProof(Proof());
+            PrintArguments(Proof());
             Console.WriteLine("\n\n\n");
         }
 
-        private void PrintVariablesInProof(Expr proof)
+        public void PrintUnsatCore()
+        {
+            Console.WriteLine($"Printing unsat core: {UnsatCore().Count()}");
+            foreach(var coreExpr in UnsatCore())
+            {
+                Console.WriteLine(coreExpr.ToString());
+            }
+            Console.WriteLine($"\n\n\n");
+        }
+
+        public void PrintVariablesInProof(Expr proof)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Arguments in proof.");

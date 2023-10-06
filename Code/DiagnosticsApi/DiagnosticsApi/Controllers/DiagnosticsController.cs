@@ -2,6 +2,8 @@
 using Elfskot.Core.Masterdata.FeatureModels.Translator;
 using Elfsquad.Core.Archer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Z3;
 using Z3Parser;
 
 namespace DiagnosticsApi.Controllers
@@ -24,8 +26,6 @@ namespace DiagnosticsApi.Controllers
         [ProducesResponseType(500)]
         public async Task<ActionResult<string>> GetProof([FromBody] string model = null)
         {
-            Console.WriteLine("Model: \n" + model);
-
             if (model == null)
                 return BadRequest("No model provided!");
 
@@ -36,12 +36,43 @@ namespace DiagnosticsApi.Controllers
             {
                 solver.PrintProof();
 
-                var result = solver.Proof.ToString();
+                var result = solver.Proof().ToString();
 
                 return Ok(result);
             }
 
-            return NotFound($"No proof found for the model \n\n{model}");
+            return NotFound($"The model seems satisfiable.");
+        }
+
+
+        [HttpPut("unsatCore")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<UnsatCoreResult>> GetUnsatCore([FromBody] string model = null)
+        {
+            if (model == null)
+                return BadRequest("No model provided!");
+
+            var solver = new DiagnosticsParser(model);
+            solver.ProveModel();
+
+            // Doesn't work for solveable model?
+            if (!solver.HasSolution)
+            {
+                solver.PrintProof();
+
+                // TODO: Make class, not string
+                var result = new UnsatCoreResult(solver.UnsatCore(),
+                                                solver.UnsatCoreArguments(),
+                                                Array.Empty<ConstraintResult>());
+
+                return Ok(result);
+            }
+
+            return NotFound(new UnsatCoreResult(Array.Empty<Expr>(),
+                                                Array.Empty<Expr>(),
+                                                Array.Empty<ConstraintResult>()));
         }
 
         [HttpPut("featureModel")]

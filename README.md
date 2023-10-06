@@ -2,9 +2,9 @@
 
 ## Tasks to do
 [Thesis paper (Overleaf)](https://www.overleaf.com/project/63ec92e134a27342e8a123d5) <br>
-[Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap)
-https://github.com/ekuiter/feature-model-viz
-https://observablehq.com/@d3/tree
+[Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap) <br>
+https://github.com/ekuiter/feature-model-viz <br>
+https://observablehq.com/@d3/tree <br>
 
 
 &nbsp;

@@ -1,8 +1,9 @@
-import { Component, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
-import * as d3 from 'd3';
+import { Component, ViewEncapsulation, Input, ElementRef, Renderer2 } from '@angular/core';
 import { FmGraphResult } from 'src/models/fmGraphResult';
+import { AbstractGraphComponent } from './abstractGraph.component';
+import { HierarchyPointNode } from 'd3-hierarchy';
 import { GraphNode } from 'src/models/node';
-import { GraphDrawer } from './graphDrawer';
+import { GraphEdge } from 'src/models/edge';
 
 @Component({
   selector: 'app-graph',
@@ -11,79 +12,103 @@ import { GraphDrawer } from './graphDrawer';
   encapsulation: ViewEncapsulation.None
 })
 
-export class GraphComponent implements AfterViewInit {
+export class GraphComponent extends AbstractGraphComponent {
   @Input() fmGraph: FmGraphResult | null = null;
+  @Input() componentSize: number = 500;
+  @Input() nodeSize: number = 10;
 
-  private graphDrawer: GraphDrawer | null = null;
-  private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> | null = null;
-
-  // Dimensions / styling.
-  private margin =  {top: 20, right: 90, bottom: 30, left: 90};
-  private width = 700 - this.margin.left - this.margin.right;
-  private height = 700 - this.margin.top - this.margin.bottom;
-
-  constructor() {}
-
-  ngAfterViewInit() {
-    if (!this.fmGraph){
-      alert("No Feature Model data given to create a Graph for.")
-      return;
-    }
-
-    this.svg = d3.select('.graph')
-                  .append('svg')
-                  .attr('width', this.width)
-                  .attr('height', this.height);
-
-    this.createGraph();
+  constructor(
+    protected override el: ElementRef, 
+    protected override renderer: Renderer2
+  ) {
+    super(el, renderer)
   }
 
-  createGraph(){
-    if (!this.fmGraph || !this.svg) return;
+  //#region Draw the Nodes
+  // Visualize the Nodes.
+  protected initNodes(){
+      // Add each node as a group.
+      this.node = this.svg.selectAll(".node")
+          .data(this.root.descendants())
+          .enter()
+          .append("g")
 
-    // Create necessary data layouts.
-    let tree = this.generateTree();
-    let stratify = this.generateStratify();
-    let root = tree(stratify(this.fmGraph.getGraphNodes()))
-
-    // Move the starting point from the edge.
-    let graphSvg = this.svg.append('g')
-                    .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
-                    
-    // Initialize Graph Drawer here since we want to assert that the FmGraph is initialized.
-    this.graphDrawer = new GraphDrawer(this.fmGraph, root, graphSvg);
-              
-    // Render the data.
-    this.graphDrawer.renderGraph();
+          
+      // Assign correct position
+          .attr("transform", (d: { x: string; y: string; }) => "translate(" + d.x + "," + d.y + ")")
+          
+      // Adds the circle to the node 
+      this.node.append("circle")
+          .attr("r", this.nodeSize)
+          .attr("class", (d: HierarchyPointNode<GraphNode>) => this.getNodeClass(d))
+          
+      // Add text to the node.
+      this.node.append("text")
+          .attr("dy", ".35em")
+          .style("text-anchor", "middle")
+          .text((d: { data: { name: any; }; }) => d.data.name);
+          
+    console.log(this.node)
   }
 
+  //#endregion
 
 
-  //#region Data Layouts
+  //#region Draw the Constraints
 
-  // Create a tree layout.
-  private generateTree(){
-    return d3.tree<GraphNode>().size([
-      this.width - this.margin.left - this.margin.right,
-      this.height - this.margin.top - this.margin.bottom
-    ])
+  protected initLinks(){
+    // Add links between the nodes.
+    this.link = this.svg.selectAll(".link")
+                        .data(this.root.links())
+                        .enter()
+                        .append("path")
+
+                        // Not a graph Node. It's a link
+                        .attr("class", "edge")
+
+                        
+                        // Straight lines.
+                        .attr("d", (d: { source: { x: string; y: string; }; target: { x: string; y: string; }; }) => "M" + d.source.x + "," + d.source.y + 
+                                        "L" + d.target.x + "," + d.target.y)
   }
 
+    
 
-  // Create a stratify layout.
-  private generateStratify(){
-    if (!this.fmGraph){
-      alert("Feature Model Graph undefined when generating Stratify hierarchy.");
-      return d3.stratify<GraphNode>();
-    }
+  protected initCrossLinks(){
+    if (!this.fmGraph) return;
 
-    let edgesHierarchy = this.fmGraph.getEdgesHierarchy();
-    return d3.stratify<GraphNode>()
-                .id(d => d.id)
-                .parentId(d => {
-                  let edge = edgesHierarchy.find(e => e.toId.includes(d.id));
-                  return edge ? edge.fromId : null;
-                })
+    this.crossLink = this.svg.selectAll(".cross-hierarchy")
+                                  .data(this.fmGraph.getEdgesCrossTree())
+                                  .enter()
+                                  .append("g")
+                                  .attr("class", (rel: GraphEdge) => this.getCrossRelationshipClass(rel));
+
+    // Render links of type1
+    this.crossLink.filter((d: { relType: number; }) => d.relType === 4)
+                    .append("line")
+                    .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                    .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
+                    .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x) 
+                    .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
+                            
+    // Render links of type1
+    this.crossLink.filter((d: { relType: number; }) => d.relType === 5)
+                    .append("line")
+                    .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                    .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
+                    .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x)
+                    .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
+
+    // Cross-tree constraints visualization
+    this.svg.selectAll(".constraint")
+            .data(this.fmGraph.getEdgesCrossTree())
+            .enter()
+            .append("line")
+            .attr("class", "constraint")
+            .style("stroke", "red")  // Cross-tree constraints in red for emphasis
+            .style("stroke-dasharray", ("3, 3"))  // Dashed line for cross-tree constraints
+            .attr("marker-end", "url(#end)");  // Arrow marker
   }
+
   //#endregion
 }

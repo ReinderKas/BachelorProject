@@ -1,0 +1,24 @@
+<div class="proof" style="padding: 10px; border:1px solid black;border-radius: 5px;">
+    <div *ngIf="unsatisfiableCore.nodes.length == 0 && unsatisfiableCore.unsatisfiableCore.length == 0">
+        <p>The model seems satisfiable!</p>
+    </div>
+    
+    <div *ngIf="unsatisfiableCore.nodes.length > 0 && unsatisfiableCore.unsatisfiableCore.length > 0">
+        <div *ngIf="unsatisfiableCore.nodes">
+            <h2>Nodes in Core:</h2>
+        </div>
+        <div *ngFor="let node of unsatisfiableCore.nodes">
+            {{node.name}}
+        </div>
+    
+        <br>
+        <br>
+        <div *ngIf="unsatisfiableCore.unsatisfiableCore">
+            <h2>Constraints in Core:</h2>
+        </div>
+    
+        <div *ngFor="let expression of unsatisfiableCore.unsatisfiableCore">
+            {{expression}}
+        </div>
+    </div>
+</div>

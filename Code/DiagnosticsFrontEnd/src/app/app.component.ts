@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ExampleModels } from 'src/models/exampleModels';
 import { FmGraphResult } from 'src/models/fmGraphResult';
+import { UnsatCoreResult } from 'src/models/unsatCoreResult';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +12,24 @@ import { FmGraphResult } from 'src/models/fmGraphResult';
 export class AppComponent {
   title = 'Z3 Theorem Prover';
 
-  public proof: string = "";
-  public fmGraph: FmGraphResult | null = null;
+  protected proof: string = "";
+  protected unsatisfiableCore: UnsatCoreResult | null = null;
+  protected fmGraph: FmGraphResult | null = null;
   public modelToDiagnose: string = ExampleModels.models[1];
+  public interactiveGraph: boolean = false;
 
+  public componentSize = 500; // Initial component size value
+  public nodeSize = 15;
+
+
+  constructor(
+    private changeDetector : ChangeDetectorRef
+  ) {}
 
   public resetVariables(){
     this.proof = "";
     this.fmGraph = null;
+    this.unsatisfiableCore = null;
   }
 
   public selectModel(modelIndex: number) {
@@ -27,6 +38,11 @@ export class AppComponent {
 
   public modelCount(){
     return Array.from({ length: ExampleModels.models.length }, (_, index) => index);
+  }
+
+  public toggleGraph(){
+    this.interactiveGraph = !this.interactiveGraph
+    this.changeDetector.detectChanges()  
   }
 
   public proveModel(){
@@ -63,6 +79,25 @@ export class AppComponent {
     })
     .catch((error) => {
       alert("Something went wrong trying to create a Feature Model graph for the model: \n\n" + error);
+    });
+  }
+
+  public getUnsatCore(){
+    this.resetVariables();
+
+    fetch("http://localhost/diagnose/unsatCore", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.modelToDiagnose),
+    })
+    .then(async (response) => {
+      let dict = await response.json();
+      this.unsatisfiableCore = new UnsatCoreResult(dict.unsatisfiableCore, dict.nodes, dict.edges)
+    })
+    .catch((error) => {
+      alert("Something went wrong trying to find proof for the model: \n\n" + error);
     });
   }
 }

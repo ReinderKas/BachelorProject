@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { Component, ViewEncapsulation, Input, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-proof',
@@ -7,13 +7,11 @@ import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
   encapsulation: ViewEncapsulation.None
 })
 
-export class ProofComponent implements OnInit {
+export class ProofComponent implements AfterViewInit {
     @Input() proof: string | null = null;
 
 
-    
-    ngOnInit(): void {
-
-      
+    ngAfterViewInit(): void {
+      // Nothing to do as of yet.
     }
 }

@@ -11,13 +11,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GraphComponent } from './graph/graph.component';
 import { ProofComponent } from './proof/proof.component';
 import { InteractiveGraphComponent } from './graph/interactive-graph.component';
+import { UnsatCoreComponent } from './unsat-core/unsat-core.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GraphComponent,
     ProofComponent,
-    InteractiveGraphComponent
+    InteractiveGraphComponent,
+    UnsatCoreComponent
   ],
   imports: [
     MatCardModule,

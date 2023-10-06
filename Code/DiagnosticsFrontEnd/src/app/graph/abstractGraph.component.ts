@@ -166,29 +166,6 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
                 return "BROKEN"
         }
       }
-
-      protected getHierarchyRelationshipClass(link: {source:any, target: any}){
-
-        if (!link.source || !link.target){        
-            alert("Floating Relationship?")
-            return "BROKEN";
-        }
-
-        if (!(link.target.id in this.parentRelationshipByChildNodeId))
-            return "Root";
-        
-        switch(this.parentRelationshipByChildNodeId[link.target.id].relType){
-            case 0: return "edge edge-mandatory"
-            case 1: return "edge edge-optional"
-            case 2: return "edge edge-alternative"
-            case 3: return "edge edge-or"
-            default:
-                alert("This Relationship type should not be present in the dictionary!: " + this.parentRelationshipByChildNodeId[link.target.id].relType)
-                return "BROKEN"
-        }
-
-      }
-
     // Initialize the d3 root hierarchical object.
     protected initRoot(){
         if (!this.fmGraph) {

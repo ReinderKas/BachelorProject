@@ -15,10 +15,12 @@
         <br>
         <div *ngIf="unsatisfiableCore.unsatisfiableCore">
             <h2>Constraints in Core:</h2>
+            <hr>
         </div>
     
         <div *ngFor="let expression of unsatisfiableCore.unsatisfiableCore">
-            {{expression}}
+            <p>{{expression}}</p>
+            <hr>
         </div>
     </div>
 </div>

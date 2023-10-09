@@ -12,6 +12,7 @@ import { GraphComponent } from './graph/graph.component';
 import { ProofComponent } from './proof/proof.component';
 import { InteractiveGraphComponent } from './graph/interactive-graph.component';
 import { UnsatCoreComponent } from './unsat-core/unsat-core.component';
+import { UnsatCoreGraph } from './unsat-core/unsat-core-graph.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { UnsatCoreComponent } from './unsat-core/unsat-core.component';
     GraphComponent,
     ProofComponent,
     InteractiveGraphComponent,
-    UnsatCoreComponent
+    UnsatCoreComponent,
+    UnsatCoreGraph
   ],
   imports: [
     MatCardModule,

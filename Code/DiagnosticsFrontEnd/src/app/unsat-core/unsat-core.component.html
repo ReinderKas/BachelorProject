@@ -24,3 +24,12 @@
         </div>
     </div>
 </div>
+<br>
+<div *ngIf="fmGraph != null">
+    <unsat-graph 
+        [fmGraph] = "fmGraph"
+        [unsatCore] = "unsatisfiableCore"
+        >
+
+    </unsat-graph>
+</div>

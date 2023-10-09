@@ -1,6 +1,7 @@
 ﻿using DiagnosticsApi.Models;
 using Elfskot.Core.Masterdata.FeatureModels.Translator;
 using Elfsquad.Core.Archer;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Z3;
@@ -65,6 +66,7 @@ namespace DiagnosticsApi.Controllers
                 // TODO: Make class, not string
                 var result = new UnsatCoreResult(solver.UnsatCore(),
                                                 solver.UnsatCoreArguments(),
+                                                solver.ModelSolver.Variables,
                                                 Array.Empty<ConstraintResult>());
 
                 return Ok(result);
@@ -72,6 +74,7 @@ namespace DiagnosticsApi.Controllers
 
             return NotFound(new UnsatCoreResult(Array.Empty<Expr>(),
                                                 Array.Empty<Expr>(),
+                                                Array.Empty<NodeProperty>(),
                                                 Array.Empty<ConstraintResult>()));
         }
 

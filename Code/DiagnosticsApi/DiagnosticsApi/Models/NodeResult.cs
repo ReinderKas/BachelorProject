@@ -1,6 +1,4 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
-using Microsoft.Z3;
-using System.Diagnostics.CodeAnalysis;
 
 namespace DiagnosticsApi.Models
 {

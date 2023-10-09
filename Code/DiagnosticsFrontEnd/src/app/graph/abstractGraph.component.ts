@@ -132,10 +132,10 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
     protected abstract initLinks(): any;        // Draw the Hierarchical Links.
     protected abstract initCrossLinks(): any;   // Draw the Cross-Hierarchical Links.
     
-    protected getNodeClass(d: d3.HierarchyPointNode<GraphNode>){
+    protected getNodeClass(d: d3.HierarchyPointNode<GraphNode>): string{
         if (!d.id){
           alert("Node ID is null. Check how we got here.")
-          return;
+          return "";
         }
     
         if (!(d.id in this.parentRelationshipByChildNodeId))

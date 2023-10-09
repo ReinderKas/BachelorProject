@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Web;
+﻿using Elfskot.Core.Masterdata.FeatureModels.Translator;
+using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Microsoft.Z3;
+using System.Text.Json.Serialization;
 
 namespace DiagnosticsApi.Models
 {
@@ -18,11 +19,12 @@ namespace DiagnosticsApi.Models
         public UnsatCoreResult(
             Expr[] core,
             Expr[] nodes,
+            NodeProperty[] modelVariables,
             ConstraintResult[] constraint)
         {
             UnsatisfiableCore = core.Select(c => c.ToString()).ToArray();
             Constraint = constraint;
-
+            
             Nodes = ConvertNodes(nodes);
         }
 
@@ -57,8 +59,11 @@ namespace DiagnosticsApi.Models
         {
             if (!proof.Args.Any())
             {
+                // TODO: This won't work for Nodes that do not have a unique name.
+
                 if (proof.ToString() != "true" && proof.ToString() != "false")
                     res.Add(new NodeResult(proof.ToString()));
+                    
                 return;
             }
 

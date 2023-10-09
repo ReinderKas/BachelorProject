@@ -16,6 +16,9 @@ namespace DiagnosticsApi.Models
         {
             // TODO: Only works for relationshipConstraints atm. Not Expression Constraints.
             Edges = constraints.Select(c => new ConstraintResult((IRelationshipConstraint)c)).ToArray();
+
+            // TODO: Check if these are the correct IDS.
+            // Can be either Archer ID or Elfsquad Id.
             Nodes = nodes.Select(n => new NodeResult(n)).ToArray();
         }
 

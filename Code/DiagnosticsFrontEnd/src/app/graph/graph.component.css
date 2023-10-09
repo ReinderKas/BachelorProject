@@ -37,6 +37,16 @@
 }
 
 
+.node-red{
+  stroke: red;
+  fill: red;
+}
+.node-green{
+  stroke: lightgreen;
+  fill: lightgreen;
+}
+
+
 
 
 .node text {

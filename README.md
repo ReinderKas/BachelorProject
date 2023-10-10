@@ -17,6 +17,7 @@ https://observablehq.com/@d3/tree <br>
  + Antlr 
  + Angular
  + NodeJS
+ + Docker
  
 ## 1.1 - Web Interface
 The front end is implemented in Angular. This is a javascript based web application framework. <br>

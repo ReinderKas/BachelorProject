@@ -14,10 +14,10 @@ import { UnsatCoreResult } from "src/models/unsatCoreResult";
 })
 
 export class UnsatCoreGraph extends AbstractGraphComponent {
-    override componentSize: number = 750;
-    override nodeSize: number = 15;
-    @Input() fmGraph: FmGraphResult | null = null; 
     @Input() unsatCore: UnsatCoreResult | null = null;
+    @Input() fmGraph: FmGraphResult | null = null; 
+    @Input() componentSize: number = 750;
+    @Input() nodeSize: number = 15;
 
 
     constructor(

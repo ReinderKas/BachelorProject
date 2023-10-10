@@ -18,8 +18,11 @@ export class AppComponent {
   public modelToDiagnose: string = ExampleModels.models[1];
   public interactiveGraph: boolean = false;
 
-  public componentSize = 500; // Initial component size value
+
+  public componentHeight = 500;
+  public componentWidth = 500;
   public nodeSize = 15;
+  public nodeSpacing = 1;
 
 
   constructor(

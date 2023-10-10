@@ -10,8 +10,10 @@ import { UnsatCoreResult } from 'src/models/unsatCoreResult';
 export class UnsatCoreComponent implements AfterViewInit {
   @Input() unsatisfiableCore: UnsatCoreResult = new UnsatCoreResult([], [], []);
   @Input() modelToDiagnose: string = "";
-  @Input() componentSize: number = 500;
+  @Input() componentHeight: number = 500;
+  @Input() componentWidth: number = 500;
   @Input() nodeSize: number = 15;
+  @Input() nodeSpacing: number = 1;
 
   
   public fmGraph: FmGraphResult | null = null;

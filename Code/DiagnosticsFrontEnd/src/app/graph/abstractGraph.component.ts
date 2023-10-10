@@ -7,8 +7,10 @@ import { GraphEdge } from 'src/models/edge';
 @Injectable()
 export abstract class AbstractGraphComponent implements AfterViewInit {
     @Input() abstract fmGraph: FmGraphResult | null;
-    @Input() abstract componentSize: number;
+    @Input() abstract componentHeight: number;
+    @Input() abstract componentWidth: number;
     @Input() abstract nodeSize: number;
+    @Input() abstract nodeSpacing: number;
     
   
     protected root: any;
@@ -27,8 +29,8 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
   
     // // Dimensions / styling.
     protected margin =  {top: 20, right: 90, bottom: 30, left: 90};
-    protected width() { return this.componentSize - this.margin.left - this.margin.right; }
-    protected height() { return this.componentSize - this.margin.top - this.margin.bottom; }
+    protected width() { return this.componentWidth - this.margin.left - this.margin.right; }
+    protected height() { return this.componentHeight - this.margin.top - this.margin.bottom; }
   
     constructor(
         protected el: ElementRef, 
@@ -54,8 +56,8 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
     // Rescale the element of the component to the given height and width.
     protected adjustSize() {
       this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
-      this.renderer.setStyle(this.el.nativeElement, 'width', this.componentSize + 'px');
-      this.renderer.setStyle(this.el.nativeElement, 'height', this.componentSize + 'px');
+      this.renderer.setStyle(this.el.nativeElement, 'width', this.componentWidth + 'px');
+      this.renderer.setStyle(this.el.nativeElement, 'height', this.componentHeight + 'px');
     }
   
     // Remove the existing SVG from the graph div in this component.
@@ -208,7 +210,7 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
   // Add the legend so that it's immediately clear what everything means.
   protected initLegend(){
     this.legend = this.svg.append("g")
-                            .attr("transform", "translate(" + -this.componentSize/10  + ",0)");  // Adjust this for legend's position
+                            .attr("transform", "translate(" + -this.componentWidth/10  + ",0)");  // Adjust this for legend's position
 
           // For hierarchical constraints
     this.legend.append("line")

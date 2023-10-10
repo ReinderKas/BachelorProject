@@ -13,8 +13,10 @@ import { GraphNode } from 'src/models/node';
 
 export class InteractiveGraphComponent extends AbstractGraphComponent {
     @Input() fmGraph: FmGraphResult | null = null;
-    @Input() componentSize: number = 500;
+    @Input() componentHeight: number = 500;
+    @Input() componentWidth: number = 500;
     @Input() nodeSize: number = 10;
+    @Input() nodeSpacing: number = 1;
     
   constructor(
         protected override el: ElementRef, 

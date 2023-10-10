@@ -16,8 +16,10 @@ import { UnsatCoreResult } from "src/models/unsatCoreResult";
 export class UnsatCoreGraph extends AbstractGraphComponent {
     @Input() unsatCore: UnsatCoreResult | null = null;
     @Input() fmGraph: FmGraphResult | null = null; 
-    @Input() componentSize: number = 750;
+    @Input() componentHeight: number = 500;
+    @Input() componentWidth: number = 500;
     @Input() nodeSize: number = 15;
+    @Input() nodeSpacing: number = 1;
 
 
     constructor(
@@ -38,7 +40,7 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
   
             
         // Assign correct position
-            .attr("transform", (d: { x: string; y: string; }) => "translate(" + d.x + "," + d.y + ")")
+            .attr("transform", (d: { x: string; y: string; }) => "translate(" + parseInt(d.x) * this.nodeSpacing + "," + d.y + ")")
             
         // Adds the circle to the node 
         this.node.append("circle")
@@ -75,8 +77,8 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
   
                           
                           // Straight lines.
-                          .attr("d", (d: { source: { x: string; y: string; }; target: { x: string; y: string; }; }) => "M" + d.source.x + "," + d.source.y + 
-                                          "L" + d.target.x + "," + d.target.y)
+                          .attr("d", (d: { source: { x: string; y: string; }; target: { x: string; y: string; }; }) => "M" + parseInt(d.source.x) * this.nodeSpacing + "," + d.source.y + 
+                                          "L" + parseInt(d.target.x) * this.nodeSpacing + "," + d.target.y)
     }
   
       
@@ -93,17 +95,17 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
       // Render links of type1
       this.crossLink.filter((d: { relType: number; }) => d.relType === 4)
                       .append("line")
-                      .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                      .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x * this.nodeSpacing)
                       .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
-                      .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x) 
+                      .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x * this.nodeSpacing) 
                       .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
                               
       // Render links of type1
       this.crossLink.filter((d: { relType: number; }) => d.relType === 5)
                       .append("line")
-                      .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x)
+                      .attr("x1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].x * this.nodeSpacing)
                       .attr("y1", (d: { fromId: string | number; }) => this.pointNodeById[d.fromId].y)
-                      .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x)
+                      .attr("x2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].x * this.nodeSpacing)
                       .attr("y2", (d: { toId: string | number; }) => this.pointNodeById[d.toId].y)
   
       // Cross-tree constraints visualization

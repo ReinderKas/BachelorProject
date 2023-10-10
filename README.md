@@ -3,7 +3,7 @@
 ## Tasks to do
 [Thesis paper (Overleaf)](https://www.overleaf.com/project/63ec92e134a27342e8a123d5) <br>
 [Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap) <br>
-[Phone Feature Model](https://www.researchgate.net/figure/Simplified-feature-model-example-inspired-by-the-mobile-phone-industry-taken-from-30_fig1_257468209)
+[Phone Feature Model](https://www.researchgate.net/figure/Simplified-feature-model-example-inspired-by-the-mobile-phone-industry-taken-from-30_fig1_257468209)<br>
 https://github.com/ekuiter/feature-model-viz <br>
 https://observablehq.com/@d3/tree <br>
 

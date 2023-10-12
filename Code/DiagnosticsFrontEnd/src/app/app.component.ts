@@ -15,7 +15,7 @@ export class AppComponent {
   protected proof: string = "";
   protected unsatisfiableCore: UnsatCoreResult | null = null;
   protected fmGraph: FmGraphResult | null = null;
-  public modelToDiagnose: string = ExampleModels.models[1];
+  public modelToDiagnose: string = ExampleModels.models[0];
   public interactiveGraph: boolean = false;
 
 

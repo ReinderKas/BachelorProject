@@ -20,8 +20,8 @@ export class AppComponent {
 
 
   public componentHeight = 500;
-  public componentWidth = 500;
-  public nodeSize = 15;
+  public componentWidth = 1500;
+  public nodeSize = 25;
   public nodeSpacing = 1;
 
 

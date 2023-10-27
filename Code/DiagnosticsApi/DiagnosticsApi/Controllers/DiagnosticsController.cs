@@ -21,7 +21,7 @@ namespace DiagnosticsApi.Controllers
         }
 
 
-        [HttpPut("proof")]
+        [HttpGet("proof")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -44,9 +44,9 @@ namespace DiagnosticsApi.Controllers
 
             return NotFound($"The model seems satisfiable.");
         }
+        
 
-
-        [HttpPut("unsatCore")]
+        [HttpGet("unsatCore")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -78,7 +78,7 @@ namespace DiagnosticsApi.Controllers
                                                 Array.Empty<ConstraintResult>()));
         }
 
-        [HttpPut("featureModel")]
+        [HttpGet("featureModel")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]

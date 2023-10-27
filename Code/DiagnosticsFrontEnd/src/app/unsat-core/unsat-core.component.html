@@ -3,7 +3,7 @@
         <p>The model seems satisfiable!</p>
     </div>
     
-    <div  *ngIf="unsatisfiableCore.toRemove.length > 0">
+    <div  *ngIf="unsatisfiableCore.toRemove.length > 0"> 
         <h2>Remove Constraint to make Satisfiable:</h2>
 
 
@@ -19,7 +19,7 @@
     </div>
 
 
-    <div *ngIf="unsatisfiableCore.nodes.length > 0 && unsatisfiableCore.unsatisfiableCore.length > 0">
+    <div style="padding-top:50px;" *ngIf="unsatisfiableCore.nodes.length > 0 && unsatisfiableCore.unsatisfiableCore.length > 0">
         <div *ngIf="unsatisfiableCore.nodes">
             <h2>Nodes in Core:</h2>
         </div>
@@ -41,7 +41,7 @@
     </div>
 </div>
 <br>
-<div *ngIf="fmGraph != null">
+<div style="padding-top:50px;" *ngIf="fmGraph != null">
     <unsat-graph 
         [fmGraph] = "fmGraph"
         [unsatCore] = "unsatisfiableCore"

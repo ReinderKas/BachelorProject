@@ -1,6 +1,6 @@
 ﻿using Microsoft.Z3;
-using System.Diagnostics.Contracts;
 using Z3Parser.FeatureModels;
+using Z3Parser.Z3Constraints;
 
 namespace Z3Parser
 {
@@ -20,7 +20,6 @@ namespace Z3Parser
             ModelString = modelString;
             HasSolution = false;
             ModelSolver = ModelBuilder.CreateModel(ModelString).Result;
-            ModelSolver.InitializeZ3Solver();
         }
 
         public void ProveModel()
@@ -34,6 +33,58 @@ namespace Z3Parser
             HasSolution = ModelSolver.Solve();
         }
 
+
+
+        // As per Chapter 7.4.2 of the holy bible.
+        public IEnumerable<AConstraint> FastDiagnose()
+        {
+            var coreConstraints = ModelSolver.Z3Constraints.Where(c => c.Hierarchical);
+            var toDiagnose = ModelSolver.Z3Constraints.Except(coreConstraints);
+
+            // No Constraints to Diagnose.
+            if (!toDiagnose.Any()
+                || !GetSolution(coreConstraints))
+                return Enumerable.Empty<AConstraint>();
+
+            // Used to be implemented for User Requirements.
+            return FD(null, toDiagnose, ModelSolver.Z3Constraints);
+        }
+
+
+
+        private IEnumerable<AConstraint> FD(
+            IEnumerable<AConstraint> d,
+            IEnumerable<AConstraint> c,
+            IEnumerable<AConstraint> ac)
+        {
+            if (d != null)
+            {
+                if (GetSolution(ac))
+                    return new List<AConstraint>();
+            }
+            if (c.Count() == 1) return c;
+
+            var k = c.Count() / 2;
+            var c1 = c.Take(k).ToList();
+            var c2 = c.Skip(k).ToList();
+
+            var d1 = FD(c2, c1, ac.Except(c2));
+            var d2 = FD(d1, c2, ac.Except(d1));
+            return d1.Concat(d2);
+        }
+
+
+        private bool GetSolution(IEnumerable<AConstraint> constraints)
+        {
+            Console.WriteLine("Getting Solution.");
+
+            ModelSolver.Z3Constraints = constraints.ToHashSet();
+            return ModelSolver.Solve();
+        }
+
+
+
+        #region Print Diagnostics
 
         public void PrintProof()
         {
@@ -92,5 +143,7 @@ namespace Z3Parser
                 Console.WriteLine($"-------------------------------");
             }
         }
+
+        #endregion
     }
 }

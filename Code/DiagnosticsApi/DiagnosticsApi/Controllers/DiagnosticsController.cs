@@ -3,9 +3,9 @@ using Elfskot.Core.Masterdata.FeatureModels.Translator;
 using Elfsquad.Core.Archer;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Z3;
 using Z3Parser;
+using Z3Parser.Z3Constraints;
 
 namespace DiagnosticsApi.Controllers
 {
@@ -21,7 +21,7 @@ namespace DiagnosticsApi.Controllers
         }
 
 
-        [HttpGet("proof")]
+        [HttpPut("proof")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -44,9 +44,9 @@ namespace DiagnosticsApi.Controllers
 
             return NotFound($"The model seems satisfiable.");
         }
-        
 
-        [HttpGet("unsatCore")]
+
+        [HttpPut("unsatCore")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
@@ -58,27 +58,55 @@ namespace DiagnosticsApi.Controllers
             var solver = new DiagnosticsParser(model);
             solver.ProveModel();
 
-            // Doesn't work for solveable model?
             if (!solver.HasSolution)
             {
                 solver.PrintProof();
 
-                // TODO: Make class, not string
+                var diagnoseResult = solver.FastDiagnose();
+
                 var result = new UnsatCoreResult(solver.UnsatCore(),
                                                 solver.UnsatCoreArguments(),
-                                                solver.ModelSolver.Variables,
-                                                Array.Empty<ConstraintResult>());
+                                                diagnoseResult);
 
                 return Ok(result);
             }
 
             return NotFound(new UnsatCoreResult(Array.Empty<Expr>(),
                                                 Array.Empty<Expr>(),
-                                                Array.Empty<NodeProperty>(),
-                                                Array.Empty<ConstraintResult>()));
+                                                Array.Empty<AConstraint>()));
         }
 
-        [HttpGet("featureModel")]
+
+        //[HttpPut("unsatConstraints")]
+        //[ProducesResponseType(200)]
+        //[ProducesResponseType(404)]
+        //[ProducesResponseType(500)]
+        //public async Task<ActionResult<UnsatCoreResult>> GetUnsatConstraints([FromBody] string model = null)
+        //{
+        //    if (model == null)
+        //        return BadRequest("No model provided!");
+
+        //    var solver = new DiagnosticsParser(model);
+        //    solver.ProveModel();
+
+        //    if (!solver.HasSolution)
+        //    {
+        //        var consToRemove = solver.FastDiagnose();
+
+        //        var result = consToRemove.Select(c => new ToRemoveResult(c));
+
+        //        Console.WriteLine("Result:");
+        //        foreach (var res in result)
+        //            Console.WriteLine($"\t{result.ToString()}");
+
+        //        return Ok(result);
+        //    }
+
+        //    return NotFound(new ToRemoveResult());
+        //}
+
+
+        [HttpPut("featureModel")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]

@@ -97,7 +97,7 @@ export class AppComponent {
     })
     .then(async (response) => {
       let dict = await response.json();
-      this.unsatisfiableCore = new UnsatCoreResult(dict.unsatisfiableCore, dict.nodes, dict.edges)
+      this.unsatisfiableCore = new UnsatCoreResult(dict.unsatisfiableCore, dict.nodes, dict.edges, dict.toRemove)
     })
     .catch((error) => {
       alert("Something went wrong trying to find proof for the model: \n\n" + error);

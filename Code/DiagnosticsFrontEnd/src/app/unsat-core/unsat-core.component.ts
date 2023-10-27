@@ -8,7 +8,7 @@ import { UnsatCoreResult } from 'src/models/unsatCoreResult';
   styleUrls: ['./unsat-core.component.css']
 })
 export class UnsatCoreComponent implements AfterViewInit {
-  @Input() unsatisfiableCore: UnsatCoreResult = new UnsatCoreResult([], [], []);
+  @Input() unsatisfiableCore: UnsatCoreResult = new UnsatCoreResult([], [], [], []);
   @Input() modelToDiagnose: string = "";
   @Input() componentHeight: number = 500;
   @Input() componentWidth: number = 500;
@@ -22,9 +22,8 @@ export class UnsatCoreComponent implements AfterViewInit {
  
   
   ngAfterViewInit(): void {
-    // Need to retrieve Model in order to initialize the Graph Data.
-    console.log(this.modelToDiagnose)
     this.getFeatureModel();
+    console.log(this.unsatisfiableCore);
   }
 
   public async getFeatureModel(){

@@ -16,6 +16,8 @@ export class UnsatCoreComponent implements AfterViewInit {
   @Input() nodeSpacing: number = 1;
 
   
+  protected api: string = "http://localhost";
+
   public fmGraph: FmGraphResult | null = null;
 
 
@@ -27,7 +29,7 @@ export class UnsatCoreComponent implements AfterViewInit {
   }
 
   public async getFeatureModel(){
-    fetch("http://localhost/diagnose/featureModel", {
+    fetch(this.api + "/diagnose/featureModel", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

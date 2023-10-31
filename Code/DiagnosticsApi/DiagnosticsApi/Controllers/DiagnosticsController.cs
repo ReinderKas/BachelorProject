@@ -60,9 +60,13 @@ namespace DiagnosticsApi.Controllers
 
             if (!solver.HasSolution)
             {
-                solver.PrintProof();
+                //solver.PrintProof();
 
                 var diagnoseResult = solver.FastDiagnose();
+
+                Console.WriteLine($"\nDiagnostics Result: (Count: {diagnoseResult.Count()})");
+                foreach(var diag in diagnoseResult)
+                    Console.WriteLine($"{diag.GetType()} - {diag.Expression}");
 
                 var result = new UnsatCoreResult(solver.UnsatCore(),
                                                 solver.UnsatCoreArguments(),
@@ -75,35 +79,6 @@ namespace DiagnosticsApi.Controllers
                                                 Array.Empty<Expr>(),
                                                 Array.Empty<AConstraint>()));
         }
-
-
-        //[HttpPut("unsatConstraints")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(404)]
-        //[ProducesResponseType(500)]
-        //public async Task<ActionResult<UnsatCoreResult>> GetUnsatConstraints([FromBody] string model = null)
-        //{
-        //    if (model == null)
-        //        return BadRequest("No model provided!");
-
-        //    var solver = new DiagnosticsParser(model);
-        //    solver.ProveModel();
-
-        //    if (!solver.HasSolution)
-        //    {
-        //        var consToRemove = solver.FastDiagnose();
-
-        //        var result = consToRemove.Select(c => new ToRemoveResult(c));
-
-        //        Console.WriteLine("Result:");
-        //        foreach (var res in result)
-        //            Console.WriteLine($"\t{result.ToString()}");
-
-        //        return Ok(result);
-        //    }
-
-        //    return NotFound(new ToRemoveResult());
-        //}
 
 
         [HttpPut("featureModel")]
@@ -124,7 +99,7 @@ namespace DiagnosticsApi.Controllers
                 solver.ModelSolver.FmGraph.GetConstraints()
             );
 
-            Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
+            //Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
 
             return Ok(result);
         }

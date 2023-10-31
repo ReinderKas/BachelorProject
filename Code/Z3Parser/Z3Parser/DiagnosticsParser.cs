@@ -1,4 +1,6 @@
-﻿using Microsoft.Z3;
+﻿using Microsoft.Win32.SafeHandles;
+using Microsoft.Z3;
+using System.Threading.Tasks.Sources;
 using Z3Parser.FeatureModels;
 using Z3Parser.Z3Constraints;
 
@@ -25,7 +27,7 @@ namespace Z3Parser
         public void ProveModel()
         {
             Console.WriteLine("\n");
-            Console.Write($"Proof for:");
+            Console.Write($"Proof for:\n");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write($"{ModelString}\n\n");
             Console.ResetColor();
@@ -39,17 +41,23 @@ namespace Z3Parser
         public IEnumerable<AConstraint> FastDiagnose()
         {
             var coreConstraints = ModelSolver.Z3Constraints.Where(c => c.Hierarchical);
-            var toDiagnose = ModelSolver.Z3Constraints.Except(coreConstraints);
+            var toDiagnose = ModelSolver.Z3Constraints.Where(c => !c.Hierarchical);
+            var allConstraints = coreConstraints.Concat(toDiagnose);
 
             // No Constraints to Diagnose.
             if (!toDiagnose.Any()
                 || !GetSolution(coreConstraints))
                 return Enumerable.Empty<AConstraint>();
 
-            // Used to be implemented for User Requirements.
-            return FD(null, toDiagnose, ModelSolver.Z3Constraints);
-        }
 
+            PrintConsole(coreConstraints, ConsoleColor.Green);
+            PrintConsole(toDiagnose, ConsoleColor.Magenta);
+            Console.WriteLine();
+
+
+            // Used to be implemented for User Requirements.
+            return FD(null, toDiagnose, allConstraints);
+        }
 
 
         private IEnumerable<AConstraint> FD(
@@ -62,11 +70,16 @@ namespace Z3Parser
                 if (GetSolution(ac))
                     return new List<AConstraint>();
             }
-            if (c.Count() == 1) return c;
+
+            if (c.Count() == 1)
+            {
+                PrintConsole(c, ConsoleColor.Red);
+                return c;
+            }
 
             var k = c.Count() / 2;
-            var c1 = c.Take(k).ToList();
-            var c2 = c.Skip(k).ToList();
+            var c1 = c.Take(k);
+            var c2 = c.Skip(k);
 
             var d1 = FD(c2, c1, ac.Except(c2));
             var d2 = FD(d1, c2, ac.Except(d1));
@@ -76,12 +89,20 @@ namespace Z3Parser
 
         private bool GetSolution(IEnumerable<AConstraint> constraints)
         {
-            Console.WriteLine("Getting Solution.");
-
             ModelSolver.Z3Constraints = constraints.ToHashSet();
             return ModelSolver.Solve();
         }
 
+
+        private void PrintConsole(IEnumerable<AConstraint> constraints, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine($"\nConstraints: {constraints.Count()}");
+            foreach (var con in constraints)
+                Console.WriteLine($"\t{con.Expression}");
+
+            Console.ResetColor();
+        }
 
 
         #region Print Diagnostics

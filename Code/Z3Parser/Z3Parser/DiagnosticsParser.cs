@@ -49,12 +49,6 @@ namespace Z3Parser
                 || !GetSolution(coreConstraints))
                 return Enumerable.Empty<AConstraint>();
 
-
-            PrintConsole(coreConstraints, ConsoleColor.Green);
-            PrintConsole(toDiagnose, ConsoleColor.Magenta);
-            Console.WriteLine();
-
-
             // Used to be implemented for User Requirements.
             return FD(null, toDiagnose, allConstraints);
         }

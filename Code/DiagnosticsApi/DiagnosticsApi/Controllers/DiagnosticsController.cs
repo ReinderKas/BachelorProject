@@ -60,8 +60,6 @@ namespace DiagnosticsApi.Controllers
 
             if (!solver.HasSolution)
             {
-                //solver.PrintProof();
-
                 var diagnoseResult = solver.FastDiagnose();
 
                 Console.WriteLine($"\nDiagnostics Result: (Count: {diagnoseResult.Count()})");

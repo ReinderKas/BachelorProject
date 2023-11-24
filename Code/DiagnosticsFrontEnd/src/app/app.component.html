@@ -75,11 +75,57 @@
         </mat-card>
       </div>
     </div>
-    
+        
+    <!--- Unsatisfiable Core -->
+    <div class="card-container">
+      <div *ngIf="unsatisfiableCore != null" style="white-space:pre-wrap;">
+        <mat-card-header>
+          <mat-card-title>Unsatisfiable Core</mat-card-title>
+          <mat-card-subtitle>Z3 generated Unsatisfiable Core</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card>
+          <app-unsat-core  
+            [unsatisfiableCore]="unsatisfiableCore" 
+            [modelToDiagnose] = "modelToDiagnose"
+            [componentHeight] = "componentHeight"
+            [componentWidth] = "componentWidth"
+            [nodeSize]="nodeSize"
+            [nodeSpacing]="nodeSpacing">
+          </app-unsat-core>
+        </mat-card>
+      </div>
+    </div>
+        
+
+    <!--- Feature Model Graph -->
+    <div *ngIf="fmGraph != null" style="white-space:pre-wrap;">
+      <mat-card style="margin-top: 10px;">
+        <mat-card-content *ngIf="interactiveGraph">
+          <app-interactive-graph 
+            [componentHeight] = "componentHeight"
+            [componentWidth] = "componentWidth"
+            [nodeSize]="nodeSize"
+            [fmGraph]="fmGraph"
+            [nodeSpacing]="nodeSpacing">
+          </app-interactive-graph>
+        </mat-card-content>
+        
+        <mat-card-content *ngIf="!interactiveGraph">
+          <app-graph 
+            [componentHeight] = "componentHeight"
+            [componentWidth] = "componentWidth"
+            [nodeSize]="nodeSize"
+            [fmGraph]="fmGraph"
+            [nodeSpacing]="nodeSpacing">
+          </app-graph>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
 
     <!--- Feature Model Graph Component Input -->
-      <div class="card-container" style="margin-top:0px">
-        <div *ngIf="fmGraph != null || unsatisfiableCore != null" style="white-space:pre-wrap;padding: 10px;">
+    <div *ngIf="fmGraph != null || unsatisfiableCore != null" style="white-space:pre-wrap;padding: 10px;">
+      <mat-card style="background-color: (242, 242, 242);">
           <mat-card-header>
             <mat-card-title>Feature Model Graph</mat-card-title>
             <mat-card-subtitle>Definition of the Feature Model Graph according to the Elfsquad Implementation</mat-card-subtitle>
@@ -143,54 +189,8 @@
             </button>
           </mat-list-item>  
         </mat-list>  
-      </div>
-    </div>
-    
-    <!--- Unsatisfiable Core -->
-    <div class="card-container">
-      <div *ngIf="unsatisfiableCore != null" style="white-space:pre-wrap;">
-        <mat-card-header>
-          <mat-card-title>Unsatisfiable Core</mat-card-title>
-          <mat-card-subtitle>Z3 generated Unsatisfiable Core</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card>
-          <app-unsat-core  
-            [unsatisfiableCore]="unsatisfiableCore" 
-            [modelToDiagnose] = "modelToDiagnose"
-            [componentHeight] = "componentHeight"
-            [componentWidth] = "componentWidth"
-            [nodeSize]="nodeSize"
-            [nodeSpacing]="nodeSpacing">
-          </app-unsat-core>
-        </mat-card>
-      </div>
-    </div>
-        
-
-    <!--- Feature Model Graph -->
-    <div *ngIf="fmGraph != null" style="white-space:pre-wrap;">
-      <mat-card style="margin-top: 10px;">
-        <mat-card-content *ngIf="interactiveGraph">
-          <app-interactive-graph 
-            [componentHeight] = "componentHeight"
-            [componentWidth] = "componentWidth"
-            [nodeSize]="nodeSize"
-            [fmGraph]="fmGraph"
-            [nodeSpacing]="nodeSpacing">
-          </app-interactive-graph>
-        </mat-card-content>
-        
-        <mat-card-content *ngIf="!interactiveGraph">
-          <app-graph 
-            [componentHeight] = "componentHeight"
-            [componentWidth] = "componentWidth"
-            [nodeSize]="nodeSize"
-            [fmGraph]="fmGraph"
-            [nodeSpacing]="nodeSpacing">
-          </app-graph>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    </mat-card>
+  </div>
 
     <!-- Footer -->
     <footer>

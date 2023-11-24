@@ -1,7 +1,6 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Microsoft.Z3;
-using System.Text.Json.Serialization;
+using Z3Parser.Z3Constraints;
 
 namespace DiagnosticsApi.Models
 {
@@ -10,6 +9,7 @@ namespace DiagnosticsApi.Models
     {
         public NodeResult[] Nodes { get; set; }
         public ConstraintResult[] Constraint { get; set; }
+        public ToRemoveResult[] ToRemove { get; set; }
 
         //TODO: Currently string, could this be Z3.Expr?
         //      Need something to fix this within the front-end
@@ -17,28 +17,25 @@ namespace DiagnosticsApi.Models
 
 
         public UnsatCoreResult(
-            Expr[] core,
-            Expr[] nodes,
-            NodeProperty[] modelVariables,
-            ConstraintResult[] constraint)
+            IEnumerable<Expr> core,
+            IEnumerable<Expr> nodes,
+            IEnumerable<AConstraint> toRemove)
         {
-            UnsatisfiableCore = core.Select(c => c.ToString()).ToArray();
-            Constraint = constraint;
-            
+            UnsatisfiableCore = core.Select(c => c.ToString()).ToArray();            
             Nodes = ConvertNodes(nodes);
+
+            ToRemove = toRemove.Select(c => new ToRemoveResult(c)).ToArray();
+
         }
 
-        private NodeResult[] ConvertNodes(Expr[] nodes)
+        private NodeResult[] ConvertNodes(IEnumerable<Expr> nodes)
         {
             var result = new List<NodeResult>();
 
             foreach (var node in nodes)
-                VisitRecursively(node, result); // Distinct?
+                VisitRecursively(node, result);
 
-            result = result.DistinctBy(n => n.Name).ToList();
-
-            PrintVariablesInUnsatCore(result);
-            return result.ToArray();
+            return result.DistinctBy(n => n.Name).ToArray();
         }
 
 

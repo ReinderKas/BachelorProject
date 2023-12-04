@@ -4,6 +4,7 @@ using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfsquad.Core.Archer;
 using Microsoft.Z3;
+using System.Data;
 using Z3Parser.Elfsquad.Archer.Elfsquad.Core.Archer;
 
 namespace Z3Parser.FeatureModels
@@ -101,7 +102,7 @@ namespace Z3Parser.FeatureModels
         {
             InitializeSolvers();
             InitializeVariables();
-            InitializeConstraints();
+            InitializeBooleanConstraints();
             InitializeRequirements();
         }
 
@@ -126,7 +127,7 @@ namespace Z3Parser.FeatureModels
             Variables = FmGraph.TopologicalSortNodes().Reverse().ToArray();
         }
 
-        private void InitializeConstraints()
+        private void InitializeBooleanConstraints()
         {
             foreach(var variable in Variables)
             {

@@ -1,5 +1,6 @@
 # Bachelor Project - Feature Model: Model Problem Diagnostics Visualization.
 # Thesis
+[Data](https://docs.google.com/spreadsheets/d/1zbNEeivw-5RWr-Z2Bj11LbI9TzFk3ARhcJJzHJ9ih9U/edit#gid=0)<br>
 [Thesis paper (Overleaf)](https://www.overleaf.com/project/63ec92e134a27342e8a123d5) <br>
 [Backlog (Jira)](https://reinderkas.atlassian.net/jira/software/projects/BP/boards/1/roadmap) <br>
 

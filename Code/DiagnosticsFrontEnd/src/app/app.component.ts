@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ExampleModels } from 'src/models/exampleModels';
+import { WorkingModels } from 'src/models/workingModels';
+import { BrokenModels } from 'src/models/brokenModels';
 import { FmGraphResult } from 'src/models/fmGraphResult';
 import { UnsatCoreResult } from 'src/models/unsatCoreResult';
 
@@ -15,9 +16,8 @@ export class AppComponent {
   protected proof: string = "";
   protected unsatisfiableCore: UnsatCoreResult | null = null;
   protected fmGraph: FmGraphResult | null = null;
-  public modelToDiagnose: string = ExampleModels.models[0];
+  public modelToDiagnose: string = BrokenModels.models[0];
   public interactiveGraph: boolean = false;
-
 
   public componentHeight = 500;
   public componentWidth = 1500;
@@ -35,12 +35,20 @@ export class AppComponent {
     this.unsatisfiableCore = null;
   }
 
-  public selectModel(modelIndex: number) {
-    this.modelToDiagnose = ExampleModels.models[modelIndex];
+  public selectBrokenModel(modelIndex: number) {
+    this.modelToDiagnose = BrokenModels.models[modelIndex];
   }
 
-  public modelCount(){
-    return Array.from({ length: ExampleModels.models.length }, (_, index) => index);
+  public brokenModelCount(){
+    return Array.from({ length: BrokenModels.models.length }, (_, index) => index);
+  }
+  
+  public selectWorkingModel(modelIndex: number) {
+    this.modelToDiagnose = WorkingModels.models[modelIndex];
+  }
+
+  public workingModelCount(){
+    return Array.from({ length: WorkingModels.models.length }, (_, index) => index);
   }
 
   public toggleGraph(){

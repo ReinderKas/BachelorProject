@@ -15,9 +15,6 @@ export class AppComponent {
   protected api: string = "http://localhost";
 
 
-
-
-
   protected proof: string = "";
   protected unsatisfiableCore: UnsatCoreResult | null = null;
   protected fmGraph: FmGraphResult | null = null;

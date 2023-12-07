@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Z3;
 using Z3Parser;
+using Z3Parser.FeatureModels;
 using Z3Parser.Z3Constraints;
 
 namespace DiagnosticsApi.Controllers
@@ -101,9 +102,17 @@ namespace DiagnosticsApi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<ActionResult<Expr>> Options()
+        public async Task<ActionResult<DiagnoseOptions[]>> Options([FromBody] Guid NodeId)
         {
-            return Ok();
+
+            // TODO: Find out which options are possible.
+            var options = new DiagnoseOptions[]
+            {
+                DiagnoseOptions.Optional,
+                DiagnoseOptions.Delete
+            };
+
+            return Ok(options);
         }
     }
 }

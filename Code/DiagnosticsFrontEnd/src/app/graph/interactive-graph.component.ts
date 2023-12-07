@@ -2,7 +2,6 @@ import { Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@ang
 import * as d3 from 'd3';
 import { AbstractGraphComponent } from './abstractGraph.component';
 import { FmGraphResult } from 'src/models/fmGraphResult';
-import { GraphNode } from 'src/models/node';
 
 @Component({
   selector: 'app-interactive-graph',

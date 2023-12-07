@@ -13,6 +13,10 @@ import { ProofComponent } from './proof/proof.component';
 import { InteractiveGraphComponent } from './graph/interactive-graph.component';
 import { UnsatCoreComponent } from './unsat-core/unsat-core.component';
 import { UnsatCoreGraph } from './unsat-core/unsat-core-graph.component';
+import { OptionsComponent } from './options/options.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -21,17 +25,21 @@ import { UnsatCoreGraph } from './unsat-core/unsat-core-graph.component';
     ProofComponent,
     InteractiveGraphComponent,
     UnsatCoreComponent,
-    UnsatCoreGraph
+    UnsatCoreGraph,
+    OptionsComponent
   ],
   imports: [
     MatCardModule,
     MatListModule,
-    MatDividerModule,
+    MatDividerModule, 
     BrowserModule,
     MatButtonModule,
     FormsModule,
     BrowserAnimationsModule, 
-  ],
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

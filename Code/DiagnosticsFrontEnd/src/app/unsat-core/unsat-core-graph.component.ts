@@ -5,6 +5,9 @@ import { HierarchyPointNode } from "d3-hierarchy";
 import { GraphNode } from "src/models/node";
 import { GraphEdge } from "src/models/edge";
 import { UnsatCoreResult } from "src/models/unsatCoreResult";
+import * as d3 from 'd3';
+import { OptionsComponent } from "../options/options.component";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
     selector: 'unsat-graph',
@@ -21,10 +24,10 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
     @Input() nodeSize: number = 15;
     @Input() nodeSpacing: number = 1;
 
-
     constructor(
       protected override el: ElementRef, 
-      protected override renderer: Renderer2
+      protected override renderer: Renderer2,
+      public dialog: MatDialog
     ) {
       super(el, renderer)
     }
@@ -52,9 +55,14 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
             .text((d: { data: { name: any; }; }) => d.data.name);
+        this.node.on('click', (_event: any, d: HierarchyPointNode<GraphNode>) => this.openDialog(d));
     }
 
     protected override getNodeClass(d: HierarchyPointNode<GraphNode>): string{
+      if (d.id == this.fmGraph?.root?.id){
+        return "node node-green";
+      }
+
       return (this.unsatCore?.nodes.find(n => n.name == d.data.name) != undefined)
                     ? "node node-red"
                     : "node node-green";
@@ -120,4 +128,21 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
     }
   
     //#endregion
+
+    private openDialog(d: HierarchyPointNode<GraphNode>){
+      if (this.fmGraph?.root?.name === d.data.name
+        || !this.unsatCore?.nodes.some(n => n.name === d.data.name)){
+        return;
+      }
+      let dialogRef = this.dialog.open(OptionsComponent, {
+        width: '350px',
+        height: '350px',
+        data: d
+      });
+
+
+      dialogRef.afterClosed().subscribe((result: any) => {
+        console.log('The dialog was closed. Selected Item: ', result);
+      });
+    }
   }

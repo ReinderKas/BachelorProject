@@ -1,0 +1,43 @@
+.selected p {
+    background-color: #3083dd; /* Highlight color */
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  
+  p {
+    border: 2px solid #000000; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2); /* Optional: Adds a shadow for better visibility */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px 0;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  p:hover {
+    background-color: #0056b3; /* Hover color */
+    color: white;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #5e5e5e; /* Button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  } 
+  
+  /* Styles for the container */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }

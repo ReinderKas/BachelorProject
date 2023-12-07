@@ -3,9 +3,25 @@
         <p>The model seems satisfiable!</p>
     </div>
     
-    <div *ngIf="unsatisfiableCore.nodes.length > 0 && unsatisfiableCore.unsatisfiableCore.length > 0">
+    <div  *ngIf="unsatisfiableCore.toRemove.length > 0"> 
+        <h2>Remove Constraint to make Satisfiable:</h2>
+
+
+        <div *ngFor="let constraint of unsatisfiableCore.toRemove">
+            <div *ngIf="constraint.nodes.length == 2">
+                [{{constraint.nodes[0].name}}] - {{constraint.relationshipType}} -> [{{constraint.nodes[1].name}}] 
+            </div>
+            <div *ngIf="constraint.nodes.length == 1">
+                [{{constraint.nodes[0].name}}] - {{constraint.relationshipType}} -> [{{constraint.nodes[0].name}}]
+            </div>
+            <hr>
+        </div>
+    </div>
+
+
+    <div style="padding-top:50px;" *ngIf="unsatisfiableCore.nodes.length > 0 && unsatisfiableCore.unsatisfiableCore.length > 0">
         <div *ngIf="unsatisfiableCore.nodes">
-            <h2>Nodes in Core:</h2>
+            <h2>Nodes in Unsatisfiable Core:</h2>
         </div>
         <div *ngFor="let node of unsatisfiableCore.nodes">
             {{node.name}}
@@ -14,7 +30,7 @@
         <br>
         <br>
         <div *ngIf="unsatisfiableCore.unsatisfiableCore">
-            <h2>Constraints in Core:</h2>
+            <h2>Constraints in Unsatisfiable Core:</h2>
             <hr>
         </div>
     
@@ -25,7 +41,7 @@
     </div>
 </div>
 <br>
-<div *ngIf="fmGraph != null">
+<div style="padding-top:50px;" *ngIf="fmGraph != null">
     <unsat-graph 
         [fmGraph] = "fmGraph"
         [unsatCore] = "unsatisfiableCore"

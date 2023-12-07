@@ -8,7 +8,7 @@ import { UnsatCoreResult } from 'src/models/unsatCoreResult';
   styleUrls: ['./unsat-core.component.css']
 })
 export class UnsatCoreComponent implements AfterViewInit {
-  @Input() unsatisfiableCore: UnsatCoreResult = new UnsatCoreResult([], [], []);
+  @Input() unsatisfiableCore: UnsatCoreResult = new UnsatCoreResult([], [], [], []);
   @Input() modelToDiagnose: string = "";
   @Input() componentHeight: number = 500;
   @Input() componentWidth: number = 500;
@@ -16,19 +16,20 @@ export class UnsatCoreComponent implements AfterViewInit {
   @Input() nodeSpacing: number = 1;
 
   
+  protected api: string = "http://localhost";
+
   public fmGraph: FmGraphResult | null = null;
 
 
  
   
   ngAfterViewInit(): void {
-    // Need to retrieve Model in order to initialize the Graph Data.
-    console.log(this.modelToDiagnose)
     this.getFeatureModel();
+    console.log(this.unsatisfiableCore);
   }
 
   public async getFeatureModel(){
-    fetch("http://localhost/diagnose/featureModel", {
+    fetch(this.api + "/diagnose/featureModel", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

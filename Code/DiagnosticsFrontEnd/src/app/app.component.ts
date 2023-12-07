@@ -13,6 +13,12 @@ import { UnsatCoreResult } from 'src/models/unsatCoreResult';
 export class AppComponent {
   title = 'Z3 Theorem Prover';
 
+  protected api: string = "http://localhost";
+
+
+
+
+
   protected proof: string = "";
   protected unsatisfiableCore: UnsatCoreResult | null = null;
   protected fmGraph: FmGraphResult | null = null;
@@ -59,7 +65,7 @@ export class AppComponent {
   public proveModel(){
     this.resetVariables();
 
-    fetch("http://localhost/diagnose/proof", {
+    fetch(this.api + "/diagnose/proof", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +83,7 @@ export class AppComponent {
   public getFeatureModel(){
     this.resetVariables();
 
-    fetch("http://localhost/diagnose/featureModel", {
+    fetch(this.api + "/diagnose/featureModel", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +102,7 @@ export class AppComponent {
   public getUnsatCore(){
     this.resetVariables();
 
-    fetch("http://localhost/diagnose/unsatCore", {
+    fetch(this.api + "/diagnose/unsatCore", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -105,7 +111,7 @@ export class AppComponent {
     })
     .then(async (response) => {
       let dict = await response.json();
-      this.unsatisfiableCore = new UnsatCoreResult(dict.unsatisfiableCore, dict.nodes, dict.edges)
+      this.unsatisfiableCore = new UnsatCoreResult(dict.unsatisfiableCore, dict.nodes, dict.edges, dict.toRemove)
     })
     .catch((error) => {
       alert("Something went wrong trying to find proof for the model: \n\n" + error);

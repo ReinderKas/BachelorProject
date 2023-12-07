@@ -6,6 +6,7 @@ using Elfsquad.Core.Archer;
 using Microsoft.Z3;
 using System.Data;
 using Z3Parser.Elfsquad.Archer.Elfsquad.Core.Archer;
+using Z3Parser.Z3Constraints;
 
 namespace Z3Parser.FeatureModels
 {
@@ -36,7 +37,7 @@ namespace Z3Parser.FeatureModels
         public Expr Proof;
         public Expr[] UnsatCore;
 
-        public HashSet<BoolExpr> Z3Constraints;
+        public HashSet<AConstraint> Z3Constraints;
 
         public Z3Solver()
         {
@@ -59,19 +60,23 @@ namespace Z3Parser.FeatureModels
 
         public bool Solve()
         {
+            // Have to Initialize new Solver here if FastDiag is to be used!
+            InitializeZ3Solver();
+
+
             int counter = 0;
 
-            foreach(var constraint in Z3Constraints)
+            foreach(var constraint in Z3Constraints.Select(c =>c.Expression))
             {
                 try
                 {
                     counter++;
-                    Console.WriteLine($"({counter}/{Z3Constraints.Count()}) {constraint}");
+                    //Console.WriteLine($"({counter}/{Z3Constraints.Count()}) {constraint}");
                     Solver.AssertAndTrack(constraint, constraint);
                 }
                 catch (Z3Exception ex) 
                 {
-                    Console.WriteLine($"(Z3) Something went wrong for {constraint}: {ex.Message}");
+                    //Console.WriteLine($"(Z3) Something went wrong for {constraint}: {ex.Message}");
                 }
                 catch (Exception ex) 
                 {
@@ -102,8 +107,16 @@ namespace Z3Parser.FeatureModels
         {
             InitializeSolvers();
             InitializeVariables();
+<<<<<<< HEAD
             InitializeBooleanConstraints();
+=======
+
+            if (!Z3Constraints.Any())
+                InitializeConstraints();
+            
+>>>>>>> d9e4fa450c45705edac18f0f97751a17644afad7
             InitializeRequirements();
+
         }
 
         private void InitializeSolvers()
@@ -117,9 +130,10 @@ namespace Z3Parser.FeatureModels
 
             var root = ArcherVariableStore.GetExpression(SelectedProperty(FmGraph.GetRoot())) as BoolExpr;
 
-            Z3Constraints.Add(
-                Z3Context.MkEq(root, Z3Context.MkTrue()) 
-                );
+            Z3Constraints.Add( 
+                new UserRequirement(
+                    Z3Context.MkEq(root, Z3Context.MkTrue())
+                ));
         }
 
         private void InitializeVariables()
@@ -169,8 +183,8 @@ namespace Z3Parser.FeatureModels
             Z3Constraints.Add(
                 relationship switch
                 {
-                    AlternativeFeatureModelConstraint => Alternative(parent, children.ToArray()),
-                    OrFeatureModelConstraint => Or(parent, children.ToArray()),
+                    AlternativeFeatureModelConstraint => InitAlternative(parent, children.ToArray()),
+                    OrFeatureModelConstraint => InitOr(parent, children.ToArray()),
                     _ => throw new NotImplementedException($"Type {relationship.GetType()} is not suported")
                 });
         }
@@ -183,47 +197,51 @@ namespace Z3Parser.FeatureModels
             Z3Constraints.Add(
                 relationship switch
                 {
-                    OptionalFeatureModelConstraint => Optional(parent, child),
-                    MandatoryFeatureModelConstraint => Mandatory(parent, child),
-                    ExcludesFeatureModelConstraint => Excludes(parent, child),
-                    RequiresFeatureModelConstraint => Requires(parent, child),
+                    OptionalFeatureModelConstraint => InitOptional(parent, child),
+                    MandatoryFeatureModelConstraint => InitMandatory(parent, child),
+                    ExcludesFeatureModelConstraint => InitExcludes(parent, child),
+                    RequiresFeatureModelConstraint => InitRequires(parent, child),
                     _ => throw new NotImplementedException($"Type {relationship.GetType()} is not suported")
                 });
         }
 
 
-        private BoolExpr Mandatory(BoolExpr parent, BoolExpr child)
+        private AConstraint InitMandatory(BoolExpr parent, BoolExpr child)
         {
-            return Z3Context.MkEq(parent, child);
+            return new Mandatory(Z3Context.MkEq(parent, child));
         }
 
-        private BoolExpr Optional(BoolExpr parent, BoolExpr child)
+        private AConstraint InitOptional(BoolExpr parent, BoolExpr child)
         {
-            return Z3Context.MkOr(
+            return new Optional(
+                Z3Context.MkOr(
                 parent,
-                Z3Context.MkAnd(Z3Context.MkNot(parent), Z3Context.MkNot(child)));
+                Z3Context.MkAnd(Z3Context.MkNot(parent), Z3Context.MkNot(child)))
+            );
         }
 
-        private BoolExpr Alternative(BoolExpr parent, params BoolExpr[] children)
+        private AConstraint InitAlternative(BoolExpr parent, params BoolExpr[] children)
         {
-            return Z3Context.MkAnd(
-                Or(parent, children),
-                Z3Context.MkAtMost(children, 1));
+            return new Alternative(
+                Z3Context.MkAnd(
+                InitOr(parent, children).Expression,
+                Z3Context.MkAtMost(children, 1))
+            );
         }
 
-        private BoolExpr Or(BoolExpr parent, params BoolExpr[] children)
+        private AConstraint InitOr(BoolExpr parent, params BoolExpr[] children)
         {
-            return Z3Context.MkEq(parent, Z3Context.MkOr(children));
+            return new Or(Z3Context.MkEq(parent, Z3Context.MkOr(children)));
         }
 
-        private BoolExpr Requires(BoolExpr parent, BoolExpr child)
+        private AConstraint InitRequires(BoolExpr parent, BoolExpr child)
         {
-            return Z3Context.MkImplies(parent, child);
+            return new Requires(Z3Context.MkImplies(parent, child));
         }
 
-        private BoolExpr Excludes(BoolExpr parent, BoolExpr child)
+        private AConstraint InitExcludes(BoolExpr parent, BoolExpr child)
         {
-            return Z3Context.MkOr(Z3Context.MkNot(parent), Z3Context.MkNot(child));
+            return new Excludes(Z3Context.MkOr(Z3Context.MkNot(parent), Z3Context.MkNot(child)));
         }
 
         private NodeProperty SelectedProperty(IFeatureModelNode node)

@@ -3,9 +3,9 @@ using Elfskot.Core.Masterdata.FeatureModels.Translator;
 using Elfsquad.Core.Archer;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Z3;
 using Z3Parser;
+using Z3Parser.Z3Constraints;
 
 namespace DiagnosticsApi.Controllers
 {
@@ -58,25 +58,26 @@ namespace DiagnosticsApi.Controllers
             var solver = new DiagnosticsParser(model);
             solver.ProveModel();
 
-            // Doesn't work for solveable model?
             if (!solver.HasSolution)
             {
-                solver.PrintProof();
+                var diagnoseResult = solver.FastDiagnose();
 
-                // TODO: Make class, not string
+                Console.WriteLine($"\nDiagnostics Result: (Count: {diagnoseResult.Count()})");
+                foreach(var diag in diagnoseResult)
+                    Console.WriteLine($"{diag.GetType()} - {diag.Expression}");
+
                 var result = new UnsatCoreResult(solver.UnsatCore(),
                                                 solver.UnsatCoreArguments(),
-                                                solver.ModelSolver.Variables,
-                                                Array.Empty<ConstraintResult>());
+                                                diagnoseResult);
 
                 return Ok(result);
             }
 
             return NotFound(new UnsatCoreResult(Array.Empty<Expr>(),
                                                 Array.Empty<Expr>(),
-                                                Array.Empty<NodeProperty>(),
-                                                Array.Empty<ConstraintResult>()));
+                                                Array.Empty<AConstraint>()));
         }
+
 
         [HttpPut("featureModel")]
         [ProducesResponseType(200)]
@@ -96,7 +97,7 @@ namespace DiagnosticsApi.Controllers
                 solver.ModelSolver.FmGraph.GetConstraints()
             );
 
-            Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
+            //Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
 
             return Ok(result);
         }

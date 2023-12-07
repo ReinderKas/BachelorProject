@@ -1,6 +1,8 @@
-﻿using Microsoft.Z3;
-using System.Diagnostics.Contracts;
+﻿using Microsoft.Win32.SafeHandles;
+using Microsoft.Z3;
+using System.Threading.Tasks.Sources;
 using Z3Parser.FeatureModels;
+using Z3Parser.Z3Constraints;
 
 namespace Z3Parser
 {
@@ -20,13 +22,12 @@ namespace Z3Parser
             ModelString = modelString;
             HasSolution = false;
             ModelSolver = ModelBuilder.CreateModel(ModelString).Result;
-            ModelSolver.InitializeZ3Solver();
         }
 
         public void ProveModel()
         {
             Console.WriteLine("\n");
-            Console.Write($"Proof for:");
+            Console.Write($"Proof for:\n");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write($"{ModelString}\n\n");
             Console.ResetColor();
@@ -34,6 +35,71 @@ namespace Z3Parser
             HasSolution = ModelSolver.Solve();
         }
 
+
+
+        // As per Chapter 7.4.2 of the holy bible.
+        public IEnumerable<AConstraint> FastDiagnose()
+        {
+            var coreConstraints = ModelSolver.Z3Constraints.Where(c => c.Hierarchical);
+            var toDiagnose = ModelSolver.Z3Constraints.Where(c => !c.Hierarchical);
+            var allConstraints = coreConstraints.Concat(toDiagnose);
+
+            // No Constraints to Diagnose.
+            if (!toDiagnose.Any()
+                || !GetSolution(coreConstraints))
+                return Enumerable.Empty<AConstraint>();
+
+            // Used to be implemented for User Requirements.
+            return FD(null, toDiagnose, allConstraints);
+        }
+
+
+        private IEnumerable<AConstraint> FD(
+            IEnumerable<AConstraint> d,
+            IEnumerable<AConstraint> c,
+            IEnumerable<AConstraint> ac)
+        {
+            if (d != null)
+            {
+                if (GetSolution(ac))
+                    return new List<AConstraint>();
+            }
+
+            if (c.Count() == 1)
+            {
+                PrintConsole(c, ConsoleColor.Red);
+                return c;
+            }
+
+            var k = c.Count() / 2;
+            var c1 = c.Take(k);
+            var c2 = c.Skip(k);
+
+            var d1 = FD(c2, c1, ac.Except(c2));
+            var d2 = FD(d1, c2, ac.Except(d1));
+            return d1.Concat(d2);
+        }
+
+
+        private bool GetSolution(IEnumerable<AConstraint> constraints)
+        {
+            ModelSolver.Z3Constraints = constraints.ToHashSet();
+            return ModelSolver.Solve();
+        }
+
+
+        private void PrintConsole(IEnumerable<AConstraint> constraints, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine($"\nConstraints: {constraints.Count()}");
+            foreach (var con in constraints)
+                Console.WriteLine($"\t{con.Expression}");
+
+            Console.ResetColor();
+        }
+
+
+        #region Print Diagnostics
 
         public void PrintProof()
         {
@@ -92,5 +158,7 @@ namespace Z3Parser
                 Console.WriteLine($"-------------------------------");
             }
         }
+
+        #endregion
     }
 }

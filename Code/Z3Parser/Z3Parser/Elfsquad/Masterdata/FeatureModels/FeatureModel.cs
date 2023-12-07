@@ -1,14 +1,4 @@
-﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Xml.Serialization;
-namespace Elfskot.Core.Models.Entities.FeatureModels
+﻿namespace Elfskot.Core.Models.Entities.FeatureModels
 {
     public class FeatureModel
     {

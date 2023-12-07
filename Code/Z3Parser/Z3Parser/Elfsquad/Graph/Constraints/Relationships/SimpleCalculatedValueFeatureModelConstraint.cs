@@ -1,6 +1,5 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfskot.Core.Models.Entities.FeatureModels;
-using System;
 
 namespace Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints.Relationships
 {

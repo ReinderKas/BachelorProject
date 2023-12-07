@@ -1,9 +1,5 @@
-﻿using Elfskot.Core.Models.Entities;
-using Elfskot.Core.Models.Entities.FeatureModels;
+﻿using Elfskot.Core.Models.Entities.FeatureModels;
 using Elfsquad.Core.Archer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes
 {

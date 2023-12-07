@@ -4,7 +4,6 @@ using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 namespace DiagnosticsApi.Models
 { 
     // TODO: Currently only works for normal Relationship Constraints. Not Expression Constraints
-    // TODO: Currently only works for normal Relationship Constraints. Not Expression Constraints
     [Serializable]
     public class ConstraintResult
     {

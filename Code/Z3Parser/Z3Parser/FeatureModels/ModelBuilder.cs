@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace Z3Parser.FeatureModels
+﻿namespace Z3Parser.FeatureModels
 {
     public static class ModelBuilder
     {

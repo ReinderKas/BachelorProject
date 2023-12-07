@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Serialization;
-
-namespace Elfskot.Core.Models.Entities.FeatureModels
+﻿namespace Elfskot.Core.Models.Entities.FeatureModels
 {
     [Serializable]
     public abstract class FeatureModelRelationshipCondition

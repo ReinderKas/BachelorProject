@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Z3;
+﻿using Microsoft.Z3;
 
 namespace Z3Parser.Z3Constraints
 {

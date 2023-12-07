@@ -1,11 +1,6 @@
 ﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
 using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfsquad.Core.Archer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Elfskot.Core.Models.Configurator.Graph.Constraints
 {

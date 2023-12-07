@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection.Metadata.Ecma335;
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
+﻿using Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes;
 using Elfsquad.Core.Archer;
 
 namespace Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints

@@ -1,7 +1,4 @@
 ﻿using DiagnosticsApi.Models;
-using Elfskot.Core.Masterdata.FeatureModels.Translator;
-using Elfsquad.Core.Archer;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Z3;
 using Z3Parser;
@@ -84,7 +81,7 @@ namespace DiagnosticsApi.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<ActionResult<FmGraphResult>> FeatureModel([FromBody] string model = null)
-        { 
+        {
             if (model == null)
                 return BadRequest("No model provided!");
 
@@ -93,13 +90,20 @@ namespace DiagnosticsApi.Controllers
 
 
             var result = new FmGraphResult(
-                solver.ModelSolver.FmGraph.GetNodes(), 
+                solver.ModelSolver.FmGraph.GetNodes(),
                 solver.ModelSolver.FmGraph.GetConstraints()
             );
 
-            //Console.WriteLine("Returning FM Graph Result Object: " + result.ToString());
-
             return Ok(result);
+        }
+
+        [HttpPut("options")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<Expr>> Options()
+        {
+            return Ok();
         }
     }
 }

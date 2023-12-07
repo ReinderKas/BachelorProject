@@ -1,9 +1,3 @@
-using Elfskot.Core.Masterdata.FeatureModels.Translator.Constraints;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-
 namespace Elfsquad.Core.Archer
 {
     public class ArcherModel

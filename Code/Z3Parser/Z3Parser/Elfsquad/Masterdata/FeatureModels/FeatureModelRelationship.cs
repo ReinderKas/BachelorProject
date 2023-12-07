@@ -1,6 +1,4 @@
 ﻿using Elfskot.Core.Models.Entities.FeatureModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Serialization;
 
 namespace Elfskot.Core.Models.Entities.FeatureModels
 {

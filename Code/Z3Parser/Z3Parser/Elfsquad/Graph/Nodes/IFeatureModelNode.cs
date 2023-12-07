@@ -1,5 +1,4 @@
-﻿using Elfskot.Core.Models.Entities;
-using Elfskot.Core.Models.Entities.FeatureModels;
+﻿using Elfskot.Core.Models.Entities.FeatureModels;
 using Elfsquad.Core.Archer;
 
 namespace Elfskot.Core.Masterdata.FeatureModels.Translator.Nodes

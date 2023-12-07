@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
-using Microsoft.Z3;
-using System.Threading.Tasks.Sources;
+﻿using Microsoft.Z3;
 using Z3Parser.FeatureModels;
 using Z3Parser.Z3Constraints;
 

@@ -1,8 +1,6 @@
 import { Component, Inject,  OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { HierarchyPointNode } from 'd3';
 import { DiagnoseOptions } from 'src/models/diagnoseDialogType';
-import { GraphNode } from 'src/models/node';
 
 @Component({
   selector: 'app-options',
@@ -16,16 +14,21 @@ export class OptionsComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<OptionsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: HierarchyPointNode<GraphNode>
+    @Inject(MAT_DIALOG_DATA) public data: {   
+                                              model: string;
+                                              nodeId: string;
+                                              nodeName: string;
+                                          } 
     ) {}
 
   ngOnInit() {
-    fetch('http://localhost/diagnose/options', {
+    console.log(this.data.nodeId)
+    fetch('http://localhost/diagnose/options/' + this.data.nodeName, {
       method: 'PUT',
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(this.data.id)
+      body: JSON.stringify(this.data.model)
     })
     .then(async (response) => {
       this.options = await response.json();

@@ -42,7 +42,8 @@
 </div>
 <br>
 <div style="padding-top:50px;" *ngIf="fmGraph != null">
-    <unsat-graph 
+    <unsat-graph
+        [model] = "modelToDiagnose" 
         [fmGraph] = "fmGraph"
         [unsatCore] = "unsatisfiableCore"
         [componentHeight] = "componentHeight"

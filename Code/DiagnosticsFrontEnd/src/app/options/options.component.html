@@ -1,6 +1,6 @@
 <div class="container">
     <h3>Select an action for the Node: </h3>
-    <h2 style="align-items: center;"><b>{{data.data.name}}</b></h2>
+    <h2 style="align-items: center;"><b>{{data.nodeName}}</b></h2>
     <div *ngFor="let option of options" [class.selected]="option === selectedOption">
         <p (click)="selectOption(option)">{{ getOptionText(option) }}</p> <!-- Adjust as per your data structure -->
     </div>

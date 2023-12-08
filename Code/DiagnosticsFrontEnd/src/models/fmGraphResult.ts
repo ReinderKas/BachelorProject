@@ -60,10 +60,10 @@ export class FmGraphResult{
 
         return result;
     }
-
     
     public getEdgesCrossTree(){
         let result: GraphEdge[] = new Array();
+        console.log("Inside getEdgesCrossTree", this.edges)
 
         // Currently only assigns ID's
         // Could easily be made into assigning entire Node.

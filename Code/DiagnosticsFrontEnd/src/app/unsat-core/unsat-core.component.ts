@@ -21,11 +21,8 @@ export class UnsatCoreComponent implements AfterViewInit {
   public fmGraph: FmGraphResult | null = null;
 
 
- 
-  
   ngAfterViewInit(): void {
     this.getFeatureModel();
-    console.log(this.unsatisfiableCore);
   }
 
   public async getFeatureModel(){
@@ -39,7 +36,6 @@ export class UnsatCoreComponent implements AfterViewInit {
     .then(async (response) => {
       let dict = await response.json();
       this.fmGraph = new FmGraphResult(dict.nodes, dict.edges);
-      console.log(this.fmGraph)
     })
     .catch((error) => {
       alert("Something went wrong trying to create a Feature Model graph for the model: \n\n" + error);

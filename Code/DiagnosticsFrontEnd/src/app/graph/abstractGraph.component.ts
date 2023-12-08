@@ -46,6 +46,7 @@ export abstract class AbstractGraphComponent implements AfterViewInit {
     
     // Called when the 'componentSize' property changes (through binding from the parent/app component).
     ngOnChanges() {
+      console.log(this.fmGraph?.edges.length)
       this.clearGraph();
       this.adjustSize();
       this.createGraph();

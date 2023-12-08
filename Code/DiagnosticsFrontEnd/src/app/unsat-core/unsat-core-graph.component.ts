@@ -3,11 +3,11 @@ import { AbstractGraphComponent } from "../graph/abstractGraph.component";
 import { FmGraphResult } from "src/models/fmGraphResult";
 import { HierarchyPointNode } from "d3-hierarchy";
 import { GraphNode } from "src/models/node";
-import { GraphEdge } from "src/models/edge";
+import { ConstraintType, GraphEdge } from "src/models/edge";
 import { UnsatCoreResult } from "src/models/unsatCoreResult";
-import * as d3 from 'd3';
 import { OptionsComponent } from "../options/options.component";
 import { MatDialog } from "@angular/material/dialog";
+import { DiagnoseOptions } from "src/models/diagnoseDialogType";
 
 @Component({
     selector: 'unsat-graph',
@@ -17,6 +17,7 @@ import { MatDialog } from "@angular/material/dialog";
 })
 
 export class UnsatCoreGraph extends AbstractGraphComponent {
+    @Input() model: string = "";
     @Input() unsatCore: UnsatCoreResult | null = null;
     @Input() fmGraph: FmGraphResult | null = null; 
     @Input() componentHeight: number = 500;
@@ -134,15 +135,65 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
         || !this.unsatCore?.nodes.some(n => n.name === d.data.name)){
         return;
       }
+
+      var data = {
+        "model" : this.model,
+        "nodeId" : d.data.id,
+        "nodeName" : d.data.name
+      }
+
       let dialogRef = this.dialog.open(OptionsComponent, {
         width: '350px',
         height: '350px',
-        data: d
+        data: data
       });
 
 
       dialogRef.afterClosed().subscribe((result: any) => {
         console.log('The dialog was closed. Selected Item: ', result);
+        this.changeConstraint(result, d);
       });
+    }
+
+
+
+    private changeConstraint(option: DiagnoseOptions, node: HierarchyPointNode<GraphNode>){
+      switch(option){
+        case DiagnoseOptions.Optional:
+          this.makeOptional(node);
+          return;
+
+        case DiagnoseOptions.Delete:
+          this.deleteConstraint(node);
+          return;
+
+        default:
+          return;
+      }
+    }
+
+    private makeOptional(node: HierarchyPointNode<GraphNode>){
+      let relationship = this.fmGraph?.edges.find(e => e.isNonXTree 
+                                                      && e.to.some(toNode => toNode.id === node.data.id));
+
+      if (relationship){
+        relationship.relType = ConstraintType.Optional    
+      }  
+      this.unsatCore = null;
+      this.ngOnChanges();                                      
+    }
+
+
+
+    private deleteConstraint(node: HierarchyPointNode<GraphNode>){
+      let relationship = this.fmGraph?.edges.find(e => !e.isNonXTree 
+        && (e.from.id === node.data.id 
+            || e.to.some(toNode => toNode.id === node.data.id)))
+
+      this.fmGraph?.edges.forEach((rel,index)=>{
+        if(rel === relationship) this.fmGraph?.edges.splice(index,1);
+      });
+      this.unsatCore = null;
+      this.ngOnChanges();     
     }
   }

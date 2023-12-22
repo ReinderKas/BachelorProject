@@ -11,13 +11,19 @@
 <div class="content" role="main">
    
   <!-- Archer Model  -->
-  <h1>Z3 Proof Generation</h1>
-
-  <h2 style="border-bottom: 1px solid lightgrey;">Predefined Models</h2> 
-
+  <h1>Z3 Proof Generation - Predefined Models</h1> 
+  <h1 style="border-bottom: 1px solid lightgrey;">Working Model Examples</h1>
   <mat-list style="display: flex;" >  
-    <div *ngFor="let modelNumber of modelCount()" style="padding: 10px;">
-      <button mat-raised-button color="primary" (click)="selectModel(modelNumber)"> Model {{modelNumber + 1}} </button>
+    <div *ngFor="let modelNumber of workingModelCount()" style="padding: 10px;">
+      <button mat-raised-button color="primary" (click)="selectWorkingModel(modelNumber)"> Model {{modelNumber + 1}} </button>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list>
+  
+  <h1 style="border-bottom: 1px solid lightgrey;">Broken Model Examples</h1>
+  <mat-list style="display: flex;" > 
+    <div *ngFor="let modelNumber of brokenModelCount()" style="padding: 10px;">
+      <button mat-raised-button color="primary" (click)="selectBrokenModel(modelNumber)"> Model {{modelNumber + 1}} </button>
       <mat-divider></mat-divider>
     </div>
   </mat-list>

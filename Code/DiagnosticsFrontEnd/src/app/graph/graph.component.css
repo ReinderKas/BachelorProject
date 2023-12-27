@@ -41,6 +41,12 @@
   stroke: red;
   fill: red;
 }
+
+.node-orange{
+  stroke: rgb(255, 128, 0);
+  fill: rgb(255, 128, 0);;
+}
+
 .node-green{
   stroke: lightgreen;
   fill: lightgreen;

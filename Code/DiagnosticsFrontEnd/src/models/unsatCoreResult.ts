@@ -18,6 +18,18 @@ export class UnsatCoreResult{
         this.edges = edges;
         this.toRemove = toRemove;
     }
+
+    public remove(name: string) : boolean {
+        console.log("Remove", this.toRemove)
+        for(let i = 0; i < this.toRemove.length; i++){
+            if (this.toRemove[i].nodes.find(n => n.name === name))
+            {
+                return true;   
+            }
+        }
+
+        return false;
+    }
 }
 
 export class ToRemoveResult{

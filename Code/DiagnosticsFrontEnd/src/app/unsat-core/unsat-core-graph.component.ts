@@ -60,12 +60,12 @@ export class UnsatCoreGraph extends AbstractGraphComponent {
     }
 
     protected override getNodeClass(d: HierarchyPointNode<GraphNode>): string{
-      if (d.id == this.fmGraph?.root?.id){
-        return "node node-green";
+      if (this.unsatCore?.remove(d.data.name)){
+        return "node node-red";
       }
 
       return (this.unsatCore?.nodes.find(n => n.name == d.data.name) != undefined)
-                    ? "node node-red"
+                    ? "node node-orange"
                     : "node node-green";
     }
   
